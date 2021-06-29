@@ -20,4 +20,4 @@ jobs:
         uses: browser-actions/setup-firefox@latest
       - run: firefox --version
       - run: npm install
-      - run: npm test
+      - run: MOZ_HEADLESS=1 npm test
