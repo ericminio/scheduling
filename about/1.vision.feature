@@ -18,5 +18,5 @@ Feature: Scheduling events
             | E2 | 15:00 | 18:00 | GITN, H1      |
             | E3 | 18:00 | 20:00 | GNEA , H1, H2 |
         Given I look at the events grouped by "plane"
-        When I move "E3" to start at "18:30"
-        Then I see that "E3" ends at "20:30"
+        When I move event "E3" to start at "18:30"
+        Then I see that event "E3" ends at "20:30"

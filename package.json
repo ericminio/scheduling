@@ -1,0 +1,24 @@
+{
+  "name": "yop-scheduling",
+  "version": "1.0.0",
+  "description": "[Vision](about/1.vision.feature)",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/cucumber-js -r about/steps --exit about"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericminio/yop-scheduling.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ericminio/yop-scheduling/issues"
+  },
+  "homepage": "https://github.com/ericminio/yop-scheduling#readme",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.0.1",
+    "@cucumber/cucumber": "^7.3.0"
+  }
+}
