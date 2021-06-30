@@ -1,20 +1,6 @@
 const { Before, After, Given, When, Then, World } = require('@cucumber/cucumber');
 const { Builder, By } = require('selenium-webdriver')
-
-class Server {
-    constructor(port) {
-        this.port = port;
-        this.internal = require('http').createServer(this.route);
-    }
-    start() {
-        this.internal.listen(this.port);
-    }
-    route(request, response) {
-        response.writeHead(200, { 'content-type':'text/html' })
-        response.end(require('fs').readFileSync(
-            require('path').join(__dirname, '..', '..', 'app', 'http', 'index.html')).toString())
-    }
-};
+const { Server } = require('../../app/http/server')
 
 Before(async (testCase)=>{
     World.server = new Server(8015);
