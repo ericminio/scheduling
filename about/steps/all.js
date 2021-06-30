@@ -2,9 +2,10 @@ const { Before, After, Given, When, Then, World } = require('../../app/node_modu
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver')
 const { Server } = require('../../app/http/server')
 const { expect } = require('../../app/node_modules/chai')
+const port = 8017
 
 Before(async (testCase)=>{
-    World.server = new Server(8017);
+    World.server = new Server(port);
     await World.server.start();
     World.driver = await new Builder().forBrowser('firefox').build();
 });
@@ -18,7 +19,7 @@ Given('the following resources exist in the system', function (resources) {
 Given('the following events', function (events) {
 });
 Given('I look at the events grouped by {string}', async (type)=> {
-    await World.driver.get('http://localhost:8015/events');
+    await World.driver.get('http://localhost:'+port+'/events');
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });
