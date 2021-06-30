@@ -19,5 +19,6 @@ jobs:
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
       - run: firefox --version
+      - run: cd app
       - run: npm install
       - run: MOZ_HEADLESS=1 npm test
