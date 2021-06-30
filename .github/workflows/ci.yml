@@ -18,6 +18,7 @@ jobs:
           node-version: 14.17.1
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
-      - run: firefox --version
-      - run: cd app && npm install
-      - run: MOZ_HEADLESS=1 npm test
+      - run: |
+          cd app
+          npm install
+          MOZ_HEADLESS=1 npm test
