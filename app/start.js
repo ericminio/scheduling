@@ -1,5 +1,5 @@
 const { Server } = require('./http/server');
-const port = 8015;
+const port = process.env.PORT || 8015;
 
 let server = new Server(port);
 server.start();
