@@ -4,7 +4,7 @@
   "description": "[Vision](about/1.vision.feature)",
   "main": "index.js",
   "scripts": {
-    "tests:external": "./node_modules/.bin/cucumber-js -r ../about/steps --exit ../about --tags 'not @backlog'",
+    "tests:external": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about --tags 'not @backlog'",
     "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js'",
     "test": "npm run tests:internal && npm run tests:external",
     "start": "node start.js"
