@@ -4,7 +4,8 @@
   "description": "[Vision](about/1.vision.feature)",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/cucumber-js -r about/steps --exit about"
+    "test": "./node_modules/.bin/cucumber-js -r about/steps --exit about",
+    "start": "node app/start.js"
   },
   "repository": {
     "type": "git",
