@@ -1,5 +1,5 @@
-const { Before, After, Given, When, Then, World } = require('@cucumber/cucumber');
-const { Builder, By } = require('selenium-webdriver')
+const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
+const { Builder, By } = require('../../app/node_modules/selenium-webdriver')
 const { Server } = require('../../app/http/server')
 
 Before(async (testCase)=>{

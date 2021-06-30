@@ -3,16 +3,25 @@ version: '3.4'
 services:
 
     database:
-        build: app/storage/adapters/postgresql
+        build: app/storage
         image: scheduling:postgresql
         container_name: scheduling-postgresql
         ports:
-        - 5432:5432
+            - 5432:5432
         environment:
-        - POSTGRES_DB=scheduling
-        - POSTGRES_USER=dev
-        - POSTGRES_PASSWORD=dev
+            - POSTGRES_DB=scheduling
+            - POSTGRES_USER=dev
+            - POSTGRES_PASSWORD=dev
         volumes:
-        - .:/usr/local/src
+            - .:/usr/local/src
+
+    app:
+        build: app
+        image: scheduling:app
+        container_name: scheduling-app
+        ports: 
+            - 8015:8015
+        environment: 
+            - PORT=8015
 
         
