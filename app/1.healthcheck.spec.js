@@ -8,59 +8,52 @@ const ping = {
     path: '/ping',
     method: 'GET'
 };
-
+const request = (options)=> {
+    return new Promise((resolve, reject)=>{
+        let request = http.request(options, pong => {
+            let body = '';
+            pong.on('data', chunk => {
+                body += chunk;
+            });
+            pong.on('end', ()=>{
+                pong.body = body;
+                resolve(pong)
+            });
+            pong.on('error', error => {
+                reject(error);
+            })
+        })
+        request.on('error', error => {
+            reject(error);
+        })
+        request.end();
+    })
+}
 describe('Server healthcheck', ()=>{
 
     let server;
+    let pong;
 
     beforeEach((done)=>{
         server = new Server(port);
-        server.start(done);
+        server.start(async () => {
+            pong = await request(ping);
+            done();
+        });
     });
     afterEach((done)=> {
         server.stop(done);
     })
 
-    it('is available', (done)=> {
-        let request = http.request(ping, response => {
-            expect(response.statusCode).to.equal(200);
-            done();
-        });
-        request.on('error', error => {
-            console.error(error)
-            done(error);
-        })
-        request.end();
+    it('is available', ()=> {
+        expect(pong.statusCode).to.equal(200);
     })
 
-    it('returns json', (done)=> {
-        let request = http.request(ping, response => {
-            expect(response.headers['content-type']).to.equal('application/json');
-            done();
-        });
-        request.on('error', error => {
-            console.error(error)
-            done(error);
-        })
-        request.end();
+    it('returns json', ()=> {
+        expect(pong.headers['content-type']).to.equal('application/json');
     })
 
-    it('returns expected message', (done)=> {
-        let request = http.request(ping, response => {
-            let body = '';
-            response.on('data', chunk => {
-                body += chunk;
-            });
-            response.on('end', ()=>{
-                let message = JSON.parse(body);
-                expect(message).to.deep.equal({ alive:true });
-                done();
-            });
-        });
-        request.on('error', error => {
-            console.error(error)
-            done(error);
-        })
-        request.end();
+    it('returns expected message', ()=> {
+        expect(JSON.parse(pong.body)).to.deep.equal( { alive:true } );
     })
 })
