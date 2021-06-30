@@ -18,6 +18,7 @@ Feature: Scheduling events
 
     Scenario: Inspect event
         Given I look at the events grouped by "plane"
+        Then I see that event "E3" starts at "18:00"
         Then I see that event "E3" ends at "20:00"
 
     @backlog

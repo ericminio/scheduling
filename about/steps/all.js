@@ -22,8 +22,13 @@ Given('I look at the events grouped by {string}', async (type)=> {
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });
+Then('I see that event {string} starts at {string}', async (id, expected)=> {
+    let element = await World.driver.findElement(By.css("#event-"+id))
+    let actual = await element.getAttribute('data-start')
+    expect(actual).to.equal(expected)
+});
 Then('I see that event {string} ends at {string}', async (id, expected)=> {
     let element = await World.driver.findElement(By.css("#event-"+id))
-    let text = await element.getText()
-    expect(text).to.equal(expected)
+    let actual = await element.getAttribute('data-end')
+    expect(actual).to.equal(expected)
 });
