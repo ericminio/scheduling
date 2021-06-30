@@ -11,6 +11,9 @@ https://yop-scheduling.herokuapp.com
 [Vision](about/1.vision.feature)
 
 ## run the tests
+
+Make sure `geckodriver` is in your PATH
+
 ```
 cd app
 npm install
