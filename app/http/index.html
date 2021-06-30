@@ -3,13 +3,27 @@
     <head>
         <title>Scheduling</title>
         <style>
+            calendar {
+                display: block;
+                background-color: #ffffff;  
+                position: relative;
+            }
             event {
                 display: block;
-                background-color: #ccc;                
+                background-color: #ccc;        
+                position: absolute;   
+                --unit: calc(100% / 48)     
             }
         </style>
     </head>
     <body>
-        <event id="event-E3" data-start="18:00" data-end="20:00">hello world</event>
+        <calendar style="position:relative">
+            <event 
+                id="event-E3" 
+                data-start="18:00" 
+                data-end="20:00"
+                style="top:0px; left:calc((18 - 1) * 2 * var(--unit)); width:calc(4 * var(--unit));"
+                >hello world</event>
+        </calendar>
     </body>
 </html>
