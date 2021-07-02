@@ -1,5 +1,6 @@
 let http = require('http');
 let path = require('path');
+let fs = require('fs');
 
 class Server {
     constructor(port) {
@@ -17,9 +18,19 @@ class Server {
             response.writeHead(200, { 'content-type':'application/json' })
             response.end(JSON.stringify({alive:true}));
         }
+        else if (request.url == '/calendar.js') {
+            response.writeHead(200, { 'content-type':'application/javascript' })
+            response.end(fs.readFileSync(
+                path.join(__dirname, 'calendar.js')).toString())
+        }
+        else if (request.url == '/scheduling.css') {
+            response.writeHead(200, { 'content-type':'text/css' })
+            response.end(fs.readFileSync(
+                path.join(__dirname, 'scheduling.css')).toString())
+        }
         else {
             response.writeHead(200, { 'content-type':'text/html' })
-            response.end(require('fs').readFileSync(
+            response.end(fs.readFileSync(
                 path.join(__dirname, 'index.html')).toString())
         }
     }
