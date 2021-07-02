@@ -8,17 +8,25 @@ describe('Calendar', ()=>{
     let html = `
         <!DOCTYPE html>
         <html lang="en">
+            <head>
+                <style>
+                    :root {
+                        --halfHourWidth: 10px;
+                    }
+                </style>
+            </head>
             <body>
                 <yop-calendar></yop-container>
                 <script>${sut}</script>
             </body>
         </html>
         `;
+    let window;
     let document;
     let calendar;
 
     beforeEach(()=>{
-        const { window } = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
+        window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar');
     })
@@ -28,7 +36,7 @@ describe('Calendar', ()=>{
     })
     it('adds expected event', ()=>{
         calendar.display([{ id:'42', start:'15:00', end:'19:30' }])
-        let element = document.querySelector('events > #event-42.common[data-start="15:00"][data-end="19:30"]');
+        let element = document.querySelector('events > #event-42[data-start="15:00"][data-end="19:30"]');
 
         expect(element).not.to.equal(null);
     })

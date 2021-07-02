@@ -2,14 +2,14 @@ body {
     font-family: Arial, sans-serif;
     font-size: 0.8em;
 }
-.container {
-    padding-left: 100px;
-}
-.common {
+:root {
     --padding: 5px;
-    --width: calc((100% - 2 * var(--padding) ) / 48);
+    --halfHourWidth: calc((100% - 2 * var(--padding) ) / 48);
     --height: 25px;        
     --radius: 3px; 
+}
+.container {
+    padding-left: 100px;
 }
 timeline {
     display: block;
@@ -27,7 +27,7 @@ events {
     position: relative;
     background-color: bisque;  
 }
-event {
+yop-calendar-event {
     display: block;
     position: absolute;   
     background-color: lightsalmon;        

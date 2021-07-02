@@ -22,13 +22,24 @@ Given('I look at the events grouped by {string}', async (type)=> {
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });
-Then('I see that event {string} starts at {string}', async (id, expected)=> {
+Then('I see that event {string} starts at {string}', async (id, time)=> {
+    let markerSelector = '#hour-' + time.replace(':', '');
+    let marker = await World.driver.findElement(By.css(markerSelector))
+    let markerPosition = await marker.getCssValue('left')
     let element = await World.driver.findElement(By.css("#event-"+id))
-    let actual = await element.getAttribute('data-start')
-    expect(actual).to.equal(expected)
+    let elementPosition = await element.getCssValue('left')
+    
+    expect(elementPosition).to.equal(markerPosition)
 });
-Then('I see that event {string} ends at {string}', async (id, expected)=> {
-    let element = await World.driver.findElement(By.css("#event-"+id))
-    let actual = await element.getAttribute('data-end')
+Then('I see that event {string} ends at {string}', async (id, time)=> {
+    let markerSelector = '#hour-' + time.replace(':', '');
+    let marker = await World.driver.findElement(By.css(markerSelector))
+    let markerPosition = await marker.getCssValue('left')
+    let element = await World.driver.findElement(By.css("#event-"+id))  
+    let elementPosition = await element.getCssValue('left')
+    let elementWidth = await element.getCssValue('width')
+    let actual = parseInt(elementPosition) + parseInt(elementWidth)
+    let expected = parseInt(markerPosition)
+
     expect(actual).to.equal(expected)
 });

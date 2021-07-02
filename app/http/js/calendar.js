@@ -1,44 +1,36 @@
 const calendarTemplate = document.createElement('template')
 calendarTemplate.innerHTML = `
 <timeline>
-    <hour class="common" style="left: calc(0 * 2 * var(--width) + var(--padding));">0</hour>
-    <hour class="common" style="left: calc(8 * 2 * var(--width) + var(--padding));">8</hour>
-    <hour class="common" style="left: calc(12 * 2 * var(--width) + var(--padding));">12</hour>
-    <hour class="common" style="left: calc(16 * 2 * var(--width) + var(--padding));">16</hour>
-    <hour class="common" style="left: calc(20 * 2 * var(--width) + var(--padding));">20</hour>
+    <hour id="hour-0000" style="left: calc(0 * 2 * var(--halfHourWidth) + var(--padding));">0</hour>
+    <hour id="hour-0800" style="left: calc(8 * 2 * var(--halfHourWidth) + var(--padding));">8</hour>
+    <hour id="hour-1000" style="left: calc(10 * 2 * var(--halfHourWidth) + var(--padding));">10</hour>
+    <hour id="hour-1200" style="left: calc(12 * 2 * var(--halfHourWidth) + var(--padding));">12</hour>
+    <hour id="hour-1400" style="left: calc(14 * 2 * var(--halfHourWidth) + var(--padding));">14</hour>
+    <hour id="hour-1600" style="left: calc(16 * 2 * var(--halfHourWidth) + var(--padding));">16</hour>
+    <hour id="hour-1800" style="left: calc(18 * 2 * var(--halfHourWidth) + var(--padding));">18</hour>
+    <hour id="hour-2000" style="left: calc(20 * 2 * var(--halfHourWidth) + var(--padding));">20</hour>
 </timeline>
-<events class="common" style="height: calc(2 * var(--height) + 2 * var(--padding));">
-    <event class="common"
-        id="event-E1" 
-        data-start="00:00" 
-        data-end="07:00"
-        style="top:calc(0 * var(--height) + var(--padding)); left:calc(0 * 2 * var(--width) + var(--padding)); width:calc((7 - 0) * 2 * var(--width));"
-        ></event>
-    <event class="common"
-        id="event-E3" 
-        data-start="18:00" 
-        data-end="20:00"
-        style="top:calc(0 * var(--height) + var(--padding)); left:calc(18 * 2 * var(--width) + var(--padding)); width:calc((20 - 18 ) * 2 * var(--width));"
-        ></event>
-    <event class="common"
-        id="event-E5" 
-        data-start="08:00" 
-        data-end="11:00"
-        style="top:calc(1 * var(--height) + var(--padding)); left:calc(8 * 2 * var(--width) + var(--padding)); width:calc((11 - 8) * 2 * var(--width));"
-        ></event>
-    <event class="common"
-        id="event-E6" 
-        data-start="23:00" 
-        data-end="24:00"
-        style="top:calc(1 * var(--height) + var(--padding)); left:calc(23 * 2 * var(--width) + var(--padding)); width:calc((24 - 23) * 2 * var(--width));"
-        ></event>
-</events>
+<events></events>
 `;
-const eventTemplate = document.createElement('template');
-eventTemplate.innerHTML = `
-<event class="common"
-    ></event>
-`;
+
+class CalendarEvent extends HTMLElement {
+    constructor() {
+        super()
+    }
+    digest(event) {
+        this.id = `event-${event.id}`;
+        this.dataset.start = event.start;
+        this.dataset.end = event.end;
+
+        let startHour = parseInt(event.start.split(':')[0])
+        let endHour = parseInt(event.end.split(':')[0])
+
+        this.style.left = `calc(${startHour} * 2 * var(--halfHourWidth) + var(--padding)`;
+        this.style.width = `calc((${endHour} - ${startHour}) * 2 * var(--halfHourWidth))`;
+        this.style.top = `calc(${event.line} * var(--height) + var(--padding))`;
+    }
+}
+customElements.define('yop-calendar-event', CalendarEvent)
 
 class Calendar extends HTMLElement {
 
@@ -48,20 +40,27 @@ class Calendar extends HTMLElement {
     connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.display([ 
-            { id:'E3', start:'18:00', end:'20:00' } 
+            { id:'E1', start:'00:00', end:'07:00', line:0 },
+            { id:'E3', start:'18:00', end:'20:00', line:0 },
+            { id:'E5', start:'08:00', end:'11:00', line:1 },
+            { id:'E6', start:'21:00', end:'24:00', line:1 } 
     ])
     }
     display(events) {
         let view = this.querySelector('events');
         view.innerHTML = '';
+        let maxLine = 0;
         events.forEach(event => {
-            let clone = eventTemplate.content.cloneNode(true);
-            let element = clone.childNodes[1];
-            element.id = `event-${event.id}`;
-            element.dataset.start = event.start;
-            element.dataset.end = event.end;
-            view.appendChild(clone);                
+            let instance = new CalendarEvent();
+            instance.digest(event);
+            view.appendChild(instance);     
+            if (event.line > maxLine) {
+                maxLine = event.line
+            }           
         });
+        let lineCount = maxLine + 1;
+        view.style.height = `calc(${lineCount} * var(--height) + 2 * var(--padding))`;
     }
 }
 customElements.define('yop-calendar', Calendar)
+
