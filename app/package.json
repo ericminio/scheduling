@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tests:external": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about --tags 'not @backlog'",
-    "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js'",
+    "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js' --exit",
     "test": "npm run tests:internal && npm run tests:external",
     "start": "node start.js"
   },
