@@ -21,7 +21,7 @@ describe('Server', ()=>{
         const file = {
             hostname: 'localhost',
             port: port,
-            path: '/calendar.js',
+            path: '/all.js',
             method: 'GET'
         };
         let response = await request(file);

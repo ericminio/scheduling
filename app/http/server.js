@@ -18,7 +18,7 @@ class Server {
             response.writeHead(200, { 'content-type':'application/json' })
             response.end(JSON.stringify({alive:true}));
         }
-        else if (request.url == '/calendar.js') {
+        else if (request.url == '/all.js') {
             response.writeHead(200, { 'content-type':'application/javascript' })
             response.end(fs.readFileSync(
                 path.join(__dirname, 'js', 'calendar.js')).toString())
