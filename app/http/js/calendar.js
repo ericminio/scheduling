@@ -22,7 +22,7 @@ calendarTemplate.innerHTML = `
         ></event>
     <event class="common"
         id="event-E5" 
-        data-start="8:00" 
+        data-start="08:00" 
         data-end="11:00"
         style="top:calc(1 * var(--height) + var(--padding)); left:calc(8 * 2 * var(--width) + var(--padding)); width:calc((11 - 8) * 2 * var(--width));"
         ></event>
@@ -33,7 +33,12 @@ calendarTemplate.innerHTML = `
         style="top:calc(1 * var(--height) + var(--padding)); left:calc(23 * 2 * var(--width) + var(--padding)); width:calc((24 - 23) * 2 * var(--width));"
         ></event>
 </events>
-`
+`;
+const eventTemplate = document.createElement('template');
+eventTemplate.innerHTML = `
+<event class="common"
+    ></event>
+`;
 
 class Calendar extends HTMLElement {
 
@@ -42,6 +47,21 @@ class Calendar extends HTMLElement {
     }
     connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
+        this.display([ 
+            { id:'E3', start:'18:00', end:'20:00' } 
+    ])
+    }
+    display(events) {
+        let view = this.querySelector('events');
+        view.innerHTML = '';
+        events.forEach(event => {
+            let clone = eventTemplate.content.cloneNode(true);
+            let element = clone.childNodes[1];
+            element.id = `event-${event.id}`;
+            element.dataset.start = event.start;
+            element.dataset.end = event.end;
+            view.appendChild(clone);                
+        });
     }
 }
 customElements.define('yop-calendar', Calendar)
