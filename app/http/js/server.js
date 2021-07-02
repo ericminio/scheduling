@@ -21,17 +21,17 @@ class Server {
         else if (request.url == '/all.js') {
             response.writeHead(200, { 'content-type':'application/javascript' })
             response.end(fs.readFileSync(
-                path.join(__dirname, 'js', 'calendar.js')).toString())
+                path.join(__dirname, 'calendar.js')).toString())
         }
         else if (request.url == '/scheduling.css') {
             response.writeHead(200, { 'content-type':'text/css' })
             response.end(fs.readFileSync(
-                path.join(__dirname, 'css', 'scheduling.css')).toString())
+                path.join(__dirname, '..', 'css', 'scheduling.css')).toString())
         }
         else {
             response.writeHead(200, { 'content-type':'text/html' })
             response.end(fs.readFileSync(
-                path.join(__dirname, 'index.html')).toString())
+                path.join(__dirname, '..', 'index.html')).toString())
         }
     }
 }

@@ -1,6 +1,6 @@
 const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver')
-const { Server } = require('../../app/http/server')
+const { Server } = require('../../app/http/js/server')
 const { expect } = require('../../app/node_modules/chai')
 const port = 8017
 

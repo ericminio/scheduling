@@ -1,6 +1,6 @@
 const { expect } = require('chai');
-const request = require('./http/support/request');
-const { Server } = require('./http/server');
+const request = require('./http/js/support/request');
+const { Server } = require('./http/js/server');
 const port = 8005;
 const ping = {
     hostname: 'localhost',
