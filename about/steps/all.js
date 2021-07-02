@@ -1,12 +1,11 @@
 const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver')
-const { Server } = require('../../app/http/js/server')
 const { expect } = require('../../app/node_modules/chai')
-const port = 8017
 
 Before(async (testCase)=>{
-    World.server = new Server(port);
-    await World.server.start();
+    let maybeLoaded = require.resolve('../../app/start');
+    delete require.cache[maybeLoaded];
+    World.server = require('../../app/start');
     World.driver = await new Builder().forBrowser('firefox').build();
 });
 After(async (testCase)=>{
@@ -19,7 +18,7 @@ Given('the following resources exist in the system', function (resources) {
 Given('the following events', function (events) {
 });
 Given('I look at the events grouped by {string}', async (type)=> {
-    await World.driver.get('http://localhost:'+port+'/events');
+    await World.driver.get('http://localhost:'+World.server.port+'/events');
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });
