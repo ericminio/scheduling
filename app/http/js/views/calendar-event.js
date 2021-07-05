@@ -16,11 +16,11 @@ class CalendarEvent extends HTMLElement {
     width(event) {
         let startHour = this.parse(event.start).hours;
         let endHour = this.parse(event.end).hours;
-        return `calc((${endHour - startHour} * 2 + 0) * var(--minimalWidthInMinutes))`;
+        return `calc((${endHour - startHour} * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth))`;
     }
     left(event) {
         let { hours } = this.parse(event.start);
-        return `calc((${hours} * 2 + 0) * var(--minimalWidthInMinutes) + var(--padding))`;
+        return `calc((${hours} * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth) + var(--padding))`;
     }
     top(event) {
         return `calc(${event.line} * var(--height) + var(--padding))`;
