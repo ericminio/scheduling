@@ -34,10 +34,25 @@ describe('Calendar', ()=>{
     it('is available', ()=>{
         expect(calendar).not.to.equal(null);
     })
-    it('adds expected event', ()=>{
-        calendar.display([{ id:'42', start:'15:00', end:'19:30' }])
-        let element = document.querySelector('events > #event-42[data-start="15:00"][data-end="19:30"]');
+    it('adds expected events', ()=>{
+        calendar.display([
+            { id:'42', start:'15:00', end:'19:30' },
+            { id:'15', start:'19:30', end:'23:30' }
+        ])
+        
+        expect(document.querySelector('events > #event-42')).not.to.equal(null);
+        expect(document.querySelector('events > #event-15')).not.to.equal(null);
+    })
+    it('sizes event as expected', ()=>{
+        calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
+        let element = document.querySelector('#event-42');
 
-        expect(element).not.to.equal(null);
+        expect(element.dataset.width).to.equal('calc((4 * 2 + 0) * var(--halfHourWidth))')
+    })
+    it('positions event as expected', ()=>{
+        calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
+        let element = document.querySelector('#event-42');
+
+        expect(element.dataset.left).to.equal('calc((15 * 2 + 0) * var(--halfHourWidth) + var(--padding))')
     })
 })
