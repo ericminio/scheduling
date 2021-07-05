@@ -1,14 +1,14 @@
 const calendarTemplate = document.createElement('template')
 calendarTemplate.innerHTML = `
 <timeline>
-    <hour id="hour-0000" style="left: calc(0 * 2 * var(--halfHourWidth) + var(--padding));">0</hour>
-    <hour id="hour-0800" style="left: calc(8 * 2 * var(--halfHourWidth) + var(--padding));">8</hour>
-    <hour id="hour-1000" style="left: calc(10 * 2 * var(--halfHourWidth) + var(--padding));">10</hour>
-    <hour id="hour-1200" style="left: calc(12 * 2 * var(--halfHourWidth) + var(--padding));">12</hour>
-    <hour id="hour-1400" style="left: calc(14 * 2 * var(--halfHourWidth) + var(--padding));">14</hour>
-    <hour id="hour-1600" style="left: calc(16 * 2 * var(--halfHourWidth) + var(--padding));">16</hour>
-    <hour id="hour-1800" style="left: calc(18 * 2 * var(--halfHourWidth) + var(--padding));">18</hour>
-    <hour id="hour-2000" style="left: calc(20 * 2 * var(--halfHourWidth) + var(--padding));">20</hour>
+    <hour id="hour-0000" style="left: calc(0 * 2 * var(--minimalWidthInMinutes) + var(--padding));">0</hour>
+    <hour id="hour-0800" style="left: calc(8 * 2 * var(--minimalWidthInMinutes) + var(--padding));">8</hour>
+    <hour id="hour-1000" style="left: calc(10 * 2 * var(--minimalWidthInMinutes) + var(--padding));">10</hour>
+    <hour id="hour-1200" style="left: calc(12 * 2 * var(--minimalWidthInMinutes) + var(--padding));">12</hour>
+    <hour id="hour-1400" style="left: calc(14 * 2 * var(--minimalWidthInMinutes) + var(--padding));">14</hour>
+    <hour id="hour-1600" style="left: calc(16 * 2 * var(--minimalWidthInMinutes) + var(--padding));">16</hour>
+    <hour id="hour-1800" style="left: calc(18 * 2 * var(--minimalWidthInMinutes) + var(--padding));">18</hour>
+    <hour id="hour-2000" style="left: calc(20 * 2 * var(--minimalWidthInMinutes) + var(--padding));">20</hour>
 </timeline>
 <events></events>
 `;

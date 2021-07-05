@@ -15,7 +15,7 @@ describe('Calendar', ()=>{
             <head>
                 <style>
                     :root {
-                        --halfHourWidth: 10px;
+                        --minimalWidthInMinutes: 10px;
                     }
                 </style>
             </head>
@@ -51,12 +51,12 @@ describe('Calendar', ()=>{
         calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
         let element = document.querySelector('#event-42');
 
-        expect(element.dataset.width).to.equal('calc((4 * 2 + 0) * var(--halfHourWidth))')
+        expect(element.dataset.width).to.equal('calc((4 * 2 + 0) * var(--minimalWidthInMinutes))')
     })
     it('positions event as expected', ()=>{
         calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
         let element = document.querySelector('#event-42');
 
-        expect(element.dataset.left).to.equal('calc((15 * 2 + 0) * var(--halfHourWidth) + var(--padding))')
+        expect(element.dataset.left).to.equal('calc((15 * 2 + 0) * var(--minimalWidthInMinutes) + var(--padding))')
     })
 })

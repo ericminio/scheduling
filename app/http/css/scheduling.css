@@ -4,7 +4,7 @@ body {
 }
 :root {
     --padding: 5px;
-    --halfHourWidth: calc((100% - 2 * var(--padding) ) / 48);
+    --minimalWidthInMinutes: calc(30 * (100% - 2 * var(--padding) ) / 24 / 60);
     --height: 25px;        
     --radius: 3px; 
 }
