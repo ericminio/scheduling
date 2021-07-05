@@ -20,8 +20,10 @@ class Server {
         }
         else if (request.url == '/all.js') {
             response.writeHead(200, { 'content-type':'application/javascript' })
-            response.end(fs.readFileSync(
-                path.join(__dirname, 'calendar.js')).toString())
+            let body = ''
+                + fs.readFileSync(path.join(__dirname, 'views', 'calendar-event.js')).toString()
+                + fs.readFileSync(path.join(__dirname, 'views', 'calendar.js')).toString();
+            response.end(body)
         }
         else if (request.url == '/scheduling.css') {
             response.writeHead(200, { 'content-type':'text/css' })

@@ -1,7 +1,11 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai')
-const sut = require('fs').readFileSync(require('path').join(__dirname, 'calendar.js')).toString();
+const { expect } = require('chai');
+let fs = require('fs');
+let path = require('path');
+const sut = ''
+    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString();
 
 describe('Calendar', ()=>{
 

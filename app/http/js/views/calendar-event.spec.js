@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const sut = require('fs').readFileSync(require('path').join(__dirname, 'calendar.js')).toString();
+const sut = require('fs').readFileSync(require('path').join(__dirname, 'calendar-event.js')).toString();
 
 describe('Calendar Event', ()=>{
 
