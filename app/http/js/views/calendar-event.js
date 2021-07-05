@@ -14,13 +14,21 @@ class CalendarEvent extends HTMLElement {
         `;
     }
     width(event) {
-        let startHour = this.parse(event.start).hours;
+        let start = this.parse(event.start);
         let endHour = this.parse(event.end).hours;
-        return `calc((${endHour - startHour} * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth))`;
+        let value = `calc(var(--minimalWidth) * (${endHour - start.hours} * 60) / var(--minimalWidthInMinutes))`;
+        if (start.minutes > 0) {
+            value = `calc(var(--minimalWidth) * (${endHour - start.hours} * 60 - 30) / var(--minimalWidthInMinutes))`;
+        }
+        return value;
     }
     left(event) {
-        let { hours } = this.parse(event.start);
-        return `calc((${hours} * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth) + var(--padding))`;
+        let start = this.parse(event.start);
+        let value = `calc(var(--padding) + var(--minimalWidth) * (${start.hours} * 60) / var(--minimalWidthInMinutes))`;
+        if (start.minutes > 0) {
+            value = `calc(var(--padding) + var(--minimalWidth) * (${start.hours} * 60 + 30) / var(--minimalWidthInMinutes))`;
+        }
+        return value;
     }
     top(event) {
         return `calc(${event.line} * var(--height) + var(--padding))`;

@@ -51,12 +51,12 @@ describe('Calendar', ()=>{
         calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
         let element = document.querySelector('#event-42');
 
-        expect(element.dataset.width).to.equal('calc((4 * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth))')
+        expect(element.dataset.width).to.equal('calc(var(--minimalWidth) * (4 * 60) / var(--minimalWidthInMinutes))')
     })
     it('positions event as expected', ()=>{
         calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
         let element = document.querySelector('#event-42');
 
-        expect(element.dataset.left).to.equal('calc((15 * 60 / var(--minimalWidthInMinutes)) * var(--minimalWidth) + var(--padding))')
+        expect(element.dataset.left).to.equal('calc(var(--padding) + var(--minimalWidth) * (15 * 60) / var(--minimalWidthInMinutes))')
     })
 })

@@ -2,6 +2,7 @@ const calendarTemplate = document.createElement('template')
 calendarTemplate.innerHTML = `
 <timeline>
     <hour id="hour-0000" style="left: calc(0 * 2 * var(--minimalWidth) + var(--padding));">0</hour>
+    <hour id="hour-0100" style="left: calc(1 * 2 * var(--minimalWidth) + var(--padding));">1</hour>
     <hour id="hour-0800" style="left: calc(8 * 2 * var(--minimalWidth) + var(--padding));">8</hour>
     <hour id="hour-1000" style="left: calc(10 * 2 * var(--minimalWidth) + var(--padding));">10</hour>
     <hour id="hour-1200" style="left: calc(12 * 2 * var(--minimalWidth) + var(--padding));">12</hour>
@@ -21,7 +22,9 @@ class Calendar extends HTMLElement {
     connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.display([ 
-            { id:'E1', start:'00:00', end:'07:00', line:0 },
+            { id:'E0', start:'00:00', end:'07:00', line:0 },
+            { id:'E1', start:'00:30', end:'07:00', line:1 },
+            { id:'E2', start:'01:00', end:'07:00', line:2 },
             { id:'E3', start:'18:00', end:'20:00', line:0 },
             { id:'E5', start:'08:00', end:'11:00', line:1 },
             { id:'E6', start:'21:00', end:'24:00', line:1 } 
