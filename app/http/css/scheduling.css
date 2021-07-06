@@ -18,7 +18,7 @@ timeline {
     height: 20px;
     background-color: lightskyblue;
 }
-hour {
+yop-timeline-marker {
     display: block;
     position: absolute;
     top: var(--padding);

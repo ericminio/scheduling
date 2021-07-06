@@ -1,16 +1,6 @@
 const calendarTemplate = document.createElement('template')
 calendarTemplate.innerHTML = `
-<timeline>
-    <hour id="hour-0000" style="left: calc(0 * 2 * var(--minimalWidth) + var(--padding));">0</hour>
-    <hour id="hour-0100" style="left: calc(1 * 2 * var(--minimalWidth) + var(--padding));">1</hour>
-    <hour id="hour-0800" style="left: calc(8 * 2 * var(--minimalWidth) + var(--padding));">8</hour>
-    <hour id="hour-1000" style="left: calc(10 * 2 * var(--minimalWidth) + var(--padding));">10</hour>
-    <hour id="hour-1200" style="left: calc(12 * 2 * var(--minimalWidth) + var(--padding));">12</hour>
-    <hour id="hour-1400" style="left: calc(14 * 2 * var(--minimalWidth) + var(--padding));">14</hour>
-    <hour id="hour-1600" style="left: calc(16 * 2 * var(--minimalWidth) + var(--padding));">16</hour>
-    <hour id="hour-1800" style="left: calc(18 * 2 * var(--minimalWidth) + var(--padding));">18</hour>
-    <hour id="hour-2000" style="left: calc(20 * 2 * var(--minimalWidth) + var(--padding));">20</hour>
-</timeline>
+<timeline></timeline>
 <events></events>
 `;
 
@@ -21,6 +11,7 @@ class Calendar extends HTMLElement {
     }
     connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
+        this.displayTimeline();
         this.display([ 
             { id:'E0', start:'00:00', end:'07:00', line:0 },
             { id:'E1', start:'00:30', end:'07:00', line:1 },
@@ -28,7 +19,17 @@ class Calendar extends HTMLElement {
             { id:'E3', start:'18:00', end:'20:00', line:0 },
             { id:'E5', start:'08:00', end:'11:00', line:1 },
             { id:'E6', start:'21:00', end:'24:00', line:1 } 
-    ])
+        ]);
+    }
+    displayTimeline() {
+        let starts = [0, 1, 8, 10, 12, 14, 16, 18, 20, 23];
+        let view = this.querySelector('timeline');
+        view.innerHTML = '';
+        starts.forEach((start)=>{
+            let marker = new TimelineMarker();
+            marker.digest(start);
+            view.appendChild(marker);
+        })
     }
     display(events) {
         let view = this.querySelector('events');
