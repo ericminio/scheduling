@@ -8,7 +8,7 @@ class TimelineMarker extends HTMLElement {
         this.style = `left:${this.left(mark)};`;
     }
     left(mark) {
-        return `calc(var(--padding) + var(--minimalWidth) * (${mark.hours} * 60 + ${mark.minutes}) / var(--minimalWidthInMinutes))`
+        return layout.left(mark);
     }
 };
 customElements.define('yop-timeline-marker', TimelineMarker);

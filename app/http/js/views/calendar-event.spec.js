@@ -1,5 +1,10 @@
 const { expect } = require('chai')
-const sut = require('fs').readFileSync(require('path').join(__dirname, 'calendar-event.js')).toString();
+const fs = require('fs');
+const path = require('path');
+const sut = ''
+    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
+    ;
 const wrapper = `
     var wrapper = (document, customElements)=> {
         class HTMLElement {};

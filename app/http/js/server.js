@@ -21,9 +21,11 @@ class Server {
         else if (request.url == '/all.js') {
             response.writeHead(200, { 'content-type':'application/javascript' })
             let body = ''
+                + fs.readFileSync(path.join(__dirname, 'views', 'layout.js')).toString()
                 + fs.readFileSync(path.join(__dirname, 'views', 'timeline-marker.js')).toString()
                 + fs.readFileSync(path.join(__dirname, 'views', 'calendar-event.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'calendar.js')).toString();
+                + fs.readFileSync(path.join(__dirname, 'views', 'calendar.js')).toString()
+                ;
             response.end(body)
         }
         else if (request.url == '/scheduling.css') {

@@ -13,13 +13,11 @@ class CalendarEvent extends HTMLElement {
     width(event) {
         let start = this.parse(event.start);
         let end = this.parse(event.end);
-        let value = `calc(var(--minimalWidth) * (${end.hours - start.hours} * 60 - ${start.minutes} + ${end.minutes}) / var(--minimalWidthInMinutes))`;
-        return value;
+        return layout.width(start, end);
     }
     left(event) {
         let start = this.parse(event.start);
-        let value = `calc(var(--padding) + var(--minimalWidth) * (${start.hours} * 60 + ${start.minutes}) / var(--minimalWidthInMinutes))`;
-        return value;
+        return layout.left(start);
     }
     top(event) {
         return `calc(${event.line} * var(--height) + var(--padding))`;
