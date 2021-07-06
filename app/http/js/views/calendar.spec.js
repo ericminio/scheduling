@@ -15,13 +15,6 @@ describe('Calendar', ()=>{
     let html = `
         <!DOCTYPE html>
         <html lang="en">
-            <head>
-                <style>
-                    :root {
-                        --minimalWidth: 10px;
-                    }
-                </style>
-            </head>
             <body>
                 <yop-calendar></yop-container>
                 <script>${sut}</script>
@@ -47,7 +40,7 @@ describe('Calendar', ()=>{
             { id:'15', start:'19:30', end:'23:30' }
         ])
         
-        expect(document.querySelector('events > #event-42')).not.to.equal(null);
-        expect(document.querySelector('events > #event-15')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar > events > #event-42')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar > events > #event-15')).not.to.equal(null);
     })
 })

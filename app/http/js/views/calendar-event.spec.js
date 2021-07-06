@@ -6,12 +6,12 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
     ;
 const wrapper = `
-    var wrapper = (document, customElements)=> {
+    var wrapper = (customElements)=> {
         class HTMLElement {};
         ${sut};
         return new CalendarEvent();
     };
-    return wrapper({ createElement:()=>{ return {} } }, { define:()=>{} });
+    return wrapper({ define:()=>{} });
 `;
 describe('Calendar Event', ()=>{
 
@@ -49,6 +49,13 @@ describe('Calendar Event', ()=>{
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 30 + 30) / var(--minimalWidthInMinutes))')
         })
+
+        it('works with values outside of minimals', ()=>{
+            let width = event.width({ start:"12:17", end:"15:42" })
+            
+            expect(width).to.equal(
+                'calc(var(--minimalWidth) * (3 * 60 - 17 + 42) / var(--minimalWidthInMinutes))')
+        })
     })
     describe('Calendar Event Left', ()=>{
 
@@ -69,6 +76,13 @@ describe('Calendar Event', ()=>{
             
             expect(left).to.equal(
                 'calc(var(--padding) + var(--minimalWidth) * (12 * 60 + 30) / var(--minimalWidthInMinutes))')
+        })
+
+        it('works with value outside of minimals', ()=>{
+            let left = event.left({ start:"12:15", end:"15:00" })
+            
+            expect(left).to.equal(
+                'calc(var(--padding) + var(--minimalWidth) * (12 * 60 + 15) / var(--minimalWidthInMinutes))')
         })
     })
 })
