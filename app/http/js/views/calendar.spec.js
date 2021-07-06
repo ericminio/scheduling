@@ -35,7 +35,7 @@ describe('Calendar', ()=>{
         expect(calendar).not.to.equal(null);
     })
     it('adds expected events', ()=>{
-        calendar.display([
+        calendar.displayEvents([
             { id:'42', start:'15:00', end:'19:30' },
             { id:'15', start:'19:30', end:'23:30' }
         ])

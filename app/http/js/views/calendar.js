@@ -11,8 +11,8 @@ class Calendar extends HTMLElement {
     }
     connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
-        this.displayTimeline();
-        this.display([ 
+        this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
+        this.displayEvents([ 
             { id:'E0', start:'00:00', end:'07:00', line:0 },
             { id:'E1', start:'00:30', end:'07:00', line:1 },
             { id:'E2', start:'01:00', end:'07:00', line:2 },
@@ -21,8 +21,7 @@ class Calendar extends HTMLElement {
             { id:'E6', start:'21:00', end:'24:00', line:1 } 
         ]);
     }
-    displayTimeline() {
-        let starts = [0, 1, 8, 10, 12, 14, 16, 18, 20, 23];
+    displayTimelineMarks(starts) {
         let view = this.querySelector('timeline');
         view.innerHTML = '';
         starts.forEach((start)=>{
@@ -31,7 +30,7 @@ class Calendar extends HTMLElement {
             view.appendChild(marker);
         })
     }
-    display(events) {
+    displayEvents(events) {
         let view = this.querySelector('events');
         view.innerHTML = '';
         let maxLine = 0;
