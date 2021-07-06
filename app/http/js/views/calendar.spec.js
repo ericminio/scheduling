@@ -47,16 +47,4 @@ describe('Calendar', ()=>{
         expect(document.querySelector('events > #event-42')).not.to.equal(null);
         expect(document.querySelector('events > #event-15')).not.to.equal(null);
     })
-    it('sizes event as expected', ()=>{
-        calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
-        let element = document.querySelector('#event-42');
-
-        expect(element.dataset.width).to.equal('calc(var(--minimalWidth) * (4 * 60) / var(--minimalWidthInMinutes))')
-    })
-    it('positions event as expected', ()=>{
-        calendar.display([{ id:'42', start:'15:00', end:'19:00' }])
-        let element = document.querySelector('#event-42');
-
-        expect(element.dataset.left).to.equal('calc(var(--padding) + var(--minimalWidth) * (15 * 60) / var(--minimalWidthInMinutes))')
-    })
 })

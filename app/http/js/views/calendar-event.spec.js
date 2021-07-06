@@ -21,14 +21,28 @@ describe('Calendar Event', ()=>{
             let width = event.width({ start:"12:00", end:"15:00" })
             
             expect(width).to.equal(
-                'calc(var(--minimalWidth) * (3 * 60) / var(--minimalWidthInMinutes))')
+                'calc(var(--minimalWidth) * (3 * 60 - 0 + 0) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted start', ()=>{
             let width = event.width({ start:"12:30", end:"15:00" })
             
             expect(width).to.equal(
-                'calc(var(--minimalWidth) * (3 * 60 - 30) / var(--minimalWidthInMinutes))')
+                'calc(var(--minimalWidth) * (3 * 60 - 30 + 0) / var(--minimalWidthInMinutes))')
+        })
+
+        it('works with shifted end', ()=>{
+            let width = event.width({ start:"12:00", end:"15:30" })
+            
+            expect(width).to.equal(
+                'calc(var(--minimalWidth) * (3 * 60 - 0 + 30) / var(--minimalWidthInMinutes))')
+        })
+
+        it('works with shifted start and end', ()=>{
+            let width = event.width({ start:"12:30", end:"15:30" })
+            
+            expect(width).to.equal(
+                'calc(var(--minimalWidth) * (3 * 60 - 30 + 30) / var(--minimalWidthInMinutes))')
         })
     })
     describe('Calendar Event Left', ()=>{
@@ -42,7 +56,7 @@ describe('Calendar Event', ()=>{
             let left = event.left({ start:"12:00", end:"15:00" })
             
             expect(left).to.equal(
-                'calc(var(--padding) + var(--minimalWidth) * (12 * 60) / var(--minimalWidthInMinutes))')
+                'calc(var(--padding) + var(--minimalWidth) * (12 * 60 + 0) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted start', ()=>{
