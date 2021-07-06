@@ -27,7 +27,7 @@ class Calendar extends HTMLElement {
         view.innerHTML = '';
         starts.forEach((start)=>{
             let marker = new TimelineMarker();
-            marker.digest(start);
+            marker.digest({ hours:start, minutes:0 });
             view.appendChild(marker);
         })
     }

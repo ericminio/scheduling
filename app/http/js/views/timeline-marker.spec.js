@@ -10,15 +10,13 @@ const wrapper = `
 `;
 describe('TimelineMarker', ()=>{
 
-    let marker;
-    beforeEach(()=>{
-        marker = (new Function(wrapper))();
-    })
+    let marker = (new Function(wrapper))();
+    let mark = { hours:18, minutes: 0 };
 
     describe('id', ()=>{
 
         it('has prefix', ()=>{
-            marker.digest(18)
+            marker.digest(mark)
             
             expect(marker.id).to.equal('hour-1800')
         })
@@ -27,7 +25,7 @@ describe('TimelineMarker', ()=>{
     describe('text', ()=>{
 
         it('is given value', ()=>{
-            marker.digest(18)
+            marker.digest(mark)
             
             expect(marker.innerHTML).to.equal('18')
         })
@@ -35,9 +33,25 @@ describe('TimelineMarker', ()=>{
 
     describe('position', ()=>{
 
+        let saved;
+        beforeEach(()=>{
+            saved = marker.left
+        })
+        afterEach(()=>{
+            marker.left = saved
+        })
+
+        it('is computed at digest time', ()=>{
+            let spy = {}
+            marker.left = (value)=>{ spy.see = value; }
+            marker.digest({ data:'value' });
+
+            expect(spy.see).to.deep.equal({ data:'value' })
+        })
+
         it('is as expected', ()=>{
             let expected = 'calc(var(--padding) + var(--minimalWidth) * (18 * 60 + 0) / var(--minimalWidthInMinutes))'
-            expect(marker.left(18)).to.equal(expected)
+            expect(marker.left(mark)).to.equal(expected)
         })
     })
 })

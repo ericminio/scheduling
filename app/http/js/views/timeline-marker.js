@@ -2,13 +2,13 @@ class TimelineMarker extends HTMLElement {
     constructor() {
         super()
     }
-    digest(hours) {
-        this.id = `hour-${hours}00`;
-        this.innerHTML = `${hours}`;
-        this.style = `left:${this.left(hours)};`;
+    digest(mark) {
+        this.id = `hour-${mark.hours}00`;
+        this.innerHTML = `${mark.hours}`;
+        this.style = `left:${this.left(mark)};`;
     }
-    left(hours) {
-        return `calc(var(--padding) + var(--minimalWidth) * (${hours} * 60 + 0) / var(--minimalWidthInMinutes))`
+    left(mark) {
+        return `calc(var(--padding) + var(--minimalWidth) * (${mark.hours} * 60 + ${mark.minutes}) / var(--minimalWidthInMinutes))`
     }
 };
 customElements.define('yop-timeline-marker', TimelineMarker);
