@@ -17,7 +17,20 @@ describe('Calendar', ()=>{
         <html lang="en">
             <body>
                 <yop-calendar></yop-container>
-                <script>${sut}</script>
+                <script>
+                    let api = {
+                        getEvents: async ()=> {
+                            var p = new Promise((resolve, reject)=>{
+                                resolve({ events:[
+                                    { id:'42', start:'15:00', end:'19:30' },
+                                    { id:'15', start:'19:30', end:'23:30' }
+                                ]});
+                            });
+                            return p;
+                        }
+                    };
+                    ${sut}
+                </script>
             </body>
         </html>
         `;
@@ -25,21 +38,17 @@ describe('Calendar', ()=>{
     let document;
     let calendar;
 
-    beforeEach(()=>{
+    beforeEach((done)=>{
         window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar');
+        setTimeout(done, 150);
     })
 
     it('is available', ()=>{
         expect(calendar).not.to.equal(null);
     })
     it('adds expected events', ()=>{
-        calendar.displayEvents([
-            { id:'42', start:'15:00', end:'19:30' },
-            { id:'15', start:'19:30', end:'23:30' }
-        ])
-        
         expect(document.querySelector('yop-calendar > events > #event-42')).not.to.equal(null);
         expect(document.querySelector('yop-calendar > events > #event-15')).not.to.equal(null);
     })
