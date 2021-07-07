@@ -59,7 +59,7 @@ class Server {
             body = fs.readFileSync(path.join(__dirname, '..', 'css', 'scheduling.css')).toString();
             response.setHeader('content-type', 'text/css');
         }
-        else if (request.url == '/events') {
+        else if (request.url == '/data/events') {
             let events = this.services['events'].all();
             body = JSON.stringify({ events:events });
             response.setHeader('content-type', 'application/json');

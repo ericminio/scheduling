@@ -5,7 +5,7 @@ class ApiClient {
 
     getEvents() {
         return new Promise((resolve, reject)=>{
-            this.fetch('/events').then((response) => {
+            this.fetch('/data/events').then((response) => {
                 response.json().then((json) => {                    
                     resolve(json);
                 });
