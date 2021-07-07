@@ -18,7 +18,7 @@ Given('the following resources exist in the system', function (resources) {
 Given('the following events', function (events) {
 });
 Given('I look at the events grouped by {string}', async (type)=> {
-    await World.driver.get('http://localhost:'+World.server.port+'/events');
+    await World.driver.get('http://localhost:'+World.server.port);
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });

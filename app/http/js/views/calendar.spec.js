@@ -19,7 +19,7 @@ describe('Calendar', ()=>{
                 <yop-calendar></yop-container>
                 <script>
                     let api = {
-                        getEvents: async ()=> {
+                        getEvents: ()=> {
                             var p = new Promise((resolve, reject)=>{
                                 resolve({ events:[
                                     { id:'42', start:'15:00', end:'19:30' },
