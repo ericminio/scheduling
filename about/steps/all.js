@@ -22,20 +22,46 @@ Given('I look at the events grouped by {string}', async (type)=> {
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });
-Then('I see that event {string} starts at {string}', async (id, time)=> {
+Then('I see that {string} starts at {string}', async (label, time)=> {
     let markerSelector = '#hour-' + time.replace(':', '');
     let marker = await World.driver.findElement(By.css(markerSelector))
     let markerPosition = await marker.getCssValue('left')
-    let element = await World.driver.findElement(By.css("#event-"+id))
+
+    let candidates = await World.driver.findElements(By.css('yop-calendar-event'));
+    let found;
+    for (let i=0; i<candidates.length; i++) {
+        let candidate = candidates[i];
+        let text = await candidate.getText();
+        if (text == label) {
+            found = candidate;
+            break;
+        }
+    }
+    let id = await found.getAttribute('id');
+
+    let element = await World.driver.findElement(By.css("#"+id))
     let elementPosition = await element.getCssValue('left')
     
     expect(elementPosition).to.equal(markerPosition)
 });
-Then('I see that event {string} ends at {string}', async (id, time)=> {
+Then('I see that {string} ends at {string}', async (label, time)=> {
     let markerSelector = '#hour-' + time.replace(':', '');
     let marker = await World.driver.findElement(By.css(markerSelector))
     let markerPosition = await marker.getCssValue('left')
-    let element = await World.driver.findElement(By.css("#event-"+id))  
+
+    let candidates = await World.driver.findElements(By.css('yop-calendar-event'));
+    let found;
+    for (let i=0; i<candidates.length; i++) {
+        let candidate = candidates[i];
+        let text = await candidate.getText();
+        if (text == label) {
+            found = candidate;
+            break;
+        }
+    }
+    let id = await found.getAttribute('id');
+
+    let element = await World.driver.findElement(By.css("#"+id))  
     let elementPosition = await element.getCssValue('left')
     let elementWidth = await element.getCssValue('width')
     let actual = parseInt(elementPosition) + parseInt(elementWidth)
@@ -43,11 +69,34 @@ Then('I see that event {string} ends at {string}', async (id, time)=> {
 
     expect(actual).to.equal(expected)
 });
-Then('I see that event {string} belongs to {string}', async (eventId, resourceId)=> {
-    let resourceSelector = '#resource-' + resourceId;
+Then('I see that {string} is scheduled with {string}', async (eventLabel, resourceName)=> {
+    let candidatesResources = await World.driver.findElements(By.css('yop-calendar-resource'));
+    let foundResource;
+    for (let i=0; i<candidatesResources.length; i++) {
+        let candidate = candidatesResources[i];
+        let text = await candidate.getText();
+        if (text == resourceName) {
+            foundResource = candidate;
+            break;
+        }
+    }
+    let resourceId = await foundResource.getAttribute('id');
+    let resourceSelector = '#' + resourceId;
     let resource = await World.driver.findElement(By.css(resourceSelector));
     let resourcePosition = await resource.getCssValue('top');
-    let element = await World.driver.findElement(By.css("#event-"+eventId));
+
+    let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
+    let foundEvent;
+    for (let i=0; i<candidatesEvents.length; i++) {
+        let candidate = candidatesEvents[i];
+        let text = await candidate.getText();
+        if (text == eventLabel) {
+            foundEvent = candidate;
+            break;
+        }
+    }
+    let eventId = await foundEvent.getAttribute('id');
+    let element = await World.driver.findElement(By.css("#"+eventId));
     let elementPosition = await element.getCssValue('top');
 
     expect(elementPosition).to.equal(resourcePosition);

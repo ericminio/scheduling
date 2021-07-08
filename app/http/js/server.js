@@ -10,18 +10,15 @@ class Server {
         this.services = {
             'events': {
                 all: ()=> [
-                    { id:'E0', start:'00:00', end:'07:00', line:0 },
-                    { id:'E1', start:'00:30', end:'07:00', line:1 },
-                    { id:'E2', start:'01:00', end:'07:00', line:2 },
-                    { id:'E3', start:'18:00', end:'20:00', line:0 },
-                    { id:'E5', start:'08:00', end:'11:00', line:1 },
-                    { id:'E6', start:'21:00', end:'24:00', line:1 } 
+                    { id:'E1', start:'11:30', end:'13:30', resources:['R1'], label:'Bob', line:0 },
+                    { id:'E2', start:'15:00', end:'18:00', resources:['R1, R3'], label:'Joe', line:2 },
+                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R3', 'R4'], label:'Alex', line:1 } 
                 ]
             },
             'resources': {
                 all: ()=> [
                     { id:'R1', type:'plane', name:'GITN' },
-                    { id:'R2', type:'plane', name:'GNEQ' },
+                    { id:'R2', type:'plane', name:'GNEA' },
                     { id:'R3', type:'headeset', name:'H1' },
                     { id:'R4', type:'headeset', name:'H2' },
                     { id:'R5', type:'headeset', name:'H3' }

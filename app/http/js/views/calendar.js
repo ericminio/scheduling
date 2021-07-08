@@ -43,7 +43,7 @@ class Calendar extends HTMLElement {
     displayResources(resources) {
         let view = this.querySelector('resources');
         view.innerHTML = '';
-        resources.forEach((data, index) => {
+        resources.filter(r => r.type=='plane').forEach((data, index) => {
             let instance = new Resource();
             instance.digest(data, index);
             view.appendChild(instance);

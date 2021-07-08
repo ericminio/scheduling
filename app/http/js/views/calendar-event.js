@@ -4,6 +4,7 @@ class CalendarEvent extends HTMLElement {
     }
     digest(event) {
         this.id = `event-${event.id}`;
+        this.innerHTML = event.label;
         this.style = `
             top:${this.top(event)}; 
             left:${this.left(event)}; 
