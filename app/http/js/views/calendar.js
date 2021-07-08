@@ -12,7 +12,7 @@ class Calendar extends HTMLElement {
     }
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
-        this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23, 24]);
+        this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
         api.getEvents().then(data => this.displayEvents(data.events));
         api.getResources().then(data => this.displayResources(data.resources));
     }

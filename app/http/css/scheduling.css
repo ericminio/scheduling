@@ -7,12 +7,24 @@ body {
     --body-margin: 5px;
     --padding: 5px;
     --resourceAreaWidth: 15%;
-    --agendaAreaWidth: calc(100% - var(--resourceAreaWidth) - 2 * var(--body-margin));
+    --agendaAreaWidth: calc(100% - var(--resourceAreaWidth));
     --minimalWidthInMinutes: 30;
-    --minimalWidth: calc(var(--minimalWidthInMinutes) * (var(--agendaAreaWidth) - 2 * var(--padding)) / 24 / 60);
+    --minimalWidth: calc(var(--minimalWidthInMinutes) * (100% - 2 * var(--padding)) / 24 / 60);
     --height: 25px;        
     --radius: 3px;
     --timelineHeigth: 20px;
+}
+.container {
+    padding-left: 100px;
+    padding-top: 15px;
+}
+resources {
+    background-color: bisque;  
+    display: block;
+    position: relative;
+    top: var(--timelineHeigth);
+    left: 0px;
+    width: var(--resourceAreaWidth);
 }
 timeline {
     background-color: lightskyblue;
@@ -23,18 +35,26 @@ timeline {
     width: var(--agendaAreaWidth);
     height: var(--timelineHeigth);
 }
+events {
+    background-color: bisque;  
+    display: block;
+    position: relative;
+    top: 0px;
+    left: var(--resourceAreaWidth);
+    width: var(--agendaAreaWidth);
+}
 yop-timeline-marker {
     display: block;
     position: absolute;
     top: var(--padding);
 }
-events {
-    background-color: bisque;  
-    display: block;
-    position: relative;
-    top: var(--timelineHeigth);
-    left: var(--resourceAreaWidth);
-    width: var(--agendaAreaWidth);
+yop-calendar-resource {
+    background-color: lightseagreen;
+    display: inline-block;
+    position: absolute;
+    left: var(--padding);
+    width: calc(100% - 2 * var(--padding));
+    height: var(--height);
 }
 yop-calendar-event {
     background-color: lightsalmon;
@@ -42,17 +62,4 @@ yop-calendar-event {
     position: absolute;   
     height: var(--height);  
     border-radius: var(--radius);
-}
-resources {
-    display: block;
-    position: relative;
-    width: var(--resourceAreaWidth);
-}
-yop-calendar-resource {
-    background-color: lightseagreen;
-    display: block;
-    position: absolute;
-    left: var(--padding);
-    width: calc(100% - 2 * var(--padding));
-    height: var(--height);
 }
