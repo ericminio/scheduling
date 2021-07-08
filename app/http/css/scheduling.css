@@ -1,22 +1,27 @@
 body {
     font-family: Arial, sans-serif;
     font-size: 0.8em;
+    margin: var(--body-margin);
 }
 :root {
+    --body-margin: 5px;
     --padding: 5px;
+    --resourceAreaWidth: 15%;
+    --agendaAreaWidth: calc(100% - var(--resourceAreaWidth) - 2 * var(--body-margin));
     --minimalWidthInMinutes: 30;
-    --minimalWidth: calc(var(--minimalWidthInMinutes) * (100% - 2 * var(--padding) ) / 24 / 60);
+    --minimalWidth: calc(var(--minimalWidthInMinutes) * (var(--agendaAreaWidth) - 2 * var(--padding)) / 24 / 60);
     --height: 25px;        
-    --radius: 3px; 
-}
-.container {
-    padding-left: 100px;
+    --radius: 3px;
+    --timelineHeigth: 20px;
 }
 timeline {
+    background-color: lightskyblue;
     display: block;
     position: relative;
-    height: 20px;
-    background-color: lightskyblue;
+    top: 0px;
+    left: var(--resourceAreaWidth);
+    width: var(--agendaAreaWidth);
+    height: var(--timelineHeigth);
 }
 yop-timeline-marker {
     display: block;
@@ -24,14 +29,30 @@ yop-timeline-marker {
     top: var(--padding);
 }
 events {
+    background-color: bisque;  
     display: block;
     position: relative;
-    background-color: bisque;  
+    top: var(--timelineHeigth);
+    left: var(--resourceAreaWidth);
+    width: var(--agendaAreaWidth);
 }
 yop-calendar-event {
+    background-color: lightsalmon;
     display: block;
     position: absolute;   
-    background-color: lightsalmon;        
     height: var(--height);  
     border-radius: var(--radius);
+}
+resources {
+    display: block;
+    position: relative;
+    width: var(--resourceAreaWidth);
+}
+yop-calendar-resource {
+    background-color: lightseagreen;
+    display: block;
+    position: absolute;
+    left: var(--padding);
+    width: calc(100% - 2 * var(--padding));
+    height: var(--height);
 }

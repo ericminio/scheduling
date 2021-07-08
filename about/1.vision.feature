@@ -4,12 +4,12 @@ Feature: Scheduling events
 
     Background: brand new system
         Given the following resources exist in the system
-            | Type     | Id   |
-            | plane    | GITN |
-            | plane    | GNEA |
-            | headeset | H1   |
-            | headeset | H2   |
-            | headeset | H3   |
+            | Id | Type     | Name |
+            | R1 | plane    | GITN |
+            | R2 | plane    | GNEA |
+            | R3 | headeset | H1   |
+            | R4 | headeset | H2   |
+            | R5 | headeset | H3   |
         Given the following events
             | Id | Start | End   | Resources     |
             | E1 | 11:30 | 13:30 | GITN          |
@@ -20,6 +20,7 @@ Feature: Scheduling events
         Given I look at the events grouped by "plane"
         Then I see that event "E3" starts at "18:00"
         Then I see that event "E3" ends at "20:00"
+        Then I see that event "E3" belongs to "R2"
 
     @backlog
     Scenario: Modify event

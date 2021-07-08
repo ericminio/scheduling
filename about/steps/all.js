@@ -43,3 +43,12 @@ Then('I see that event {string} ends at {string}', async (id, time)=> {
 
     expect(actual).to.equal(expected)
 });
+Then('I see that event {string} belongs to {string}', async (eventId, resourceId)=> {
+    let resourceSelector = '#resource-' + resourceId;
+    let resource = await World.driver.findElement(By.css(resourceSelector));
+    let resourcePosition = await resource.getCssValue('top');
+    let element = await World.driver.findElement(By.css("#event-"+eventId));
+    let elementPosition = await element.getCssValue('top');
+
+    expect(elementPosition).to.equal(resourcePosition);
+});

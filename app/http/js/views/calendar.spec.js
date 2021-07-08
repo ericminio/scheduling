@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const sut = ''
     + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
@@ -20,13 +21,20 @@ describe('Calendar', ()=>{
                 <script>
                     let api = {
                         getEvents: ()=> {
-                            var p = new Promise((resolve, reject)=>{
+                            return new Promise((resolve, reject)=>{
                                 resolve({ events:[
                                     { id:'42', start:'15:00', end:'19:30' },
                                     { id:'15', start:'19:30', end:'23:30' }
                                 ]});
                             });
-                            return p;
+                        },
+                        getResources: ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ resources:[
+                                    { id:'1', type:'plane', name:'GSDZ' },
+                                    { id:'2', type:'plane', name:'GKMY' }
+                                ]});
+                            });
                         }
                     };
                     ${sut}
@@ -48,8 +56,12 @@ describe('Calendar', ()=>{
     it('is available', ()=>{
         expect(calendar).not.to.equal(null);
     })
-    it('adds expected events', ()=>{
+    it('displays expected events', ()=>{
         expect(document.querySelector('yop-calendar > events > #event-42')).not.to.equal(null);
         expect(document.querySelector('yop-calendar > events > #event-15')).not.to.equal(null);
+    })
+    it('displays expected resources', ()=>{
+        expect(document.querySelector('yop-calendar > resources > #resource-1')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar > resources > #resource-2')).not.to.equal(null);
     })
 })
