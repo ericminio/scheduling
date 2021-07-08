@@ -2,8 +2,8 @@ class CalendarEvent extends HTMLElement {
     constructor() {
         super()
     }
-    digest(event) {
-        this.id = `event-${event.id}`;
+    digest(event, resource) {
+        this.id = `event-${event.id}-resource-${resource.id}`;
         this.innerHTML = event.label;
         this.style = `
             top:${this.top(event)}; 

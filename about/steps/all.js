@@ -17,7 +17,7 @@ Given('the following resources exist in the system', function (resources) {
 });
 Given('the following events', function (events) {
 });
-Given('I look at the events grouped by {string}', async (type)=> {
+Given('I look at the events scheduled with {string}', async (resources)=> {
     await World.driver.get('http://localhost:'+World.server.port+'/events');
 });
 When('I move event {string} to start at {string}', function (id, start) {
@@ -67,7 +67,7 @@ Then('I see that {string} ends at {string}', async (label, time)=> {
     let actual = parseInt(elementPosition) + parseInt(elementWidth)
     let expected = parseInt(markerPosition)
 
-    expect(actual).to.equal(expected)
+    expect(Math.abs(actual-expected) < 2).to.equal(true)
 });
 Then('I see that {string} is scheduled with {string}', async (eventLabel, resourceName)=> {
     let candidatesResources = await World.driver.findElements(By.css('yop-calendar-resource'));
@@ -86,18 +86,28 @@ Then('I see that {string} is scheduled with {string}', async (eventLabel, resour
     let resourcePosition = await resource.getCssValue('top');
 
     let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
-    let foundEvent;
+    let foundEventsWithLabel = [];
     for (let i=0; i<candidatesEvents.length; i++) {
         let candidate = candidatesEvents[i];
         let text = await candidate.getText();
         if (text == eventLabel) {
-            foundEvent = candidate;
-            break;
+            foundEventsWithLabel.push(candidate);
         }
     }
-    let eventId = await foundEvent.getAttribute('id');
-    let element = await World.driver.findElement(By.css("#"+eventId));
-    let elementPosition = await element.getCssValue('top');
 
-    expect(elementPosition).to.equal(resourcePosition);
+    let found = false;
+    for (let i=0; i<foundEventsWithLabel.length; i++) {
+        let foundEvent = foundEventsWithLabel[i];
+        let eventId = await foundEvent.getAttribute('id');
+        let element = await World.driver.findElement(By.css("#"+eventId));
+        let elementPosition = await element.getCssValue('top');
+        if (elementPosition == resourcePosition) {
+            found = true;
+            break;
+        }    
+    }
+    
+    if (!found) {
+        throw Error('nope')
+    }
 });

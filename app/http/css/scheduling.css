@@ -15,8 +15,8 @@ body {
     --timelineHeigth: 20px;
 }
 .container {
-    padding-left: 100px;
-    padding-top: 15px;
+    padding-left: 0px;
+    padding-top: 0px;
 }
 resources {
     background-color: bisque;  
@@ -62,4 +62,7 @@ yop-calendar-event {
     position: absolute;   
     height: var(--height);  
     border-radius: var(--radius);
+}
+filters {
+    padding: var(--padding);
 }

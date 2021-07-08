@@ -12,16 +12,19 @@ class Server {
                 all: ()=> [
                     { id:'R1', type:'plane', name:'GITN' },
                     { id:'R2', type:'plane', name:'GNEA' },
-                    { id:'R3', type:'headeset', name:'H1' },
-                    { id:'R4', type:'headeset', name:'H2' },
-                    { id:'R5', type:'headeset', name:'H3' }
+                    { id:'R3', type:'instructor', name:'Vasile' },
+                    { id:'R4', type:'instructor', name:'Alain' },
+                    { id:'R5', type:'instructor', name:'Eddy' },
+                    { id:'R6', type:'headset', name:'Headset #1' },
+                    { id:'R7', type:'headset', name:'Headset #2' },
+                    { id:'R8', type:'headset', name:'Headset #3' },
                 ]
             },
             'events': {
                 all: ()=> [
-                    { id:'E1', start:'11:30', end:'13:30', resources:['R1'], label:'Bob' },
+                    { id:'E1', start:'11:30', end:'13:30', resources:['R1', 'R6', 'R7'], label:'Bob' },
                     { id:'E2', start:'15:00', end:'18:00', resources:['R1', 'R3'], label:'Joe' },
-                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R3', 'R4'], label:'Alex' } 
+                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R4', 'R6'], label:'Alex' } 
                 ]
             }
         };
