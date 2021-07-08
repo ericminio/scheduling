@@ -2,10 +2,9 @@ class ApiClient {
     fetch(url) {
         return window.fetch(url);
     }
-
-    getEvents() {
+    get(url) {
         return new Promise((resolve, reject)=>{
-            this.fetch('/data/events')
+            this.fetch(url)
                 .then((response) => {
                     response.json().then((json) => {                    
                         resolve(json);
@@ -17,18 +16,12 @@ class ApiClient {
         });
     }
 
+    getEvents() {
+        return this.get('/data/events');
+    }
+
     getResources() {
-        return new Promise((resolve, reject)=>{
-            this.fetch('/data/resources')
-                .then((response) => {
-                    response.json().then((json) => {                    
-                        resolve(json);
-                    });
-                })
-                .catch((error)=> {
-                    reject(error);
-                });
-        });
+        return this.get('/data/resources');
     }
 };
 let api = new ApiClient();
