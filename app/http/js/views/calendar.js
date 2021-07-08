@@ -13,8 +13,11 @@ class Calendar extends HTMLElement {
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
-        api.getEvents().then(data => this.displayEvents(data.events));
-        api.getResources().then(data => this.displayResources(data.resources));
+        api.getResources().then(data => {
+            let filtered = data.resources.filter(r => r.type=='plane')
+            this.displayResources(filtered)
+            api.getEvents().then(data => this.displayEvents(data.events, filtered));
+        });
     }
     displayTimelineMarks(starts) {
         let view = this.querySelector('timeline');
@@ -25,11 +28,12 @@ class Calendar extends HTMLElement {
             view.appendChild(marker);
         })
     }
-    displayEvents(events) {
+    displayEvents(events, resources) {
         let view = this.querySelector('events');
         view.innerHTML = '';
         let maxLine = 0;
         events.forEach(event => {
+            event.line = resources.findIndex(r => event.resources.includes(r.id));
             let instance = new CalendarEvent();
             instance.digest(event);
             view.appendChild(instance);     
@@ -43,7 +47,7 @@ class Calendar extends HTMLElement {
     displayResources(resources) {
         let view = this.querySelector('resources');
         view.innerHTML = '';
-        resources.filter(r => r.type=='plane').forEach((data, index) => {
+        resources.forEach((data, index) => {
             let instance = new Resource();
             instance.digest(data, index);
             view.appendChild(instance);

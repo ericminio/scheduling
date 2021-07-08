@@ -20,14 +20,6 @@ describe('Calendar', ()=>{
                 <yop-calendar></yop-container>
                 <script>
                     let api = {
-                        getEvents: ()=> {
-                            return new Promise((resolve, reject)=>{
-                                resolve({ events:[
-                                    { id:'42', start:'15:00', end:'19:30' },
-                                    { id:'15', start:'19:30', end:'23:30' }
-                                ]});
-                            });
-                        },
                         getResources: ()=> {
                             return new Promise((resolve, reject)=>{
                                 resolve({ resources:[
@@ -35,7 +27,15 @@ describe('Calendar', ()=>{
                                     { id:'2', type:'plane', name:'GKMY' }
                                 ]});
                             });
-                        }
+                        },
+                        getEvents: ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ events:[
+                                    { id:'42', start:'15:00', end:'19:30', resources:['1'] },
+                                    { id:'15', start:'19:30', end:'23:30', resources:['2'] }
+                                ]});
+                            });
+                        }                        
                     };
                     ${sut}
                 </script>

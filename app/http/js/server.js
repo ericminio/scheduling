@@ -8,13 +8,6 @@ class Server {
         this.internal = http.createServer((request, response)=>this.route(request, response));
         this.sockets = [];
         this.services = {
-            'events': {
-                all: ()=> [
-                    { id:'E1', start:'11:30', end:'13:30', resources:['R1'], label:'Bob', line:0 },
-                    { id:'E2', start:'15:00', end:'18:00', resources:['R1, R3'], label:'Joe', line:2 },
-                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R3', 'R4'], label:'Alex', line:1 } 
-                ]
-            },
             'resources': {
                 all: ()=> [
                     { id:'R1', type:'plane', name:'GITN' },
@@ -22,6 +15,13 @@ class Server {
                     { id:'R3', type:'headeset', name:'H1' },
                     { id:'R4', type:'headeset', name:'H2' },
                     { id:'R5', type:'headeset', name:'H3' }
+                ]
+            },
+            'events': {
+                all: ()=> [
+                    { id:'E1', start:'11:30', end:'13:30', resources:['R1'], label:'Bob' },
+                    { id:'E2', start:'15:00', end:'18:00', resources:['R1', 'R3'], label:'Joe' },
+                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R3', 'R4'], label:'Alex' } 
                 ]
             }
         };
