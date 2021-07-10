@@ -2,14 +2,14 @@ class RepositoryUsingMap {
     constructor() {
         this.store = [];
     }
-    save(instance) {
+    async save(instance) {
         this.store.push(instance);
         return instance.id;
     }
-    get(id) {
+    async get(id) {
         return this.store.find(instance => instance.id == id);
     }
-    all() {
+    async all() {
         return this.store;
     }
 };

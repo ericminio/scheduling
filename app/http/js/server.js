@@ -81,40 +81,40 @@ class Server {
             body = fs.readFileSync(path.join(__dirname, '..', 'css', 'scheduling.css')).toString();
             response.setHeader('content-type', 'text/css');
         }
-        else if (request.url == '/data/events') {
-            let events = this.services['events'].all();
+        else if (request.method=='GET' && request.url == '/data/events') {
+            let events = await this.services['events'].all();
             body = JSON.stringify({ events:events });
             response.setHeader('content-type', 'application/json');
         }
         else if (request.method=='GET' && request.url == '/data/resources') {
-            let resources = this.services['resources'].all();
+            let resources = await this.services['resources'].all();
             body = JSON.stringify({ resources:resources });
             response.setHeader('content-type', 'application/json');
         }
         else if (request.method=='POST' && request.url == '/data/resources/create') {
             let incoming = await payload(request);
-            let id = this.services['resources'].save(incoming);
+            let id = await this.services['resources'].save(incoming);
             body = JSON.stringify({ location:'/data/resources/' + id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;
         }
         else if (request.method=='GET' && request.url.indexOf('/data/resources/')==0) {
             let id = request.url.substring('/data/resources/'.length);
-            let instance = this.services['resources'].get(id);
+            let instance = await this.services['resources'].get(id);
             body = JSON.stringify(instance);
             response.setHeader('content-type', 'application/json');
             response.statusCode = 200;
         }
         else if (request.method=='POST' && request.url == '/data/events/create') {
             let incoming = await payload(request);
-            let id = this.services['events'].save(incoming);
+            let id = await this.services['events'].save(incoming);
             body = JSON.stringify({ location:'/data/events/' + id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;
         }
         else if (request.method=='GET' && request.url.indexOf('/data/events/')==0) {
             let id = request.url.substring('/data/events/'.length);
-            let instance = this.services['events'].get(id);
+            let instance = await this.services['events'].get(id);
             body = JSON.stringify(instance);
             response.setHeader('content-type', 'application/json');
             response.statusCode = 200;
