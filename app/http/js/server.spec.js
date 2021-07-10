@@ -1,7 +1,8 @@
 const { expect } = require('chai');
-const request = require('./support/request');
+const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
+const RepositoryUsingMap = require('./support/repository-using-map')
 
 describe('Server', ()=>{
 
@@ -42,5 +43,41 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
         expect(response.body).to.contain('events {');
+    })
+    it('is open to resource creation', async ()=>{
+        server.services['resources'] = new RepositoryUsingMap();
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/create',
+            method: 'POST'
+        };
+        let response = await post(creation, { id:'this-id', type:'table', name:'by the fireplace'});
+        
+        expect(response.statusCode).to.equal(201);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body).location).to.equal('/data/resources/this-id');
+
+        const created = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/this-id',
+            method: 'GET'
+        }
+        response = await request(created);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ id:'this-id', type:'table', name:'by the fireplace'});
+
+        const all = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources',
+            method: 'GET'
+        }
+        response = await request(all);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ resources:[{ id:'this-id', type:'table', name:'by the fireplace'}] });
     })
 })

@@ -1,11 +1,14 @@
 const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
-const { Builder, By } = require('../../app/node_modules/selenium-webdriver')
-const { expect } = require('../../app/node_modules/chai')
+const { Builder, By } = require('../../app/node_modules/selenium-webdriver');
+const { expect } = require('../../app/node_modules/chai');
+const { post } = require('../../app/http/js/support/request');
+const RepositoryUsingMap = require('../../app/http/js/support/repository-using-map');
 
 Before(async (testCase)=>{
     let maybeLoaded = require.resolve('../../app/start');
     delete require.cache[maybeLoaded];
     World.server = require('../../app/start');
+    World.server.services['resources'] = new RepositoryUsingMap();
     World.driver = await new Builder().forBrowser('firefox').build();
 });
 After(async (testCase)=>{
@@ -13,7 +16,23 @@ After(async (testCase)=>{
     await World.server.stop();
 });
 
-Given('the following resources exist in the system', function (resources) {
+Given('the following resources exist in the system', async (resources)=> {
+    let lines = resources.rawTable;
+    let fields = lines[0].map(r => r.toLowerCase());
+    for (let i=1; i<lines.length; i++) {
+        let payload = {};
+        let data = lines[i];
+        for (let j=0; j<data.length; j++) {
+            payload[fields[j]] = data[j];
+        }
+        let response = await post({
+            hostname: 'localhost',
+            port: World.server.port,
+            path: '/data/resources/create',
+            method: 'POST'
+        }, payload);
+        expect(response.statusCode).to.equal(201);
+    }
 });
 Given('the following events', function (events) {
 });

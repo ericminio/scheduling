@@ -4,12 +4,12 @@ Feature: Scheduling events
 
     Background: brand new system
         Given the following resources exist in the system
-            | Id | Type       | Name   |
-            | R1 | plane      | GITN   |
-            | R2 | plane      | GNEA   |
-            | R3 | instructor | Vasile |
-            | R4 | instructor | Alain  |
-            | R5 | instructor | Eddy   |
+            | Id | Type       | Name       |
+            | R1 | plane      | GITN       |
+            | R2 | plane      | GNEA       |
+            | R3 | instructor | Vasile     |
+            | R4 | instructor | Alain      |
+            | R5 | instructor | Eddy       |
             | R6 | headset    | Headset #1 |
             | R7 | headset    | Headset #2 |
             | R8 | headset    | Headset #3 |

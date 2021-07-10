@@ -1,11 +1,22 @@
 let http = require('http');
 let path = require('path');
 let fs = require('fs');
+const payload = require('./support/payload');
 
 class Server {
     constructor(port) {
         this.port = port;
-        this.internal = http.createServer((request, response)=>this.route(request, response));
+        this.internal = http.createServer(async (request, response)=>{
+            try {
+                await this.route(request, response);
+            }
+            catch (error) {
+                console.log(error);
+                response.setHeader('content-type', 'text/plain');
+                response.statusCode = 500;
+                response.end()
+            }
+        });
         this.sockets = [];
         this.services = {
             'resources': {
@@ -44,10 +55,11 @@ class Server {
         this.sockets.forEach(socket=> socket.destroy())
         this.internal.close(done);
     }
-    route(request, response) {
+    async route(request, response) {
         response.setHeader('Access-Control-Allow-Origin', '*');
 
         console.log(request.method, request.url)
+        response.statusCode = 200;
         let body = 'NOT FOUND';
 
         if (request.url == '/ping') {
@@ -74,10 +86,24 @@ class Server {
             body = JSON.stringify({ events:events });
             response.setHeader('content-type', 'application/json');
         }
-        else if (request.url == '/data/resources') {
+        else if (request.method=='GET' && request.url == '/data/resources') {
             let resources = this.services['resources'].all();
             body = JSON.stringify({ resources:resources });
             response.setHeader('content-type', 'application/json');
+        }
+        else if (request.method=='POST' && request.url == '/data/resources/create') {
+            let incoming = await payload(request);
+            this.services['resources'].save(incoming);
+            body = JSON.stringify({ location:'/data/resources/' + incoming.id });
+            response.setHeader('content-type', 'application/json');
+            response.statusCode = 201;
+        }
+        else if (request.method=='GET' && request.url.indexOf('/data/resources/')==0) {
+            let id = request.url.substring('/data/resources/'.length);
+            let instance = this.services['resources'].get(id);
+            body = JSON.stringify(instance);
+            response.setHeader('content-type', 'application/json');
+            response.statusCode = 200;
         }
         else {
             body = fs.readFileSync(path.join(__dirname, '..', 'index.html')).toString();
@@ -86,7 +112,6 @@ class Server {
         // console.log('--> returning', body)
         response.setHeader('content-length', body.length);
         response.write(body);
-        response.statusCode = 200;
         response.end();
     }
 }

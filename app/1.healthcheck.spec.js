@@ -1,19 +1,19 @@
 const { expect } = require('chai');
-const request = require('./http/js/support/request');
+const { request } = require('./http/js/support/request');
 const { Server } = require('./http/js/server');
 const port = 8005;
-const ping = {
-    hostname: 'localhost',
-    port: port,
-    path: '/ping',
-    method: 'GET'
-};
 
 describe('Server healthcheck', ()=>{
 
     let server;
+    const ping = {
+        hostname: 'localhost',
+        port: port,
+        path: '/ping',
+        method: 'GET'
+    };
     let pong;
-
+    
     beforeEach((done)=>{
         server = new Server(port);
         server.start(async () => {
