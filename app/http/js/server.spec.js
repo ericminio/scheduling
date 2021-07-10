@@ -4,7 +4,7 @@ const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map')
 
-describe('Server', ()=>{
+describe.only('Server', ()=>{
 
     let server;
 
@@ -80,4 +80,47 @@ describe('Server', ()=>{
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ resources:[{ id:'this-id', type:'table', name:'by the fireplace'}] });
     })
+    it('is open to event creation', async ()=>{
+        server.services['events'] = new RepositoryUsingMap();
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/create',
+            method: 'POST'
+        };
+        let payload = {
+            id: 'this-event',
+            start: '08:30',
+            end: '12:00',
+            label: 'Bob',
+            resources: ['R1', 'R2']
+        };
+        let response = await post(creation, payload);
+        
+        expect(response.statusCode).to.equal(201);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+
+        const created = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/this-event',
+            method: 'GET'
+        }
+        response = await request(created);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal(payload);
+
+        const all = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events',
+            method: 'GET'
+        }
+        response = await request(all);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ events:[payload] });
+    });
 })

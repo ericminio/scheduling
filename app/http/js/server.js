@@ -93,8 +93,8 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/resources/create') {
             let incoming = await payload(request);
-            this.services['resources'].save(incoming);
-            body = JSON.stringify({ location:'/data/resources/' + incoming.id });
+            let id = this.services['resources'].save(incoming);
+            body = JSON.stringify({ location:'/data/resources/' + id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;
         }
@@ -104,6 +104,23 @@ class Server {
             body = JSON.stringify(instance);
             response.setHeader('content-type', 'application/json');
             response.statusCode = 200;
+        }
+        else if (request.method=='POST' && request.url == '/data/events/create') {
+            let incoming = await payload(request);
+            let id = this.services['events'].save(incoming);
+            body = JSON.stringify({ location:'/data/events/' + id });
+            response.setHeader('content-type', 'application/json');
+            response.statusCode = 201;
+        }
+        else if (request.method=='GET' && request.url.indexOf('/data/events/')==0) {
+            let id = request.url.substring('/data/events/'.length);
+            let instance = this.services['events'].get(id);
+            body = JSON.stringify(instance);
+            response.setHeader('content-type', 'application/json');
+            response.statusCode = 200;
+        }
+        else if (request.url.indexOf('/data/')==0) {
+            response.statusCode = 404;
         }
         else {
             body = fs.readFileSync(path.join(__dirname, '..', 'index.html')).toString();

@@ -13,7 +13,7 @@ Feature: Scheduling events
             | R6 | headset    | Headset #1 |
             | R7 | headset    | Headset #2 |
             | R8 | headset    | Headset #3 |
-        Given the following events
+        Given the following events exist in the system
             | Id | Start | End   | Resources                    | Label |
             | E1 | 11:30 | 13:30 | GITN, Headset #1, Headset #2 | Bob   |
             | E2 | 15:00 | 18:00 | GITN, Vasile                 | Joe   |

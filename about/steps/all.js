@@ -1,7 +1,7 @@
 const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver');
 const { expect } = require('../../app/node_modules/chai');
-const { post } = require('../../app/http/js/support/request');
+const { request, post } = require('../../app/http/js/support/request');
 const RepositoryUsingMap = require('../../app/http/js/support/repository-using-map');
 
 Before(async (testCase)=>{
@@ -9,6 +9,7 @@ Before(async (testCase)=>{
     delete require.cache[maybeLoaded];
     World.server = require('../../app/start');
     World.server.services['resources'] = new RepositoryUsingMap();
+    World.server.services['events'] = new RepositoryUsingMap();
     World.driver = await new Builder().forBrowser('firefox').build();
 });
 After(async (testCase)=>{
@@ -34,7 +35,34 @@ Given('the following resources exist in the system', async (resources)=> {
         expect(response.statusCode).to.equal(201);
     }
 });
-Given('the following events', function (events) {
+Given('the following events exist in the system', async (events)=> {
+    let response = await request({
+        hostname: 'localhost',
+        port: World.server.port,
+        path: '/data/resources',
+        method: 'GET'
+    });
+    let resources = JSON.parse(response.body).resources;
+    let getResourceId = (name)=> resources.find(r => name == r.name).id
+    
+    let lines = events.rawTable;
+    for (let i=1; i<lines.length; i++) {
+        let data = lines[i];
+        let payload = {
+            id: data[0],
+            start: data[1],
+            end: data[2],
+            label: data[4],
+            resources: data[3].split(',').map(name => getResourceId(name.trim()))
+        };
+        response = await post({
+            hostname: 'localhost',
+            port: World.server.port,
+            path: '/data/events/create',
+            method: 'POST'
+        }, payload);
+        expect(response.statusCode).to.equal(201);
+    }
 });
 Given('I look at the events scheduled with {string}', async (resources)=> {
     await World.driver.get('http://localhost:'+World.server.port+'/events');
