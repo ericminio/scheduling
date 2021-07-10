@@ -4,7 +4,7 @@ const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map')
 
-describe.only('Server', ()=>{
+describe('Server', ()=>{
 
     let server;
 
