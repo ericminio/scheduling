@@ -2,6 +2,7 @@ let http = require('http');
 let path = require('path');
 let fs = require('fs');
 const payload = require('./support/payload');
+const Factory = require('../../domain/factory')
 
 class Server {
     constructor(port) {
@@ -39,6 +40,7 @@ class Server {
                 ]
             }
         };
+        this.factory = new Factory();
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -93,7 +95,8 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/resources/create') {
             let incoming = await payload(request);
-            let id = await this.services['resources'].save(incoming);
+            let resource = this.factory.createResource(incoming);
+            let id = await this.services['resources'].save(resource);
             body = JSON.stringify({ location:'/data/resources/' + id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;
@@ -107,7 +110,8 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/events/create') {
             let incoming = await payload(request);
-            let id = await this.services['events'].save(incoming);
+            let event = this.factory.createEvent(incoming);
+            let id = await this.services['events'].save(event);
             body = JSON.stringify({ location:'/data/events/' + id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;

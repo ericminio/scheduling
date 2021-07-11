@@ -2,7 +2,9 @@ const { expect } = require('chai');
 const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
-const RepositoryUsingMap = require('./support/repository-using-map')
+const RepositoryUsingMap = require('./support/repository-using-map');
+const Resource = require('../../domain/resource');
+const Event = require('../../domain/event');
 
 describe('Server', ()=>{
 
@@ -45,7 +47,8 @@ describe('Server', ()=>{
         expect(response.body).to.contain('events {');
     })
     it('is open to resource creation', async ()=>{
-        server.services['resources'] = new RepositoryUsingMap();
+        let repository = new RepositoryUsingMap();
+        server.services['resources'] = repository;
         const creation = {
             hostname: 'localhost',
             port: port,
@@ -57,6 +60,7 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/resources/this-id');
+        expect((await repository.get('this-id')) instanceof Resource).to.equal(true);
 
         const created = {
             hostname: 'localhost',
@@ -81,7 +85,8 @@ describe('Server', ()=>{
         expect(JSON.parse(response.body)).to.deep.equal({ resources:[{ id:'this-id', type:'table', name:'by the fireplace'}] });
     })
     it('is open to event creation', async ()=>{
-        server.services['events'] = new RepositoryUsingMap();
+        let repository = new RepositoryUsingMap();
+        server.services['events'] = repository;
         const creation = {
             hostname: 'localhost',
             port: port,
@@ -100,6 +105,8 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+        let stored = await repository.get('this-event');
+        expect(stored instanceof Event).to.equal(true);
 
         const created = {
             hostname: 'localhost',
