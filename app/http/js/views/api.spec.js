@@ -55,30 +55,32 @@ describe('Api client', ()=>{
     it('exposes events', async()=> {
         server.services['events'] = {
             all: ()=> [
-                { id:'E1', start:'11:30', end:'13:30', resources:['GITN'], line:0 },
-                { id:'E2', start:'15:00', end:'18:00', resources:['GITN', 'H1'], line:0 },
-                { id:'E3', start:'18:00', end:'20:00', resources:['GNEA', 'H1', 'H2'], line:1 }
+                { any:'value' },
+                { any:'thing' }
             ]
         };
         let data = await api.getEvents()
-        expect(data).to.deep.equal({ events:[
-            { id:'E1', start:'11:30', end:'13:30', resources:['GITN'], line:0 },
-            { id:'E2', start:'15:00', end:'18:00', resources:['GITN', 'H1'], line:0 },
-            { id:'E3', start:'18:00', end:'20:00', resources:['GNEA', 'H1', 'H2'], line:1 }
-        ]});
+        expect(data).to.deep.equal({ 
+            events:[
+                { any:'value' },
+                { any:'thing' }
+            ]
+        });
     });
 
     it('exposes resources', async()=> {
         server.services['resources'] = {
             all: ()=> [
-                { id:'1', type:'plane', name:'GSDZ' },
-                { id:'2', type:'plane', name:'GKMY' }
+                { any:'value' },
+                { any:'thing' }
             ]
         };
         let data = await api.getResources()
-        expect(data).to.deep.equal({ resources:[
-            { id:'1', type:'plane', name:'GSDZ' },
-            { id:'2', type:'plane', name:'GKMY' }
-        ]});
+        expect(data).to.deep.equal({ 
+            resources:[
+                { any:'value' },
+                { any:'thing' }
+            ]
+        });
     });
 })

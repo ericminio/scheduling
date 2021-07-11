@@ -34,9 +34,9 @@ class Server {
             },
             'events': {
                 all: ()=> [
-                    { id:'E1', start:'2015-09-21 11:30', end:'2015-09-21 13:30', resources:['R1', 'R6', 'R7'], label:'Bob' },
-                    { id:'E2', start:'2015-09-21 15:00', end:'2015-09-21 18:00', resources:['R1', 'R3'], label:'Joe' },
-                    { id:'E3', start:'2015-09-21 18:00', end:'2015-09-21 20:00', resources:['R2', 'R4', 'R6'], label:'Alex' } 
+                    { id:'E1', start:'2015-09-21 11:30', end:'2015-09-21 13:30', resources:[{id:'R1'}, {id:'R6'}, {id:'R7'}], label:'Bob' },
+                    { id:'E2', start:'2015-09-21 15:00', end:'2015-09-21 18:00', resources:[{id:'R1'}, {id:'R3'}], label:'Joe' },
+                    { id:'E3', start:'2015-09-21 18:00', end:'2015-09-21 20:00', resources:[{id:'R2'}, {id:'R4'}, {id:'R6'}], label:'Alex' } 
                 ]
             }
         };
@@ -69,14 +69,18 @@ class Server {
             response.setHeader('content-type', 'application/json');
         }
         else if (request.url == '/all.js') {
-            body = ''
-                + fs.readFileSync(path.join(__dirname, 'views', 'api.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'layout.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'resource.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'timeline-marker.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'calendar-event.js')).toString()
-                + fs.readFileSync(path.join(__dirname, 'views', 'calendar.js')).toString()
-                ;
+            let files = [
+                'api.js',
+                'layout.js',
+                'resource.js',
+                'timeline-marker.js',
+                'calendar-event.js',
+                'calendar.js'
+            ];
+            body = '';
+            files.forEach((file)=> {
+                body += fs.readFileSync(path.join(__dirname, 'views', file)).toString();
+            })
             response.setHeader('content-type', 'application/javascript');
         }
         else if (request.url == '/scheduling.css') {
@@ -95,7 +99,7 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/resources/create') {
             let incoming = await payload(request);
-            let resource = this.factory.createResource(incoming);
+            let resource = await this.factory.createResource(incoming);
             let id = await this.services['resources'].save(resource);
             body = JSON.stringify({ location:'/data/resources/' + id });
             response.setHeader('content-type', 'application/json');
@@ -110,11 +114,18 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/events/create') {
             let incoming = await payload(request);
-            let event = this.factory.createEvent(incoming);
-            let id = await this.services['events'].save(event);
-            body = JSON.stringify({ location:'/data/events/' + id });
-            response.setHeader('content-type', 'application/json');
-            response.statusCode = 201;
+            try {
+                let event = await this.factory.createEvent(incoming, this.services['resources']);
+                let id = await this.services['events'].save(event);
+                body = JSON.stringify({ location:'/data/events/' + id });
+                response.setHeader('content-type', 'application/json');
+                response.statusCode = 201;
+            }
+            catch (error) {
+                body = JSON.stringify({ message:error.message });
+                response.setHeader('content-type', 'application/json');
+                response.statusCode = 406;
+            }
         }
         else if (request.method=='GET' && request.url.indexOf('/data/events/')==0) {
             let id = request.url.substring('/data/events/'.length);

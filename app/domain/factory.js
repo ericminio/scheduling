@@ -3,11 +3,18 @@ const Event = require("./event");
 
 class Factory {
 
-    createResource(incoming) {
+    async createResource(incoming) {
         return new Resource(incoming);
     }
 
-    createEvent(incoming) {
+    async createEvent(incoming, resourcesRepository) {
+        for (let i=0; i<incoming.resources.length; i++) {
+            let resource = incoming.resources[i];
+            let id = resource.id;
+            if (! await resourcesRepository.exists(id)) {
+                throw Error(`unknown resource with id "${id}"`);
+            }
+        }
         return new Event(incoming);
     }
 };

@@ -3,8 +3,7 @@ const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map');
-const Resource = require('../../domain/resource');
-const Event = require('../../domain/event');
+const { Resource, Event } = require('../../domain');
 
 describe('Server', ()=>{
 
@@ -20,7 +19,7 @@ describe('Server', ()=>{
         server.stop(done);
     })
 
-    it('can serve javascript', async ()=> {
+    it.skip('can serve javascript', async ()=> {
         const file = {
             hostname: 'localhost',
             port: port,
@@ -85,7 +84,10 @@ describe('Server', ()=>{
         expect(JSON.parse(response.body)).to.deep.equal({ resources:[{ id:'this-id', type:'table', name:'by the fireplace'}] });
     })
     it('is open to event creation', async ()=>{
-        let repository = new RepositoryUsingMap();
+        let resources = new RepositoryUsingMap();
+        resources.save(new Resource({ id:'R1' }));
+        resources.save(new Resource({ id:'R2' }));
+        server.services['resources'] = resources;let repository = new RepositoryUsingMap();
         server.services['events'] = repository;
         const creation = {
             hostname: 'localhost',
@@ -98,7 +100,7 @@ describe('Server', ()=>{
             start: '08:30',
             end: '12:00',
             label: 'Bob',
-            resources: ['R1', 'R2']
+            resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
         
@@ -129,5 +131,30 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ events:[payload] });
+    });
+    it('resists non-existing resource', async ()=>{
+        let resources = new RepositoryUsingMap();
+        resources.save(new Resource({ id:'I exist' }));
+        server.services['resources'] = resources;
+        let repository = new RepositoryUsingMap();
+        server.services['events'] = repository;
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/create',
+            method: 'POST'
+        };
+        let payload = {
+            id: 'this-event',
+            start: '08:30',
+            end: '12:00',
+            label: 'Bob',
+            resources: [{ id:'unknown' }]
+        };
+        let response = await post(creation, payload);
+        
+        expect(response.statusCode).to.equal(406);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body).message).to.equal('unknown resource with id "unknown"');
     });
 })

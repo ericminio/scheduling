@@ -53,7 +53,7 @@ Given('the following events exist in the system', async (events)=> {
             start: data[1],
             end: data[2],
             label: data[4],
-            resources: data[3].split(',').map(name => getResourceId(name.trim()))
+            resources: data[3].split(',').map(name => { return { id:getResourceId(name.trim()) }; })
         };
         response = await post({
             hostname: 'localhost',

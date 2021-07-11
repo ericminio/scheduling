@@ -33,14 +33,16 @@ class Calendar extends HTMLElement {
         view.style.height = `calc(${resources.length} * var(--height) + 2 * var(--padding))`;
         view.innerHTML = '';
         events.forEach(event => {
-            resources.forEach((resource, index)=>{
-                if (event.resources.includes(resource.id)) {
-                    event.line = index;
-                    let instance = new CalendarEvent();
-                    instance.digest(event, resource);
-                    view.appendChild(instance);   
-                }
-            });        
+            event.resources.forEach((eventResource)=> {
+                resources.forEach((resource, index)=>{
+                    if (eventResource.id == resource.id) {
+                        event.line = index;
+                        let instance = new CalendarEvent();
+                        instance.digest(event, resource);
+                        view.appendChild(instance);   
+                    }
+                });            
+            })
         });
     }
     displayResources(resources) {

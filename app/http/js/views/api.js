@@ -6,7 +6,7 @@ class ApiClient {
         return new Promise((resolve, reject)=>{
             this.fetch(url)
                 .then((response) => {
-                    response.json().then((json) => {                    
+                    response.json().then((json) => {
                         resolve(json);
                     });
                 })
@@ -23,5 +23,5 @@ class ApiClient {
     getResources() {
         return this.get('/data/resources');
     }
-};
+}
 let api = new ApiClient();

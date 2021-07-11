@@ -12,6 +12,9 @@ class RepositoryUsingMap {
     async all() {
         return this.store;
     }
+    async exists(id) {
+        return (await this.get(id)) !== undefined;
+    }
 };
 
 module.exports = RepositoryUsingMap;
