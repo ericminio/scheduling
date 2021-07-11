@@ -7,7 +7,8 @@
     "tests:external": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about --tags 'not @backlog'",
     "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js' --exit --timeout 0",
     "test": "npm run tests:internal && npm run tests:external",
-    "start": "node start.js"
+    "start": "node start.js",
+    "ping:database": "mocha ./storage/ready.spec.js"
   },
   "repository": {
     "type": "git",

@@ -6,7 +6,37 @@ on:
       - dev
 
 jobs:
+
+  ping:
+    name: database health check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: set node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.17.1
+      - name: setup firefox
+        uses: browser-actions/setup-firefox@latest
+      - name: run
+        env:
+          MOZ_HEADLESS: 1
+          PGHOST: 0.0.0.0
+          PGDATABASE: scheduling
+          PGUSER: dev
+          PGPASSWORD: dev
+          DATABASE_URL: postgres://dev:dev@0.0.0.0/scheduling
+        run: |
+          docker-compose up -d database
+          cd app
+          npm install
+          env
+          docker ps
+          npm run ping:database
+
   test:
+    needs: ping
 
     runs-on: ubuntu-latest
 
