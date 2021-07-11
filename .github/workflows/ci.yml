@@ -9,30 +9,38 @@ jobs:
 
   ping:
     name: database health check
+
     runs-on: ubuntu-latest
+    container: node:10.18-jessie
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout code
+        uses: actions/checkout@v2
       - name: set node version
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.1
-      - name: setup firefox
-        uses: browser-actions/setup-firefox@latest
-      - name: run
-        env:
-          MOZ_HEADLESS: 1
-          PGHOST: localhost
-          PGDATABASE: scheduling
-          PGUSER: dev
-          PGPASSWORD: dev
-          DATABASE_URL: postgres://dev:dev@0.0.0.0/scheduling
+      - name: install
         run: |
-          docker-compose up -d database
           cd app
           npm install
-          env
-          docker ps
+      - name: run
+        env:
+          PGHOST: postgres
+        run: |
+          pwd
+          cd app
           npm run ping:database
 
   test:
