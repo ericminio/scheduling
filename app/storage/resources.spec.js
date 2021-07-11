@@ -51,7 +51,7 @@ describe('Resources storage', ()=> {
         expect(collection[0] instanceof Resource).to.equal(true);
     });
 
-    it('does not duplicate, but updates', async ()=> {
+    it('updates when saving same id', async ()=> {
         await repository.save(new Resource({ id:'this-id', type:'type #1', name:'name #1'}));
         await repository.save(new Resource({ id:'this-id', type:'type #2', name:'name #2'}));
         var rows = await executeSync('select name, type from resources')

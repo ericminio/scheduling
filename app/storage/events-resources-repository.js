@@ -22,6 +22,12 @@ class EventsResourcesRepository {
         }
         return collection;
     }
+    async deleteByEvent(id) {
+        await executeSync('delete from events_resources where event_id=$1', [id]);
+    }
+    async add(eventId, resourceId) {
+        await executeSync('insert into events_resources(event_id, resource_id) values($1, $2)', [eventId, resourceId]);
+    }
 }
 
 module.exports = EventsResourcesRepository;

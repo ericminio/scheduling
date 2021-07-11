@@ -63,4 +63,22 @@ describe('Events storage', ()=> {
         expect(collection[0] instanceof Event).to.equal(true);
         expect(collection[0]).to.deep.equal(event);
     });
+
+    it('updates when saving same id', async ()=> {
+        event.label = 'label #1';
+        await repository.save(event);
+        event.label = 'label #2';
+        await repository.save(event);
+        
+        let events = await executeSync('select label from events')
+        expect(events.length).to.equal(1);
+        expect(events[0].label).to.equal('label #2');
+        let resources = await executeSync('select * from resources')
+        expect(resources.length).to.equal(2);
+        let association = await executeSync('select * from events_resources')
+        expect(association.length).to.equal(2);
+
+        let fetched = await repository.get(event.getId());
+        expect(fetched).to.deep.equal(event);
+    });
 })

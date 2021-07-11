@@ -9,13 +9,24 @@ class EventsRepository {
         this.eventsResourcesRepository = new EventsResourcesRepository();
     }
     async save(event) {
-        await executeSync('insert into events(id, label, start_utc, end_utc) values($1, $2, $3, $4)', 
-            [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
-        event.getResources().forEach(resource => this.resourcesRepository.save(resource));
-        event.getResources().forEach(async resource => {
-            await executeSync('insert into events_resources(event_id, resource_id) values($1, $2)',
-                [event.getId(), resource.getId()])
-        })
+        if (! await this.exists(event.id)) {
+            await executeSync('insert into events(id, label, start_utc, end_utc) values($1, $2, $3, $4)', 
+                [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
+        }
+        else {
+            await executeSync(`update events set label=$2, start_utc=$3, end_utc=$4 where id=$1`, 
+                [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
+        }
+        let resources = event.getResources();
+        for (let i=0; i<resources.length; i++) {
+            let resource = resources[i];
+            await this.resourcesRepository.save(resource);
+        }
+        await this.eventsResourcesRepository.deleteByEvent(event.getId());
+        for (let i=0; i<resources.length; i++) {
+            let resource = resources[i];
+            await this.eventsResourcesRepository.add(event.getId(), resource.getId());
+        }
     }
     async get(id) {
         let rows = await executeSync('select label, start_utc, end_utc from events where id=$1', [id]);
@@ -45,8 +56,9 @@ class EventsRepository {
         }
         return collection;
     }
-    async getResourcesByEvent(id) {
-        
+    async exists(id) {
+        let rows = await executeSync('select id from events where id=$1', [id]);
+        return rows.length > 0;
     }
 }
 
