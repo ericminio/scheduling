@@ -23,7 +23,8 @@ class CalendarEvent extends HTMLElement {
     top(event) {
         return `calc(${event.line} * var(--height) + var(--padding))`;
     }
-    parse(time) {
+    parse(datetime) {
+        let time = datetime.substring(datetime.indexOf(' ')).trim();
         let parts = time.split(':');
         return {
             hours: parseInt(parts[0]),

@@ -23,7 +23,7 @@ describe('Calendar Event', ()=>{
         })
 
         it('works with hours only', ()=>{
-            let width = event.width({ start:"12:00", end:"15:00" })
+            let width = event.width({ start:"2015-09-21 12:00", end:"2015-09-21 15:00" })
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 0 + 0) / var(--minimalWidthInMinutes))')

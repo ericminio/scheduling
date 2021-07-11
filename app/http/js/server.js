@@ -33,9 +33,9 @@ class Server {
             },
             'events': {
                 all: ()=> [
-                    { id:'E1', start:'11:30', end:'13:30', resources:['R1', 'R6', 'R7'], label:'Bob' },
-                    { id:'E2', start:'15:00', end:'18:00', resources:['R1', 'R3'], label:'Joe' },
-                    { id:'E3', start:'18:00', end:'20:00', resources:['R2', 'R4', 'R6'], label:'Alex' } 
+                    { id:'E1', start:'2015-09-21 11:30', end:'2015-09-21 13:30', resources:['R1', 'R6', 'R7'], label:'Bob' },
+                    { id:'E2', start:'2015-09-21 15:00', end:'2015-09-21 18:00', resources:['R1', 'R3'], label:'Joe' },
+                    { id:'E3', start:'2015-09-21 18:00', end:'2015-09-21 20:00', resources:['R2', 'R4', 'R6'], label:'Alex' } 
                 ]
             }
         };

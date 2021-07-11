@@ -32,8 +32,8 @@ describe('Calendar', ()=>{
                         getEvents: ()=> {
                             return new Promise((resolve, reject)=>{
                                 resolve({ events:[
-                                    { id:'42', start:'15:00', end:'19:30', resources:['1'] },
-                                    { id:'15', start:'19:30', end:'23:30', resources:['2', '3'] }
+                                    { id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:['1'] },
+                                    { id:'15', start:'2015-09-21 19:30', end:'2015-09-21 23:30', resources:['2', '3'] }
                                 ]});
                             });
                         }                        
