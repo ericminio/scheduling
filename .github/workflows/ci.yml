@@ -18,7 +18,7 @@ jobs:
           node-version: 14.17.1
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
-      - name run
+      - name: run
         env:
           MOZ_HEADLESS: 1
           POSTGRES_DB: scheduling
