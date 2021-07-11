@@ -17,19 +17,15 @@ class EventsRepository {
             await executeSync(`update events set label=$2, start_time=$3, end_time=$4 where id=$1`, 
                 [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
         }
+        await this.eventsResourcesRepository.deleteByEvent(event.getId());
         let resources = event.getResources();
         for (let i=0; i<resources.length; i++) {
             let resource = resources[i];
-            await this.resourcesRepository.save(resource);
-        }
-        await this.eventsResourcesRepository.deleteByEvent(event.getId());
-        for (let i=0; i<resources.length; i++) {
-            let resource = resources[i];
-            await this.eventsResourcesRepository.add(event.getId(), resource.getId());
+            await this.eventsResourcesRepository.add(event.getId(), resource.id);
         }
     }
     async get(id) {
-        let rows = await executeSync('select label, start_time, end_time from events where id=$1', [id]);
+        let rows = await executeSync('select label, start_time, end_time from events where id=$1 order by label', [id]);
         let record = rows[0];
         let event = new Event({
             id:id,

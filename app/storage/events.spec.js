@@ -1,16 +1,19 @@
 const { expect } = require('chai');
 const { executeSync } = require('yop-postgresql')
-const EventsRepository = require('./events-repository')
-const { migrate } = require('./migrations/migrate')
+const { EventsRepository, ResourcesRepository } = require('.');
+const migrate = require('./migrations/migrate')
 const { drop } = require('./migrations/drop')
 const Resource = require('../domain/resource');
 const Event = require('../domain/event');
 
 describe('Events storage', ()=> {
     
+    let resourcesRepository;
     let repository;
     let event;
+    let r1, r2;
     beforeEach(async ()=>{
+        resourcesRepository = new ResourcesRepository();
         process.env.PGUSER='dev';
         process.env.PGDATABASE='scheduling';
         process.env.PGHOST='localhost';
@@ -19,14 +22,16 @@ describe('Events storage', ()=> {
         await drop();
         await migrate();
 
-        let r1 = new Resource({ id:'r1-id', type:'r1-type', name:'r1-name' });
-        let r2 = new Resource({ id:'r2-id', type:'r2-type', name:'r2-name' });
+        r1 = new Resource({ id:'r1-id', type:'r1-type', name:'r1-name' });
+        r2 = new Resource({ id:'r2-id', type:'r2-type', name:'r2-name' });
+        resourcesRepository.save(r1);
+        resourcesRepository.save(r2);
         event = new Event({ 
             id:'event-id', 
             label:'event-label', 
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
-            resources:[r1, r2]
+            resources:[{id:'r1-id'}, {id:'r2-id'}]
         });
     });
 
@@ -41,8 +46,6 @@ describe('Events storage', ()=> {
         
         let events = await executeSync('select * from events')
         expect(events.length).to.equal(1);
-        let resources = await executeSync('select * from resources')
-        expect(resources.length).to.equal(2);
         let association = await executeSync('select * from events_resources')
         expect(association.length).to.equal(2);
     });
@@ -52,7 +55,13 @@ describe('Events storage', ()=> {
         let instance = await repository.get('event-id');
 
         expect(instance instanceof Event).to.equal(true);
-        expect(instance).to.deep.equal(event);
+        expect(instance).to.deep.equal(new Event({ 
+            id:'event-id', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[r1, r2]
+        }));
     });
 
     it('can fetch all', async ()=> {
@@ -61,7 +70,13 @@ describe('Events storage', ()=> {
 
         expect(collection.length).to.equal(1);
         expect(collection[0] instanceof Event).to.equal(true);
-        expect(collection[0]).to.deep.equal(event);
+        expect(collection[0]).to.deep.equal(new Event({ 
+            id:'event-id', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[r1, r2]
+        }));
     });
 
     it('updates when saving same id', async ()=> {
@@ -79,6 +94,12 @@ describe('Events storage', ()=> {
         expect(association.length).to.equal(2);
 
         let fetched = await repository.get(event.getId());
-        expect(fetched).to.deep.equal(event);
+        expect(fetched).to.deep.equal(new Event({ 
+            id:'event-id', 
+            label:'label #2', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[r1, r2]
+        }));
     });
 })

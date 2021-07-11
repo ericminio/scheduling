@@ -10,6 +10,7 @@ class EventsResourcesRepository {
             from resources, events_resources 
             where events_resources.resource_id = resources.id 
                 and event_id=$1
+            order by name
             `, [id]);
         let collection = [];
         for (let i=0; i<rows.length; i++) {

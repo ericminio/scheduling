@@ -7,6 +7,7 @@ let contentOf = (name)=> {
 }
 
 let run = async (file)=> {
+    console.log('Running migration: ' + file);
     await executeSync(contentOf(file))
 }
 
@@ -17,6 +18,4 @@ let migrate = async ()=> {
 }
 
 
-module.exports = {
-    migrate:migrate
-};
+module.exports = migrate;

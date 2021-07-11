@@ -4,15 +4,15 @@ Feature: Scheduling events
 
     Background: brand new system
         Given the following resources exist in the system
-            | Id | Type       | Name       |
-            | R1 | plane      | GITN       |
-            | R2 | plane      | GNEA       |
-            | R3 | instructor | Vasile     |
-            | R4 | instructor | Alain      |
-            | R5 | instructor | Eddy       |
-            | R6 | headset    | Headset #1 |
-            | R7 | headset    | Headset #2 |
-            | R8 | headset    | Headset #3 |
+            | Type       | Name       |
+            | plane      | GITN       |
+            | plane      | GNEA       |
+            | instructor | Vasile     |
+            | instructor | Alain      |
+            | instructor | Eddy       |
+            | headset    | Headset #1 |
+            | headset    | Headset #2 |
+            | headset    | Headset #3 |
         Given the following events exist in the system
             | Id | Start            | End              | Resources                    | Label |
             | E1 | 2015-10-01 11:30 | 2015-10-01 13:30 | GITN, Headset #1, Headset #2 | Bob   |

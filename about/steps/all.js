@@ -2,14 +2,17 @@ const { Before, After, Given, When, Then, World } = require('../../app/node_modu
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver');
 const { expect } = require('../../app/node_modules/chai');
 const { request, post } = require('../../app/http/js/support/request');
-const RepositoryUsingMap = require('../../app/http/js/support/repository-using-map');
+const clear = require('../../app/storage/migrations/clear');
 
 Before(async (testCase)=>{
+    process.env.PGUSER='dev';
+    process.env.PGDATABASE='scheduling';
+    process.env.PGHOST='localhost';
+    process.env.PGPASSWORD='dev';
     let maybeLoaded = require.resolve('../../app/start');
     delete require.cache[maybeLoaded];
     World.server = require('../../app/start');
-    World.server.services['resources'] = new RepositoryUsingMap();
-    World.server.services['events'] = new RepositoryUsingMap();
+    await clear();
     World.driver = await new Builder().forBrowser('firefox').build();
 });
 After(async (testCase)=>{
@@ -66,6 +69,7 @@ Given('the following events exist in the system', async (events)=> {
 });
 Given('I look at the events scheduled with {string}', async (resources)=> {
     await World.driver.get('http://localhost:'+World.server.port+'/events');
+    await World.driver.sleep(300);
 });
 When('I move event {string} to start at {string}', function (id, start) {
 });

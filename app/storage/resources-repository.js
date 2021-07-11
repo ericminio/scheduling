@@ -15,7 +15,7 @@ class ResourcesRepository {
         }
     }
     async get(id) {
-        let rows = await executeSync('select type, name from resources where id=$1', [id]);
+        let rows = await executeSync('select type, name from resources where id=$1 order by name', [id]);
         let record = rows[0];
         return new Resource({
             id:id,

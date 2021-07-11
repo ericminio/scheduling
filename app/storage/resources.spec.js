@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { executeSync } = require('yop-postgresql');
 const ResourcesRepository = require('./resources-repository');
-const { migrate } = require('./migrations/migrate');
+const migrate = require('./migrations/migrate');
 const { drop } = require('./migrations/drop');
 const Resource = require('../domain/resource');
 

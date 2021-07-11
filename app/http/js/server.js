@@ -2,11 +2,18 @@ let http = require('http');
 let path = require('path');
 let fs = require('fs');
 const payload = require('./support/payload');
-const Factory = require('../../domain/factory')
+const Factory = require('../../domain/factory');
+const { ResourcesRepository, EventsRepository } = require('../../storage');
 
 class Server {
     constructor(port) {
         this.port = port;
+        this.sockets = [];
+        this.services = {
+            'resources': new ResourcesRepository(),
+            'events': new EventsRepository()
+        };
+        this.factory = new Factory();
         this.internal = http.createServer(async (request, response)=>{
             try {
                 await this.route(request, response);
@@ -18,29 +25,6 @@ class Server {
                 response.end()
             }
         });
-        this.sockets = [];
-        this.services = {
-            'resources': {
-                all: ()=> [
-                    { id:'R1', type:'plane', name:'GITN' },
-                    { id:'R2', type:'plane', name:'GNEA' },
-                    { id:'R3', type:'instructor', name:'Vasile' },
-                    { id:'R4', type:'instructor', name:'Alain' },
-                    { id:'R5', type:'instructor', name:'Eddy' },
-                    { id:'R6', type:'headset', name:'Headset #1' },
-                    { id:'R7', type:'headset', name:'Headset #2' },
-                    { id:'R8', type:'headset', name:'Headset #3' },
-                ]
-            },
-            'events': {
-                all: ()=> [
-                    { id:'E1', start:'2015-09-21 11:30', end:'2015-09-21 13:30', resources:[{id:'R1'}, {id:'R6'}, {id:'R7'}], label:'Bob' },
-                    { id:'E2', start:'2015-09-21 15:00', end:'2015-09-21 18:00', resources:[{id:'R1'}, {id:'R3'}], label:'Joe' },
-                    { id:'E3', start:'2015-09-21 18:00', end:'2015-09-21 20:00', resources:[{id:'R2'}, {id:'R4'}, {id:'R6'}], label:'Alex' } 
-                ]
-            }
-        };
-        this.factory = new Factory();
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -100,8 +84,8 @@ class Server {
         else if (request.method=='POST' && request.url == '/data/resources/create') {
             let incoming = await payload(request);
             let resource = await this.factory.createResource(incoming);
-            let id = await this.services['resources'].save(resource);
-            body = JSON.stringify({ location:'/data/resources/' + id });
+            await this.services['resources'].save(resource);
+            body = JSON.stringify({ location:'/data/resources/' + resource.id });
             response.setHeader('content-type', 'application/json');
             response.statusCode = 201;
         }
