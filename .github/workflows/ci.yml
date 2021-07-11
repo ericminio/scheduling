@@ -22,7 +22,7 @@ jobs:
       - name: run
         env:
           MOZ_HEADLESS: 1
-          PGHOST: 0.0.0.0
+          PGHOST: localhost
           PGDATABASE: scheduling
           PGUSER: dev
           PGPASSWORD: dev
@@ -51,7 +51,7 @@ jobs:
       - name: run
         env:
           MOZ_HEADLESS: 1
-          PGHOST: 0.0.0.0
+          PGHOST: localhost
           PGDATABASE: scheduling
           PGUSER: dev
           PGPASSWORD: dev
