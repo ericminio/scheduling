@@ -16,6 +16,9 @@ class Factory {
     }
 
     async createEvent(incoming, resourcesRepository) {
+        if (incoming.id === undefined) {
+            incoming.id = this.idGenerator.next();
+        }
         for (let i=0; i<incoming.resources.length; i++) {
             let resource = incoming.resources[i];
             let id = resource.id;

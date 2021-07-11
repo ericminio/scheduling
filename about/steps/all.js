@@ -52,10 +52,9 @@ Given('the following events exist in the system', async (events)=> {
     for (let i=1; i<lines.length; i++) {
         let data = lines[i];
         let payload = {
-            id: data[0],
+            label: data[0],
             start: data[1],
             end: data[2],
-            label: data[4],
             resources: data[3].split(',').map(name => { return { id:getResourceId(name.trim()) }; })
         };
         response = await post({

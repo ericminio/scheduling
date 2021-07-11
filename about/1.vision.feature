@@ -14,10 +14,10 @@ Feature: Scheduling events
             | headset    | Headset #2 |
             | headset    | Headset #3 |
         Given the following events exist in the system
-            | Id | Start            | End              | Resources                    | Label |
-            | E1 | 2015-10-01 11:30 | 2015-10-01 13:30 | GITN, Headset #1, Headset #2 | Bob   |
-            | E2 | 2015-10-01 15:00 | 2015-10-01 18:00 | GITN, Vasile                 | Joe   |
-            | E3 | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      | Alex  |
+            | Label | Start            | End              | Resources                    |
+            | Bob   | 2015-10-01 11:30 | 2015-10-01 13:30 | GITN, Headset #1, Headset #2 |
+            | Joe   | 2015-10-01 15:00 | 2015-10-01 18:00 | GITN, Vasile                 |
+            | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
     Scenario: Inspect event
         Given I look at the events scheduled with "GITN, GNEA, Vasile, H1, H2, H3"
