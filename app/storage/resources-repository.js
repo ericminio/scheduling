@@ -5,8 +5,14 @@ class ResourcesRepository {
     constructor() {
     }
     async save(resource) {
-        await executeSync('insert into resources(id, type, name) values($1, $2, $3)', [
-            resource.id, resource.type, resource.name])
+        if (! await this.exists(resource.getId())) {
+            await executeSync('insert into resources(id, type, name) values($1, $2, $3)', [
+                resource.getId(), resource.getType(), resource.getName()]);
+        }
+        else {
+            await executeSync('update resources set type=$2, name=$3 where id=$1', [
+                resource.getId(), resource.getType(), resource.getName()]);
+        }
     }
     async get(id) {
         let rows = await executeSync('select type, name from resources where id=$1', [id]);
@@ -29,6 +35,10 @@ class ResourcesRepository {
             }));
         }
         return collection;
+    }
+    async exists(id) {
+        let rows = await executeSync('select id from resources where id=$1', [id]);
+        return rows.length > 0;
     }
 }
 

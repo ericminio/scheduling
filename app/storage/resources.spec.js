@@ -50,4 +50,14 @@ describe('Resources storage', ()=> {
         expect(collection[0]).to.deep.equal(resource);
         expect(collection[0] instanceof Resource).to.equal(true);
     });
+
+    it('does not duplicate, but updates', async ()=> {
+        await repository.save(new Resource({ id:'this-id', type:'type #1', name:'name #1'}));
+        await repository.save(new Resource({ id:'this-id', type:'type #2', name:'name #2'}));
+        var rows = await executeSync('select name, type from resources')
+
+        expect(rows.length).to.equal(1);
+        expect(rows[0].name).to.equal('name #2');
+        expect(rows[0].type).to.equal('type #2');
+    });
 });
