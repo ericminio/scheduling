@@ -70,7 +70,7 @@ class Server {
         }
         else if (request.url == '/all.js') {
             let files = [
-                'api.js',
+                'api-client.js',
                 'layout.js',
                 'resource.js',
                 'timeline-marker.js',
@@ -142,7 +142,6 @@ class Server {
             response.setHeader('content-type', 'text/html');
         }
         // console.log('--> returning', body)
-        response.setHeader('content-length', body.length);
         response.write(body);
         response.end();
     }

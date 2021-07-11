@@ -35,7 +35,7 @@ global.window.fetch = (uri)=> {
 
 let path = require('path');
 let fs = require('fs');
-let sut = fs.readFileSync(path.join(__dirname, 'api.js')).toString();
+let sut = fs.readFileSync(path.join(__dirname, 'api-client.js')).toString();
 let api = (new Function(sut + ' return api;'))();
 
 describe('Api client', ()=>{

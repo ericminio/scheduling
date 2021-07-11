@@ -19,7 +19,7 @@ describe('Server', ()=>{
         server.stop(done);
     })
 
-    it.skip('can serve javascript', async ()=> {
+    it('can serve javascript', async ()=> {
         const file = {
             hostname: 'localhost',
             port: port,
