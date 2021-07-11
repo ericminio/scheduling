@@ -19,6 +19,7 @@ jobs:
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
       - run: |
+          docker-compose up -d database
           cd app
           npm install
           MOZ_HEADLESS=1 npm test

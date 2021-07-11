@@ -15,7 +15,8 @@ let executeIgnoringErrors = async (file)=> {
 
 let migrate = async ()=> {
     await executeIgnoringErrors('1.create-table-resources.sql');
-    await executeIgnoringErrors('1.create-table-events.sql');
+    await executeIgnoringErrors('2.create-table-events.sql');
+    await executeIgnoringErrors('3.create-table-events-resources.sql');
 }
 
 
