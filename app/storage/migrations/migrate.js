@@ -6,17 +6,14 @@ let contentOf = (name)=> {
     return fs.readFileSync(path.join(__dirname, name)).toString();
 }
 
-let executeIgnoringErrors = async (file)=> {
-    try {
-        await executeSync(contentOf(file))
-    }
-    catch (ignored) { console.log(ignored); }
+let run = async (file)=> {
+    await executeSync(contentOf(file))
 }
 
 let migrate = async ()=> {
-    await executeIgnoringErrors('1.create-table-resources.sql');
-    await executeIgnoringErrors('2.create-table-events.sql');
-    await executeIgnoringErrors('3.create-table-events-resources.sql');
+    await run('1.create-table-resources.sql');
+    await run('2.create-table-events.sql');
+    await run('3.create-table-events-resources.sql');
 }
 
 

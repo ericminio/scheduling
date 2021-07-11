@@ -1,4 +1,4 @@
-create table events_resources (
+create table if not exists events_resources (
     event_id varchar,
     resource_id varchar,
 

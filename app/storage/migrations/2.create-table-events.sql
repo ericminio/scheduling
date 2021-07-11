@@ -1,4 +1,4 @@
-create table events (
+create table if not exists events (
     id varchar primary key,
     label varchar,
     start_time varchar,
