@@ -18,8 +18,16 @@ jobs:
           node-version: 14.17.1
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
-      - run: |
+      - name run
+        env:
+          MOZ_HEADLESS: 1
+          POSTGRES_DB: scheduling
+          POSTGRES_USER: dev
+          POSTGRES_PASSWORD: dev
+        run: |
           docker-compose up -d database
           cd app
           npm install
-          MOZ_HEADLESS=1 npm test
+          env
+          docker ps
+          npm test
