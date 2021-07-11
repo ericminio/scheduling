@@ -10,11 +10,11 @@ class EventsRepository {
     }
     async save(event) {
         if (! await this.exists(event.id)) {
-            await executeSync('insert into events(id, label, start_utc, end_utc) values($1, $2, $3, $4)', 
+            await executeSync('insert into events(id, label, start_time, end_time) values($1, $2, $3, $4)', 
                 [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
         }
         else {
-            await executeSync(`update events set label=$2, start_utc=$3, end_utc=$4 where id=$1`, 
+            await executeSync(`update events set label=$2, start_time=$3, end_time=$4 where id=$1`, 
                 [event.getId(), event.getLabel(), event.getStart(), event.getEnd()]);
         }
         let resources = event.getResources();
@@ -29,27 +29,27 @@ class EventsRepository {
         }
     }
     async get(id) {
-        let rows = await executeSync('select label, start_utc, end_utc from events where id=$1', [id]);
+        let rows = await executeSync('select label, start_time, end_time from events where id=$1', [id]);
         let record = rows[0];
         let event = new Event({
             id:id,
             label:record.label,
-            start:record.start_utc,
-            end:record.end_utc
+            start:record.start_time,
+            end:record.end_time
         });
         event.setResources(await this.eventsResourcesRepository.getResourcesByEvent(id))
         return event;
     }
     async all() {
-        let rows = await executeSync('select id, label, start_utc, end_utc from events');
+        let rows = await executeSync('select id, label, start_time, end_time from events');
         let collection = [];
         for (let i=0; i<rows.length; i++) {
             let record = rows[i];
             let event = new Event({
                 id:record.id,
                 label:record.label,
-                start:record.start_utc,
-                end:record.end_utc
+                start:record.start_time,
+                end:record.end_time
             });
             event.setResources(await this.eventsResourcesRepository.getResourcesByEvent(record.id))
             collection.push(event);

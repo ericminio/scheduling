@@ -24,8 +24,8 @@ describe('Events storage', ()=> {
         event = new Event({ 
             id:'event-id', 
             label:'event-label', 
-            start:new Date('2015-01-15T19:15:00Z'), 
-            end:new Date('2015-07-14T23:42:15Z'),
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
             resources:[r1, r2]
         });
     });
