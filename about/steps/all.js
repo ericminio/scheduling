@@ -5,10 +5,6 @@ const { request, post } = require('../../app/http/js/support/request');
 const clear = require('../../app/storage/migrations/clear');
 
 Before(async (testCase)=>{
-    process.env.PGUSER='dev';
-    process.env.PGDATABASE='scheduling';
-    process.env.PGHOST='localhost';
-    process.env.PGPASSWORD='dev';
     let maybeLoaded = require.resolve('../../app/start');
     delete require.cache[maybeLoaded];
     World.server = require('../../app/start');

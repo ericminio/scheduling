@@ -21,9 +21,11 @@ jobs:
       - name: run
         env:
           MOZ_HEADLESS: 1
-          POSTGRES_DB: scheduling
-          POSTGRES_USER: dev
-          POSTGRES_PASSWORD: dev
+          PGHOST: 0.0.0.0
+          PGDATABASE: scheduling
+          PGUSER: dev
+          PGPASSWORD: dev
+          DATABASE_URL: postgres://dev:dev@0.0.0.0/scheduling
         run: |
           docker-compose up -d database
           cd app

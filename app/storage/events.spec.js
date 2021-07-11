@@ -14,10 +14,6 @@ describe('Events storage', ()=> {
     let r1, r2;
     beforeEach(async ()=>{
         resourcesRepository = new ResourcesRepository();
-        process.env.PGUSER='dev';
-        process.env.PGDATABASE='scheduling';
-        process.env.PGHOST='localhost';
-        process.env.PGPASSWORD='dev';
         repository = new EventsRepository();
         await drop();
         await migrate();

@@ -3,6 +3,7 @@ let connectionString = {
     PGDATABASE: process.env.PGDATABASE,
     PGUSER: process.env.PGUSER,
     PGPASSWORD: process.env.PGPASSWORD,
+    DATABASE_URL: process.env.DATABASE_URL
 };
 console.log('connection string', connectionString);
 

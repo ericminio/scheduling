@@ -40,7 +40,6 @@ class Calendar extends HTMLElement {
                         let instance = new CalendarEvent();
                         instance.digest(event, resource);
                         view.appendChild(instance);   
-                        console.log('displayed', event)
                     }
                 });            
             })

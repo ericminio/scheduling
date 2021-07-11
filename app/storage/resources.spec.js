@@ -9,10 +9,6 @@ describe('Resources storage', ()=> {
     
     let repository;
     beforeEach(async ()=>{
-        process.env.PGUSER='dev';
-        process.env.PGDATABASE='scheduling';
-        process.env.PGHOST='localhost';
-        process.env.PGPASSWORD='dev';
         repository = new ResourcesRepository();
         await drop();
         await migrate();
