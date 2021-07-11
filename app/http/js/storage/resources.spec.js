@@ -25,7 +25,7 @@ describe('Resources storage', ()=> {
 
     it('can save', async ()=> {
         await repository.save({ id:'this-id', type:'this-type', name:'this-name'});
-        var rows = await executeSync('select id, type, name from resources')
+        var rows = await executeSync('select id from resources')
 
         expect(rows.length).to.equal(1);
     });
@@ -39,8 +39,8 @@ describe('Resources storage', ()=> {
 
     it('can fetch all', async ()=> {
         await repository.save({ id:'this-id', type:'this-type', name:'this-name'});
-        let instance = await repository.all();
+        let collection = await repository.all();
 
-        expect(instance).to.deep.equal([{ id:'this-id', type:'this-type', name:'this-name'}]);
+        expect(collection).to.deep.equal([{ id:'this-id', type:'this-type', name:'this-name'}]);
     });
 });
