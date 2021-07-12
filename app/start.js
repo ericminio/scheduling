@@ -13,7 +13,7 @@ server.services = {
 const { migrate } = require('./storage')
 new Promise(async (resolve, reject)=> {
     try {
-        await migrate();
+        await migrate(database);
         resolve();
     }
     catch(error) { reject(error); }
@@ -25,4 +25,4 @@ new Promise(async (resolve, reject)=> {
     process.exit(1);
 });
 
-module.exports = server
+module.exports = { server:server, database:database };

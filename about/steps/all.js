@@ -7,8 +7,9 @@ const clear = require('../../app/storage/migrations/clear');
 Before(async (testCase)=>{
     let maybeLoaded = require.resolve('../../app/start');
     delete require.cache[maybeLoaded];
-    World.server = require('../../app/start');
-    await clear();
+    let { server, database } = require('../../app/start');
+    World.server = server;
+    await clear(database);
     World.driver = await new Builder().forBrowser('firefox').build();
 });
 After(async (testCase)=>{

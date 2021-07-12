@@ -8,7 +8,7 @@ on:
 jobs:
 
   test:
-    name: run internal tests
+    name: run tests
     runs-on: ubuntu-latest
     
     services:
@@ -45,6 +45,6 @@ jobs:
           DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
         run: |
           cd app
-          npm run tests:external
+          npm run ping:database
 
   

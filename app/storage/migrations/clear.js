@@ -1,7 +1,4 @@
-const { Database } = require('..');
-
-let clear = async ()=> {
-    let database = new Database();
+let clear = async (database)=> {
     await database.executeSync('truncate table events_resources');
     await database.executeSync('truncate table resources');
     await database.executeSync('truncate table events');

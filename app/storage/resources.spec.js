@@ -11,8 +11,8 @@ describe('Resources storage', ()=> {
     beforeEach(async ()=>{
         database = new Database();
         repository = new ResourcesRepository(database);
-        await drop();
-        await migrate();
+        await drop(database);
+        await migrate(database);
     });
 
     it('is ready', async ()=>{

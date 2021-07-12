@@ -16,8 +16,8 @@ describe('Events storage', ()=> {
         database = new Database();
         resourcesRepository = new ResourcesRepository(database);
         repository = new EventsRepository(database);
-        await drop();
-        await migrate();
+        await drop(database);
+        await migrate(database);
 
         r1 = new Resource({ id:'r1-id', type:'r1-type', name:'r1-name' });
         r2 = new Resource({ id:'r2-id', type:'r2-type', name:'r2-name' });
