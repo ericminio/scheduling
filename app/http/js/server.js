@@ -9,10 +9,6 @@ class Server {
     constructor(port) {
         this.port = port;
         this.sockets = [];
-        this.services = {
-            'resources': new ResourcesRepository(),
-            'events': new EventsRepository()
-        };
         this.factory = new Factory();
         this.internal = http.createServer(async (request, response)=>{
             try {

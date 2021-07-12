@@ -1,15 +1,14 @@
-let connectionString = {
-    PGHOST: process.env.PGHOST,
-    PGDATABASE: process.env.PGDATABASE,
-    PGUSER: process.env.PGUSER,
-    PGPASSWORD: process.env.PGPASSWORD,
-    DATABASE_URL: process.env.DATABASE_URL
-};
-console.log('connection string', connectionString);
+const { Database } = require('./storage');
+let database = new Database();
 
 const { Server } = require('./http/js/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
+server.services = {
+    'resources': new ResourcesRepository(database),
+    'events': new EventsRepository(database)
+};
+
 
 const { migrate } = require('./storage')
 new Promise(async (resolve, reject)=> {

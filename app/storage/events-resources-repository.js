@@ -1,11 +1,11 @@
-const { executeSync } = require('yop-postgresql');
 const Resource = require('../domain/resource');
 
 class EventsResourcesRepository {
-    constructor() {
+    constructor(database) {
+        this.database = database;
     }
     async getResourcesByEvent(id) {
-        let rows = await executeSync(`
+        let rows = await this.database.executeSync(`
             select id, type, name 
             from resources, events_resources 
             where events_resources.resource_id = resources.id 
@@ -24,10 +24,10 @@ class EventsResourcesRepository {
         return collection;
     }
     async deleteByEvent(id) {
-        await executeSync('delete from events_resources where event_id=$1', [id]);
+        await this.database.executeSync('delete from events_resources where event_id=$1', [id]);
     }
     async add(eventId, resourceId) {
-        await executeSync('insert into events_resources(event_id, resource_id) values($1, $2)', [eventId, resourceId]);
+        await this.database.executeSync('insert into events_resources(event_id, resource_id) values($1, $2)', [eventId, resourceId]);
     }
 }
 

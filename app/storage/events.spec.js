@@ -1,6 +1,5 @@
 const { expect } = require('chai');
-const { executeSync } = require('yop-postgresql')
-const { EventsRepository, ResourcesRepository } = require('.');
+const { Database, EventsRepository, ResourcesRepository } = require('.');
 const migrate = require('./migrations/migrate')
 const { drop } = require('./migrations/drop')
 const Resource = require('../domain/resource');
@@ -8,13 +7,15 @@ const Event = require('../domain/event');
 
 describe('Events storage', ()=> {
     
+    let database;
     let resourcesRepository;
     let repository;
     let event;
     let r1, r2;
     beforeEach(async ()=>{
-        resourcesRepository = new ResourcesRepository();
-        repository = new EventsRepository();
+        database = new Database();
+        resourcesRepository = new ResourcesRepository(database);
+        repository = new EventsRepository(database);
         await drop();
         await migrate();
 
@@ -32,7 +33,7 @@ describe('Events storage', ()=> {
     });
 
     it('is ready', async ()=>{
-        var rows = await executeSync('select id from events')
+        var rows = await database.executeSync('select id from events')
 
         expect(rows.length).to.equal(0);
     });
@@ -40,9 +41,9 @@ describe('Events storage', ()=> {
     it('can save', async ()=> {
         await repository.save(event);
         
-        let events = await executeSync('select * from events')
+        let events = await database.executeSync('select * from events')
         expect(events.length).to.equal(1);
-        let association = await executeSync('select * from events_resources')
+        let association = await database.executeSync('select * from events_resources')
         expect(association.length).to.equal(2);
     });
 
@@ -81,12 +82,12 @@ describe('Events storage', ()=> {
         event.label = 'label #2';
         await repository.save(event);
         
-        let events = await executeSync('select label from events')
+        let events = await database.executeSync('select label from events')
         expect(events.length).to.equal(1);
         expect(events[0].label).to.equal('label #2');
-        let resources = await executeSync('select * from resources')
+        let resources = await database.executeSync('select * from resources')
         expect(resources.length).to.equal(2);
-        let association = await executeSync('select * from events_resources')
+        let association = await database.executeSync('select * from events_resources')
         expect(association.length).to.equal(2);
 
         let fetched = await repository.get(event.getId());

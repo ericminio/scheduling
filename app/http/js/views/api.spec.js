@@ -38,12 +38,18 @@ let fs = require('fs');
 let sut = fs.readFileSync(path.join(__dirname, 'api-client.js')).toString();
 let api = (new Function(sut + ' return api;'))();
 
+const RepositoryUsingMap = require('../support/repository-using-map');
+
 describe('Api client', ()=>{
 
     let server;
 
     beforeEach((done)=>{
         server = new Server(port);
+        server.services = {
+            'resources': new RepositoryUsingMap(),
+            'events': new RepositoryUsingMap()
+        };
         server.start(async () => {
             done();
         });

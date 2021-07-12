@@ -1,9 +1,10 @@
-const { executeSync } = require('yop-postgresql')
+const { Database } = require('..');
 
 let drop = async ()=> {
-    await executeSync('drop table if exists events_resources');
-    await executeSync('drop table if exists resources');
-    await executeSync('drop table if exists events');
+    let database = new Database();
+    await database.executeSync('drop table if exists events_resources');
+    await database.executeSync('drop table if exists resources');
+    await database.executeSync('drop table if exists events');
 }
 
 module.exports = {

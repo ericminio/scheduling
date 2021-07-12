@@ -1,9 +1,10 @@
-const { executeSync } = require('yop-postgresql')
+const { Database } = require('..');
 
 let clear = async ()=> {
-    await executeSync('truncate table events_resources');
-    await executeSync('truncate table resources');
-    await executeSync('truncate table events');
+    let database = new Database();
+    await database.executeSync('truncate table events_resources');
+    await database.executeSync('truncate table resources');
+    await database.executeSync('truncate table events');
 }
 
 module.exports = clear;

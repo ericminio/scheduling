@@ -12,6 +12,10 @@ describe('Server', ()=>{
 
     beforeEach((done)=>{
         server = new Server(port);
+        server.services = {
+            'resources': new RepositoryUsingMap(),
+            'events': new RepositoryUsingMap()
+        };
         server.start(async () => {
             done();
         });

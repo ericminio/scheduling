@@ -1,14 +1,16 @@
-const { executeSync } = require('yop-postgresql')
 const fs = require('fs');
 const path = require('path');
+const Database = require('../database');
 
 let contentOf = (name)=> {
     return fs.readFileSync(path.join(__dirname, name)).toString();
 }
 
+let database = new Database();
+
 let run = async (file)=> {
     console.log('Running migration: ' + file);
-    await executeSync(contentOf(file))
+    await database.executeSync(contentOf(file))
 }
 
 let migrate = async ()=> {
