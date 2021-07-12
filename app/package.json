@@ -8,7 +8,7 @@
     "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js' --exit --timeout 0",
     "test": "npm run tests:internal && npm run tests:external",
     "start": "node start.js",
-    "ping:database": "mocha ./storage/ready.spec.js"
+    "ping:database": "mocha ./storage/ready.spec.js --exit"
   },
   "repository": {
     "type": "git",

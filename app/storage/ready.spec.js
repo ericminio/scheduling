@@ -6,9 +6,9 @@ const url = require('url')
 describe('database', ()=>{
 
     it('can be reached', async ()=> {
-        const url = process.env.DATABASE_URL;
-        console.log('url', url)
-        const params = url.parse(url);
+        const databaseUrl = process.env.DATABASE_URL;
+        console.log('url', databaseUrl)
+        const params = url.parse(databaseUrl);
         const auth = params.auth.split(':');
 
         const config = {
@@ -21,7 +21,9 @@ describe('database', ()=>{
         console.log('config', config);
         const pool = new Pool(config);
 
-        var name = await pool.query('select $1::text as name', ['Joe'])
-        expect(name).to.equal('Joe');
+        var result = await pool.query('select $1::text as name', ['Joe'])
+        console.log(result.rows)
+        expect(result.rows.length).to.equal(1)
+        expect(result.rows[0].name).to.equal('Joe');
     })
 })
