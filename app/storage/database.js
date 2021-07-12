@@ -1,4 +1,4 @@
-const url = require('url');
+const { URL } = require('url');
 var pg = require('pg');
 
 class Database {
@@ -6,14 +6,13 @@ class Database {
     constructor() {
         const databaseUrl = process.env.DATABASE_URL;
         console.log('DATABASE_URL', databaseUrl);
-        const params = url.parse(databaseUrl);
-        const auth = params.auth.split(':');
+        let url = new URL(databaseUrl)
         this.config = {
-            user: auth[0],
-            password: auth[1],
-            host: params.hostname,
-            port: params.port,
-            database: params.pathname.split('/')[1]
+            user: url.username,
+            password: url.password,
+            host: url.hostname,
+            port: url.port,
+            database: url.pathname.split('/')[1]
         };
     }
 
