@@ -15,7 +15,6 @@ class Database {
             port: params.port,
             database: params.pathname.split('/')[1]
         };
-        console.log('config', this.config);
     }
 
     async executeSync(sql, params) {
