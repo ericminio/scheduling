@@ -16,6 +16,7 @@ describe('database', ()=>{
             port: params.port,
             database: params.pathname.split('/')[1]
         };
+        console.log('config', config);
         const pool = new Pool(config);
 
         var name = await pool.query('select $1::text as name', ['Joe'])
