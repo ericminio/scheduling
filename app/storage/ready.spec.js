@@ -6,7 +6,9 @@ const url = require('url')
 describe('database', ()=>{
 
     it('can be reached', async ()=> {
-        const params = url.parse(process.env.DATABASE_URL);
+        const url = process.env.DATABASE_URL;
+        console.log('url', url)
+        const params = url.parse(url);
         const auth = params.auth.split(':');
 
         const config = {
