@@ -4,6 +4,4 @@ let drop = async (database)=> {
     await database.executeSync('drop table if exists events');
 }
 
-module.exports = {
-    drop:drop
-};
+module.exports = drop;

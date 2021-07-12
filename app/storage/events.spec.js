@@ -1,7 +1,5 @@
 const { expect } = require('chai');
-const { Database, EventsRepository, ResourcesRepository } = require('.');
-const migrate = require('./migrations/migrate')
-const { drop } = require('./migrations/drop')
+const { Database, EventsRepository, ResourcesRepository, drop, migrate } = require('.');
 const Resource = require('../domain/resource');
 const Event = require('../domain/event');
 

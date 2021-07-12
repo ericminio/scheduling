@@ -1,7 +1,5 @@
 const { expect } = require('chai');
-const { Database, ResourcesRepository } = require('.');
-const migrate = require('./migrations/migrate');
-const { drop } = require('./migrations/drop');
+const { Database, ResourcesRepository, drop, migrate } = require('.');
 const Resource = require('../domain/resource');
 
 describe('Resources storage', ()=> {

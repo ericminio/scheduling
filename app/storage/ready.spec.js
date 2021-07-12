@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Database } = require('.');
+const { Database, drop, migrate, clear } = require('.');
 
 describe('database', ()=>{
 
@@ -9,4 +9,12 @@ describe('database', ()=>{
         expect(rows.length).to.equal(1);
         expect(rows[0].name).to.equal('Joe');
     });
+
+    it('can be initialized', async ()=> {
+        let database = new Database();
+        await drop(database);
+        await migrate(database);
+        await clear(database);
+    });
+
 });
