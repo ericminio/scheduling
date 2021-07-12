@@ -39,7 +39,7 @@ jobs:
           npm install
       - name: run
         env:
-          PGHOST: postgres
+          PGHOST: localhost
           PGDATABASE: scheduling
           PGUSER: dev
           PGPASSWORD: dev
