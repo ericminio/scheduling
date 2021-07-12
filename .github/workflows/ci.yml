@@ -8,7 +8,7 @@ on:
 jobs:
 
   test:
-    name: run all tests
+    name: run internal tests
 
     runs-on: ubuntu-latest
     container: 
@@ -46,6 +46,6 @@ jobs:
           DATABASE_URL: postgres://dev:dev@postgres:5432/scheduling
         run: |
           cd app
-          npm test
+          npm run tests:internal
 
   
