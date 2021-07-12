@@ -42,6 +42,7 @@ jobs:
       - name: run
         env:
           PGHOST: localhost
+          PGPORT: 5432
           PGDATABASE: scheduling
           PGUSER: dev
           PGPASSWORD: dev
