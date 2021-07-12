@@ -1,20 +1,17 @@
-const { URL } = require('url');
 var pg = require('pg');
 
 class Database {
 
     constructor() {
-        const databaseUrl = process.env.DATABASE_URL;
-        console.log('DATABASE_URL', databaseUrl);
-        let url = new URL(databaseUrl)
+        console.log('DATABASE_URL', process.env.DATABASE_URL);
         this.config = {
-            user: url.username,
-            password: url.password,
-            host: url.hostname,
-            port: url.port,
-            database: url.pathname.split('/')[1],
-            ssl: process.env.DATABASE_SSL || false
+            connectionString: process.env.DATABASE_URL
         };
+        if (process.env.DATABASE_SSL) {
+            this.config.ssl = {
+                rejectUnauthorized: false
+            }
+        }
     }
 
     async executeSync(sql, params) {
