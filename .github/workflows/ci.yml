@@ -11,7 +11,7 @@ jobs:
     name: database health check
 
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
+    container: node:14.17.1
 
     services:
       postgres:
@@ -31,10 +31,11 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: set node version
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.17.1
+      - name: info
+        run: |
+          docker ps 
+          node --version
+          npm --version
       - name: install
         run: |
           cd app
