@@ -1,22 +1,24 @@
 const { expect } = require('chai');
-const { executeSync } = require('yop-postgresql');
+
+const Pool = require('pg-pool');
+const url = require('url')
 
 describe('database', ()=>{
 
-    it('discolses info', ()=>{
-        let connectionString = {
-            PGHOST: process.env.PGHOST,
-            PGDATABASE: process.env.PGDATABASE,
-            PGUSER: process.env.PGUSER,
-            PGPASSWORD: process.env.PGPASSWORD,
-            DATABASE_URL: process.env.DATABASE_URL
-        };
-        console.log('connection string', connectionString);        
-    });
-    
     it('can be reached', async ()=> {
-        let rows = await executeSync('select 42 as number');
-        expect(rows.length).to.equal(1);
-        expect(rows[0].number).to.equal(42);
+        const params = url.parse(process.env.DATABASE_URL);
+        const auth = params.auth.split(':');
+
+        const config = {
+            user: auth[0],
+            password: auth[1],
+            host: params.hostname,
+            port: params.port,
+            database: params.pathname.split('/')[1]
+        };
+        const pool = new Pool(config);
+
+        var name = await pool.query('select $1::text as name', ['Joe'])
+        expect(name).to.equal('Joe');
     })
 })
