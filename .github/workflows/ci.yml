@@ -33,7 +33,6 @@ jobs:
         uses: actions/checkout@v2
       - name: info
         run: |
-          docker ps 
           node --version
           npm --version
       - name: install
