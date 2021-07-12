@@ -28,6 +28,14 @@ describe('database', ()=>{
     })
 
     it('can be reached via yop-postgresql', async ()=> {
+        const config = {
+            user: process.env.PGUSER,
+            password: process.env.PGPASSWORD,
+            host: process.env.PGHOST,
+            port: process.env.PGPORT,
+            database: process.env.PGDATABASE
+        };
+        console.log('config', config);
         var rows = await executeSync('select $1::text as name', ['Joe'])
         console.log(rows)
         expect(rows.length).to.equal(1)
