@@ -12,7 +12,8 @@ class Database {
             password: url.password,
             host: url.hostname,
             port: url.port,
-            database: url.pathname.split('/')[1]
+            database: url.pathname.split('/')[1],
+            ssl: process.env.DATABASE_SSL || false
         };
     }
 
