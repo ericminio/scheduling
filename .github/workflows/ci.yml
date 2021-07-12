@@ -45,6 +45,6 @@ jobs:
           DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
         run: |
           cd app
-          npm run ping:database
+          npm test
 
   
