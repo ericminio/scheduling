@@ -1,4 +1,4 @@
-const { Database } = require('./storage');
+const { Database, ResourcesRepository, EventsRepository } = require('./storage');
 let database = new Database();
 
 const { Server } = require('./http/js/server');
