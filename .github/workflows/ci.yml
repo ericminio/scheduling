@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+      - name: setup firefox
+        uses: browser-actions/setup-firefox@latest
       - name: info
         run: |
           node --version
@@ -42,14 +44,10 @@ jobs:
           npm install
       - name: run
         env:
-          PGHOST: postgres
-          PGPORT: 5432
-          PGDATABASE: scheduling
-          PGUSER: dev
-          PGPASSWORD: dev
+          MOZ_HEADLESS: 1
           DATABASE_URL: postgres://dev:dev@postgres:5432/scheduling
         run: |
           cd app
-          npm run ping:database
+          npm test
 
   
