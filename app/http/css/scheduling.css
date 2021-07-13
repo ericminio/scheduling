@@ -12,6 +12,13 @@ body {
     margin: 0px 1% 10px 1%;
     padding: 5px;
 }
+.section-middle-line {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.section-last-line {
+    margin-top: 5px;
+}
 .action {
     height: 20px;
     cursor: pointer;
@@ -20,12 +27,14 @@ body {
     border: 1px solid black;
     border-radius: 5px;
     text-align: center;
-    margin-left: 5px;
     cursor: pointer;
 }
 .signin {
     width: 75%;
     margin: 25px 10% 10px 10%;
+}
+#login {
+    width: calc(100% - 10px);
 }
 #signin {
     width: 150px;
