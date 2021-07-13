@@ -28,7 +28,7 @@ describe('Server', ()=>{
         const file = {
             hostname: 'localhost',
             port: port,
-            path: '/all.js',
+            path: '/scheduling.js',
             method: 'GET'
         };
         let response = await request(file);

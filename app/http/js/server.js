@@ -48,7 +48,11 @@ class Server {
             body = JSON.stringify({alive:true});
             response.setHeader('content-type', 'application/json');
         }
-        else if (request.url == '/all.js') {
+        else if (request.url == '/yop.js') {
+            body = require('./yop');
+            response.setHeader('content-type', 'application/javascript');
+        }
+        else if (request.url == '/scheduling.js') {
             let files = [
                 'api-client.js',
                 'layout.js',

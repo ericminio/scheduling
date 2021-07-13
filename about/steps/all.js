@@ -11,6 +11,7 @@ Before(async (testCase)=>{
     World.server = server;
     await clear(database);
     World.driver = await new Builder().forBrowser('firefox').build();
+    World.robot = new Robot(World);
 });
 After(async (testCase)=>{
     await World.driver.quit();
@@ -63,6 +64,74 @@ Given('the following events exist in the system', async (events)=> {
         expect(response.statusCode).to.equal(201);
     }
 });
+Given('I authenticate with login {string}', async (value)=> {
+    await World.robot.open("/");
+    await World.robot.input('#login', value);
+    await World.robot.click('#signin');
+
+});
+class Robot {
+    constructor(World) {
+        this.World = World;
+        this.driver = World.driver;
+        this.elements = [
+            'yop-route',
+            'yop-link'
+        ]
+    }
+    async open(uri) {
+        await World.driver.get(`http://localhost:${World.server.port}${uri}`);
+    }
+    async input(selector, value) {
+        let field = await this.findElement(selector);
+        await field.sendKeys(value);
+    }
+    async click(selector) {
+        let element = await this.findElement(selector);
+        await element.click();
+    }
+    async findElement(selector) {
+        try {
+            return await this.driver.findElement(By.css(selector))
+        }
+        catch (error) {
+            let shadowRoots = []
+            for (let i=0; i<this.elements.length; i++) {
+                let name = this.elements[i]
+                let doms = await this.driver.findElements(By.css(name))
+                shadowRoots = shadowRoots.concat(doms)
+            }
+            for (let i=0; i<shadowRoots.length; i++) {
+                let element = await this.inspect(shadowRoots[i], selector)
+                if (element) { return element }
+            }
+    
+            throw new Error('Unable to locate element: ' + selector)
+        }
+    }
+    async inspect(dom, selector) {
+        try {
+            let search = 'return arguments[0].shadowRoot.querySelector("' + selector + '")'
+            let element = await this.driver.executeScript(search, dom)
+            if (element) { return element }
+    
+            var children = []
+            for (let k=0; k<this.elements.length; k++) {
+                let name = this.elements[k]
+                let script = 'return arguments[0].shadowRoot.querySelectorAll("' + name + '")'
+                let doms = await this.driver.executeScript(script, dom)
+                children = children.concat(doms)
+            }
+            for (let i=0; i<children.length; i++) {
+                let element = await this.inspect(children[i], selector)
+                if (element) { return element }
+            }
+        }
+        catch (error) {
+            return undefined
+        }
+    }
+}
 Given('I look at the events scheduled with {string}', async (resources)=> {
     await World.driver.get('http://localhost:'+World.server.port+'/events');
     await World.driver.sleep(300);

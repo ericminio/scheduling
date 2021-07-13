@@ -20,6 +20,7 @@ Feature: Scheduling events
             | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
     Scenario: Inspect event
+        Given I authenticate with login "357"
         Given I look at the events scheduled with "GITN, GNEA, Vasile, H1, H2, H3"
         Then I see that "Alex" starts at "18:00"
         Then I see that "Alex" ends at "20:00"

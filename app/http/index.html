@@ -2,13 +2,29 @@
 <html lang="en">
     <head>
         <title>Scheduling</title>
-        <meta charset="utf-8"/>
+        <meta charset="utf-8"/>        
         <link  href="scheduling.css" rel="StyleSheet" type="text/css"> 
     </head>
     <body>
-        <div class="container">
-            <yop-calendar></yop-calendar>
-        </div>
-        <script src="all.js"></script>
+        <yop-route when="/">
+            <div class="section signin">
+                <label>Login</label>
+                <br/>
+                <input id="login" />
+                <br/>
+                <br/>
+                <yop-link to="/events">
+                    <div class="action" id="signin">Sign in</div>
+                </yop-link>
+            </div>
+        </yop-route>
+        <yop-route when="/events">
+            <div class="container">
+                <yop-calendar></yop-calendar>
+            </div>
+        </yop-route>
+
+        <script src="yop.js"></script>
+        <script src="scheduling.js"></script>
     </body>
 </html>
