@@ -12,7 +12,6 @@ class Route extends HTMLElement {
         this.update()
     }
     update() {
-        console.log('location', window.location.pathname)
         if (window.location.pathname == this.getAttribute('when')) {
             this.innerHTML = this.then;
         }
