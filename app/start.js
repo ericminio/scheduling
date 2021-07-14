@@ -1,7 +1,7 @@
 const { Database, ResourcesRepository, EventsRepository } = require('./storage');
 let database = new Database();
 
-const { Server } = require('./http/js/server');
+const { Server } = require('./node/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
 server.services = {

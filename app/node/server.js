@@ -2,8 +2,7 @@ let http = require('http');
 let path = require('path');
 let fs = require('fs');
 const payload = require('./support/payload');
-const Factory = require('../../domain/factory');
-const { ResourcesRepository, EventsRepository } = require('../../storage');
+const Factory = require('../domain/factory');
 
 class Server {
     constructor(port) {
@@ -49,26 +48,25 @@ class Server {
             response.setHeader('content-type', 'application/json');
         }
         else if (request.url == '/yop.js') {
-            body = require('./yop');
+            body = require('../web/yop');
             response.setHeader('content-type', 'application/javascript');
         }
         else if (request.url == '/scheduling.js') {
             let files = [
-                'api-client.js',
                 'layout.js',
                 'resource.js',
                 'timeline-marker.js',
                 'calendar-event.js',
                 'calendar.js'
             ];
-            body = '';
+            body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {
-                body += fs.readFileSync(path.join(__dirname, 'views', file)).toString();
+                body += fs.readFileSync(path.join(__dirname, '../web/components', file)).toString();
             })
             response.setHeader('content-type', 'application/javascript');
         }
         else if (request.url == '/scheduling.css') {
-            body = fs.readFileSync(path.join(__dirname, '..', 'css', 'scheduling.css')).toString();
+            body = fs.readFileSync(path.join(__dirname, '../web', 'scheduling.css')).toString();
             response.setHeader('content-type', 'text/css');
         }
         else if (request.method=='GET' && request.url == '/data/events') {
@@ -122,7 +120,7 @@ class Server {
             response.statusCode = 404;
         }
         else {
-            body = fs.readFileSync(path.join(__dirname, '..', 'index.html')).toString();
+            body = fs.readFileSync(path.join(__dirname, '../web', 'index.html')).toString();
             response.setHeader('content-type', 'text/html');
         }
         // console.log('--> returning', body)

@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Server } = require('../server');
+const { Server } = require('../../node/server');
 const port = 8006;
 
 const jsdom = require("jsdom");
@@ -38,7 +38,7 @@ let fs = require('fs');
 let sut = fs.readFileSync(path.join(__dirname, 'api-client.js')).toString();
 let api = (new Function(sut + ' return api;'))();
 
-const RepositoryUsingMap = require('../support/repository-using-map');
+const RepositoryUsingMap = require('../../node/support/repository-using-map');
 
 describe('Api client', ()=>{
 

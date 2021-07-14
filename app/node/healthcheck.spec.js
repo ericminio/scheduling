@@ -1,6 +1,6 @@
 const { expect } = require('chai');
-const { request } = require('./http/js/support/request');
-const { Server } = require('./http/js/server');
+const { request } = require('./support/request');
+const { Server } = require('./server');
 const port = 8005;
 
 describe('Server healthcheck', ()=>{

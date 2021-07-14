@@ -1,7 +1,7 @@
 const { Before, After, Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber');
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver');
 const { expect } = require('../../app/node_modules/chai');
-const { request, post } = require('../../app/http/js/support/request');
+const { request, post } = require('../../app/node/support/request');
 const clear = require('../../app/storage/migrations/clear');
 
 Before(async (testCase)=>{

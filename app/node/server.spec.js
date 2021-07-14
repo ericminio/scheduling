@@ -3,7 +3,7 @@ const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map');
-const { Resource, Event } = require('../../domain');
+const { Resource, Event } = require('../domain');
 const AlwaysSameId = require('./support/always-same-id');
 
 describe('Server', ()=>{
@@ -49,6 +49,19 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
         expect(response.body).to.contain('events {');
+    })
+    it('can serve html', async ()=> {
+        const file = {
+            hostname: 'localhost',
+            port: port,
+            path: '/',
+            method: 'GET'
+        };
+        let response = await request(file);
+        
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('text/html');
+        expect(response.body).to.contain('<!DOCTYPE html>');
     })
     it('is open to resource creation', async ()=>{
         let repository = new RepositoryUsingMap();
