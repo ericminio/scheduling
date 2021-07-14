@@ -20,6 +20,9 @@ class Server {
                 response.end()
             }
         });
+        this.services = {
+            ping: { status: async ()=>{ return { alive:true }; } }
+        };
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -44,7 +47,8 @@ class Server {
         let body = 'NOT FOUND';
 
         if (request.url == '/ping') {
-            body = JSON.stringify({alive:true});
+            let status = await this.services['ping'].status();
+            body = JSON.stringify(status);
             response.setHeader('content-type', 'application/json');
         }
         else if (request.url == '/yop.js') {
@@ -53,6 +57,7 @@ class Server {
         }
         else if (request.url == '/scheduling.js') {
             let files = [
+                'system-status.js',
                 'layout.js',
                 'resource.js',
                 'timeline-marker.js',

@@ -89,4 +89,12 @@ describe('Api client', ()=>{
             ]
         });
     });
+
+    it('exposes ping', async()=> {
+        server.services['ping'] = {
+            status: async ()=> { return { any:'value' }; }
+        };
+        let data = await api.ping()
+        expect(data).to.deep.equal({ any:'value' });
+    });
 })

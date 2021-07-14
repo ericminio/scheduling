@@ -16,6 +16,10 @@ class ApiClient {
         });
     }
 
+    ping() {
+        return this.get('/ping');
+    }
+
     getEvents() {
         return this.get('/data/events');
     }

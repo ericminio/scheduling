@@ -4,11 +4,8 @@ let database = new Database();
 const { Server } = require('./node/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
-server.services = {
-    'resources': new ResourcesRepository(database),
-    'events': new EventsRepository(database)
-};
-
+server.services['resources'] = new ResourcesRepository(database);
+server.services['events'] = new EventsRepository(database);
 
 const { migrate } = require('./storage')
 new Promise(async (resolve, reject)=> {

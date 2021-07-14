@@ -13,6 +13,7 @@ describe('Server', ()=>{
     beforeEach((done)=>{
         server = new Server(port);
         server.services = {
+            'ping': { status:async ()=> { return { field:'value' }; } },
             'resources': new RepositoryUsingMap(),
             'events': new RepositoryUsingMap()
         };
@@ -62,6 +63,19 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
         expect(response.body).to.contain('<!DOCTYPE html>');
+    })
+    it('answers to ping', async ()=> {
+        const ping = {
+            hostname: 'localhost',
+            port: port,
+            path: '/ping',
+            method: 'GET'
+        };
+        let response = await request(ping);
+        
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ field:'value' });
     })
     it('is open to resource creation', async ()=>{
         let repository = new RepositoryUsingMap();
