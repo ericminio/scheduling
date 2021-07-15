@@ -19,21 +19,13 @@ After(async (testCase)=>{
 });
 
 Given('the following resources exist in the system', async (resources)=> {
+    await login('max');
     let lines = resources.rawTable;
-    let fields = lines[0].map(r => r.toLowerCase());
     for (let i=1; i<lines.length; i++) {
-        let payload = {};
         let data = lines[i];
-        for (let j=0; j<data.length; j++) {
-            payload[fields[j]] = data[j];
-        }
-        let response = await post({
-            hostname: 'localhost',
-            port: World.server.port,
-            path: '/data/resources/create',
-            method: 'POST'
-        }, payload);
-        expect(response.statusCode).to.equal(201);
+        let type = data[0];
+        let name = data[1];
+        await createResource(type, name);
     }
 });
 Given('the following events exist in the system', async (events)=> {
@@ -65,11 +57,19 @@ Given('the following events exist in the system', async (events)=> {
     }
 });
 Given('I authenticate with login {string}', async (value)=> {
+    await login(value);
+});
+let login = async (value)=> {
     await World.robot.open("/");
     await World.robot.input('#login', value);
     await World.robot.click('#signin');
-
-});
+};
+let createResource = async (type, name)=> {
+    await World.robot.click('#resource-creation');
+    await World.robot.input('#resource-type', type);
+    await World.robot.input('#resource-name', name);
+    await World.robot.click('#create-resource');
+}
 class Robot {
     constructor(World) {
         this.World = World;
@@ -84,6 +84,7 @@ class Robot {
     }
     async input(selector, value) {
         let field = await this.findElement(selector);
+        await field.clear();
         await field.sendKeys(value);
     }
     async click(selector) {

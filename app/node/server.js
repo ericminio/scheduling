@@ -17,6 +17,7 @@ class Server {
                 console.log(error);
                 response.setHeader('content-type', 'text/plain');
                 response.statusCode = 500;
+                response.write('oops');
                 response.end()
             }
         });
@@ -63,7 +64,8 @@ class Server {
                 'resource.js',
                 'timeline-marker.js',
                 'calendar-event.js',
-                'calendar.js'
+                'calendar.js',
+                'resource-creation.js'
             ];
             body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {

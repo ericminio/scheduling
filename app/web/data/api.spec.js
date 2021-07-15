@@ -6,12 +6,12 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 let window = new JSDOM(`<html></html>`).window;
 global.window = window;
-global.window.fetch = (uri)=> {
+global.window.fetch = (uri, options)=> {
     return new Promise((resolve, reject)=> {
         var xhr = new window.XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:'+port + uri, true);
+        xhr.open(options.method, 'http://localhost:'+port + uri, true);
         xhr.onload = function() {
-            if (xhr.readyState == xhr.DONE && xhr.status == 200) {
+            if (xhr.readyState == xhr.DONE) {
                 try {
                     let body = JSON.parse(xhr.responseText);
                     let response = {
@@ -29,9 +29,10 @@ global.window.fetch = (uri)=> {
                 }
             }
         };
-        xhr.send();
+        if (options.body) { xhr.send(options.body); }
+        else { xhr.send(); }
     });
-}
+};
 
 let path = require('path');
 let fs = require('fs');
@@ -96,5 +97,13 @@ describe('Api client', ()=>{
         };
         let data = await api.ping()
         expect(data).to.deep.equal({ any:'value' });
+    });
+
+    it('exposes resource creation', async()=> {
+        server.services['resources'] = {
+            save: (incoming)=> { incoming.id = '42'; }
+        };
+        let data = await api.createResource({ type:'table', name:'window' });
+        expect(data).to.deep.equal({ location:'/data/resources/42' });
     });
 })
