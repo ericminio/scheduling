@@ -4,7 +4,7 @@ greenTemplate.innerHTML = `
         .status-green {
             width: 100%;
             text-align: right;
-            color: green;
+            color: lightgreen;
         }
     </style>
     <div class="status-green">online</div>

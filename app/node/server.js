@@ -58,6 +58,7 @@ class Server {
         else if (request.url == '/scheduling.js') {
             let files = [
                 'system-status.js',
+                'header.js',
                 'layout.js',
                 'resource.js',
                 'timeline-marker.js',
