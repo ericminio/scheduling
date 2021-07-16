@@ -65,7 +65,8 @@ class Server {
                 'timeline-marker.js',
                 'calendar-event.js',
                 'calendar.js',
-                'resource-creation.js'
+                'resource-creation.js',
+                'event-creation.js'
             ];
             body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {
@@ -104,10 +105,11 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/events/create') {
             let incoming = await payload(request);
+            console.log('incoming', incoming)
             try {
                 let event = await this.factory.createEvent(incoming, this.services['resources']);
-                let id = await this.services['events'].save(event);
-                body = JSON.stringify({ location:'/data/events/' + id });
+                await this.services['events'].save(event);
+                body = JSON.stringify({ location:'/data/events/' + event.id });
                 response.setHeader('content-type', 'application/json');
                 response.statusCode = 201;
             }

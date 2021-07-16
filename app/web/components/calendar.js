@@ -14,6 +14,9 @@ class Calendar extends HTMLElement {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
         this.update();
+        this.querySelector('events').addEventListener('click', (e)=>{
+            events.notify('event creation');
+        });
         events.register(this, 'resource created');
     }
     update() {
@@ -21,6 +24,7 @@ class Calendar extends HTMLElement {
             let resources = data.resources;
             this.displayResources(resources)
             api.getEvents().then(data => this.displayEvents(data.events, resources));
+            store.saveObject('resources', resources);
         });
     }
     displayTimelineMarks(starts) {

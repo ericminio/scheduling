@@ -5,9 +5,6 @@ resourceCreationTemplate.innerHTML = `
     .resource-creation-area {
         width: calc( 2.5 * var(--resourceAreaWidth));
     }
-    .hidden {
-        display: none;
-    }
 </style>
 
 <div class="resource-creation-area">

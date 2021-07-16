@@ -106,3 +106,6 @@ yop-calendar-event {
     }
 }
 
+.hidden {
+    display: none;
+}

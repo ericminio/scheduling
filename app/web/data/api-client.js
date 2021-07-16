@@ -26,7 +26,6 @@ class ApiClient {
                 headers: { 'Content-Type': 'text/plain' },
                 body:JSON.stringify(payload)
             };
-            console.log(options);
             this.fetch(url, options)
                 .then((response) => {
                     response.json()
@@ -56,6 +55,10 @@ class ApiClient {
 
     createResource(payload) {
         return this.post('/data/resources/create', payload)
+    }
+
+    createEvent(payload) {
+        return this.post('/data/events/create', payload)
     }
 }
 var api = new ApiClient();

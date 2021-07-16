@@ -36,25 +36,14 @@ Given('I create the following events', async (events)=> {
         path: '/data/resources',
         method: 'GET'
     });
-    let resources = JSON.parse(response.body).resources;
-    let getResourceId = (name)=> resources.find(r => name == r.name).id
+    World.resources = JSON.parse(response.body).resources;
+    World.getResourceId = (name)=> World.resources.find(r => name == r.name).id;
+    await World.robot.click('events');
     
     let lines = events.rawTable;
     for (let i=1; i<lines.length; i++) {
         let data = lines[i];
-        let payload = {
-            label: data[0],
-            start: data[1],
-            end: data[2],
-            resources: data[3].split(',').map(name => { return { id:getResourceId(name.trim()) }; })
-        };
-        response = await post({
-            hostname: 'localhost',
-            port: World.server.port,
-            path: '/data/events/create',
-            method: 'POST'
-        }, payload);
-        expect(response.statusCode).to.equal(201);
+        await createEvent(data);
     }
 });
 let login = async (value)=> {
@@ -66,6 +55,30 @@ let createResource = async (type, name)=> {
     await World.robot.input('#resource-type', type);
     await World.robot.input('#resource-name', name);
     await World.robot.click('#create-resource');
+}
+let createEvent = async (data)=> {
+    await World.robot.input('#new-event-label', data[0]);
+    await World.robot.input('#new-event-start', data[1]);
+    await World.robot.input('#new-event-end', data[2]);
+    let resources = data[3].split(',').map(name => { return { id:World.getResourceId(name.trim()) }; })
+    console.log(resources);
+    console.log(World.resources);
+    for (let i=0; i<World.resources.length; i++) {
+        let resource = World.resources[i];
+        let checkbox = await World.robot.findElement(`#new-event-resource-${resource.id}`)
+        let isSelected = await checkbox.isSelected();
+        if (isSelected) {
+            await checkbox.click();
+        }
+        for (let j=0; j<resources.length; j++) {
+            let candidate = resources[j];
+            if (candidate.id == resource.id) {
+                await checkbox.click();
+                break;
+            }
+        }
+    }
+    await World.robot.click('#create-event');
 }
 class Robot {
     constructor(World) {

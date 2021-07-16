@@ -40,6 +40,7 @@ let sut = fs.readFileSync(path.join(__dirname, 'api-client.js')).toString();
 let api = (new Function(sut + ' return api;'))();
 
 const RepositoryUsingMap = require('../../node/support/repository-using-map');
+const { Resource } = require('../../domain');
 
 describe('Api client', ()=>{
 
@@ -105,5 +106,21 @@ describe('Api client', ()=>{
         };
         let data = await api.createResource({ type:'table', name:'window' });
         expect(data).to.deep.equal({ location:'/data/resources/42' });
+    });
+
+    it('exposes event creation', async()=> {
+        server.services['resources'].save(new Resource({ id:'R1', type:'type-1', name:'name-1' }));
+        server.services['resources'].save(new Resource({ id:'R2', type:'type-2', name:'name-2' }));
+        server.services['events'] = {
+            save: (incoming)=> { incoming.id = '15'; }
+        };
+        let data = await api.createEvent({ 
+            id: 'this-event',
+            start: '08:30',
+            end: '12:00',
+            label: 'Bob',
+            resources: [{id:'R1'}, {id:'R2'}]
+        });
+        expect(data).to.deep.equal({ location:'/data/events/15' });
     });
 })
