@@ -1,8 +1,15 @@
 const resourceCreationTemplate = document.createElement('template')
 resourceCreationTemplate.innerHTML = `
-<div>
+
+<style>
+    .resource-creation-area {
+        width: calc( 2.5 * var(--resourceAreaWidth));
+    }
+</style>
+
+<div class="resource-creation-area">
     <label id="resource-creation">Create resource</label>
-    <div id="cresource-creation-form">
+    <div class="vertical-form">
         <label>Type</label>
         <input id="resource-type" />
         <label>Name</label>

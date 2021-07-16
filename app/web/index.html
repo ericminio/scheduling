@@ -9,19 +9,17 @@
         <yop-header></yop-header>        
 
         <yop-route when="/">
-            <div class="section signin">
+            <div class="vertical-form login-form">
                 <label >Login</label>
-                <input class="section-middle-line" id="login" />
+                <input id="login" />
                 <yop-link to="/events">
-                    <div class="action section-last-line" id="signin">Sign in</div>
+                    <button id="signin">Sign in</button>
                 </yop-link>
             </div>
         </yop-route>
         <yop-route when="/events">
-            <div class="container">
-                <resource-creation></resource-creation>
-                <yop-calendar></yop-calendar>
-            </div>
+            <resource-creation></resource-creation>
+            <yop-calendar></yop-calendar>
         </yop-route>
 
         <script src="yop.js"></script>

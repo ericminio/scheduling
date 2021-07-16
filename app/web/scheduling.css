@@ -2,6 +2,7 @@
     --body-margin: 5px;
     --vertical-margin: 15px;
     --padding: 5px;
+    --border-size: 1px;
 
     --resourceAreaWidth: 15%;
     --agendaAreaWidth: calc(100% - var(--resourceAreaWidth));
@@ -17,57 +18,29 @@ body {
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
-@media screen and (max-width: 992px) {
-    :root {
-        --vertical-margin: 25px;
-    }
-    body {
-        font-size: 50px;
-    }
-}
 
-.section {
+.vertical-form {
     background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
-    display:inline-block;
-    width: 96%;
-    margin: 0px 1% 10px 1%;
-    padding: 5px;
-}
-.section-middle-line {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.section-last-line {
-    margin-top: 5px;
-}
-.action {
-    height: 20px;
-    cursor: pointer;
-    padding: 10px 5px 5px 5px;
-    color: black;
-    border: 1px solid black;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-}
-.signin {
-    width: 75%;
-    margin: 25px 10% 10px 10%;
-}
-#login {
-    width: calc(100% - 10px);
-}
-#signin {
-    width: 150px;
+    margin-top: var(--vertical-margin);
+    margin-bottom: var(--vertical-margin);
+    padding: var(--padding);
+    border: var(--border-size) solid black;
 }
 
-
-.container {
-    padding-left: 0px;
-    padding-top: 0px;
+.vertical-form label, .vertical-form input, .vertical-form button {
+    display: block;
+    padding: 0px;
+    width: calc(100% - 2 * var(--padding));
 }
+.vertical-form label, .vertical-form input {
+    margin-bottom: var(--vertical-margin);
+}
+
+.login-form {
+    width: 50%;
+    margin-left: 25%;
+}
+
 resources {
     background-color: bisque;  
     display: block;
@@ -113,6 +86,23 @@ yop-calendar-event {
     height: var(--height);  
     border-radius: var(--radius);
 }
-filters {
-    padding: var(--padding);
+
+@media screen and (max-width: 992px) {
+    :root {
+        --vertical-margin: 25px;
+        --border-size: 1px;
+        --height: 30px;        
+        --timelineHeigth: 40px;
+        }
+    body, input, button {
+        font-size: 40px;
+    }
+    .login-form {
+        width: 75%;
+        margin-left: 12.5%;
+    }    
+    resources, timeline, events {
+        font-size: 25px;
+    }
 }
+
