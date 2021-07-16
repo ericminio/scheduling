@@ -18,11 +18,7 @@ describe('Event creation', ()=>{
                 <script>
                     ${yop}
                     var api = {
-                        createEvent: (payload)=> {
-                            return new Promise((resolve, reject)=>{
-                                resolve();
-                            });
-                        }                        
+                        createEvent: (payload)=> new Promise((resolve)=>{ resolve(); })  
                     };
                     ${sut}
                 </script>
@@ -45,7 +41,7 @@ describe('Event creation', ()=>{
 
     it('sends expected payload', ()=> {
         let spy = {};
-        window.api = { createEvent:(payload)=> { spy = payload; } }
+        window.api = { createEvent:(payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })} }
         window.store.saveObject('resources', [
             { id:'one', name:'one' },
             { id:'two', name:'two' },
@@ -65,5 +61,22 @@ describe('Event creation', ()=>{
             end: 'this end',
             resources: [ { id:'two' }, { id:'three' } ]
         });
+    });
+
+    it('notifies on event created', (done)=>{
+        let wasCalled = false;
+        let spy = {
+            update: ()=> { wasCalled = true; }
+        };
+        window.events.register(spy, 'event created');
+        
+        window.store.saveObject('resources', [{ id:'one', name:'one' }])
+        window.events.notify('event creation');
+        form.querySelector('#create-event').click();
+        
+        setTimeout(()=>{
+            expect(wasCalled).to.equal(true);
+            done();
+        }, 50);
     })
 })

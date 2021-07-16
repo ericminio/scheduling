@@ -35,28 +35,27 @@ class EventCreation extends HTMLElement {
         this.appendChild(eventCreationTemplate.content.cloneNode(true))
         events.register(this, 'event creation');
     }
-    update(value, event) {
-        if (event == 'event creation') {
-            let resources = store.getObject('resources');
-            let html = '';
-            for (let i=0 ; i<resources.length; i++) {
-                let resource = resources[i];
-                let fragment = `
-                    <input  type="checkbox"
-                            id="new-event-resource-${resource.id}" 
-                            value="${resource.id}"
-                            >
-                    <label for="new-event-resource-${resource.id}">${resource.name}</label>
-                    <br/>
-                    `;
-                html += fragment;
-            }
-            this.querySelector('#new-event-resources').innerHTML = html;
-            this.querySelector('#create-event').addEventListener('click', ()=>{
-                api.createEvent(this.payload());
-            });
-            this.querySelector('#event-creation-form').classList.toggle('hidden');
+    update() {
+        let resources = store.getObject('resources');
+        let html = '';
+        for (let i=0 ; i<resources.length; i++) {
+            let resource = resources[i];
+            let fragment = `
+                <input  type="checkbox"
+                        id="new-event-resource-${resource.id}" 
+                        value="${resource.id}"
+                        >
+                <label for="new-event-resource-${resource.id}">${resource.name}</label>
+                <br/>
+                `;
+            html += fragment;
         }
+        this.querySelector('#new-event-resources').innerHTML = html;
+        this.querySelector('#create-event').addEventListener('click', ()=>{
+            api.createEvent(this.payload())
+                .then(()=> { events.notify('event created'); } );;
+        });
+        this.querySelector('#event-creation-form').classList.toggle('hidden');
     }
     payload() {
         let candidates = this.querySelectorAll('#new-event-resources input');

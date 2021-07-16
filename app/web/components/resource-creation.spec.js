@@ -54,5 +54,5 @@ describe('Resource creation', ()=>{
             expect(wasCalled).to.equal(true);
             done();
         }, 50);
-    })
+    });
 })
