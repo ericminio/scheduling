@@ -4,7 +4,6 @@ class RepositoryUsingMap {
     }
     async save(instance) {
         this.store.push(instance);
-        return instance.id;
     }
     async get(id) {
         return this.store.find(instance => instance.id == id);
