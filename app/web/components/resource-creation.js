@@ -5,11 +5,14 @@ resourceCreationTemplate.innerHTML = `
     .resource-creation-area {
         width: calc( 2.5 * var(--resourceAreaWidth));
     }
+    .hidden {
+        display: none;
+    }
 </style>
 
 <div class="resource-creation-area">
     <label id="resource-creation">Create resource</label>
-    <div class="vertical-form">
+    <div class="vertical-form hidden" id="resource-creation-form">
         <label>Type</label>
         <input id="resource-type" />
         <label>Name</label>
@@ -34,6 +37,9 @@ class ResourceCreation extends HTMLElement {
             };
             api.createResource(payload);
         });
+        this.querySelector('#resource-creation').addEventListener('click', ()=>{
+            this.querySelector('#resource-creation-form').classList.toggle('hidden');
+        })
     }
 };
 customElements.define('resource-creation', ResourceCreation);

@@ -20,6 +20,7 @@ After(async (testCase)=>{
 
 Given('the following resources exist in the system', async (resources)=> {
     await login('max');
+    await World.robot.click('#resource-creation');
     let lines = resources.rawTable;
     for (let i=1; i<lines.length; i++) {
         let data = lines[i];
@@ -65,7 +66,6 @@ let login = async (value)=> {
     await World.robot.click('#signin');
 };
 let createResource = async (type, name)=> {
-    await World.robot.click('#resource-creation');
     await World.robot.input('#resource-type', type);
     await World.robot.input('#resource-name', name);
     await World.robot.click('#create-resource');
