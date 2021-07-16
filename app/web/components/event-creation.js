@@ -3,7 +3,7 @@ eventCreationTemplate.innerHTML = `
 
 <style>
     #event-creation-form {
-        position: relative;
+        position: absolute;
         left: var(--resourceAreaWidth);
         width: calc( 2.5 * var(--resourceAreaWidth));
     }

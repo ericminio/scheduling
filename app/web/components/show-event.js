@@ -3,8 +3,8 @@ showEventTemplate.innerHTML = `
 
 <style>
     #show-event-form {
-        position: relative;
-        right: 0px;
+        position: absolute;
+        right: var(--padding);
         width: calc( 2.5 * var(--resourceAreaWidth));
     }
 </style>
