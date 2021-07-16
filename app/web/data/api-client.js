@@ -58,4 +58,4 @@ class ApiClient {
         return this.post('/data/resources/create', payload)
     }
 }
-let api = new ApiClient();
+var api = new ApiClient();

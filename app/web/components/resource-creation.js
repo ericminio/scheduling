@@ -35,7 +35,8 @@ class ResourceCreation extends HTMLElement {
                 type: this.querySelector('#resource-type').value,
                 name: this.querySelector('#resource-name').value
             };
-            api.createResource(payload);
+            api.createResource(payload)
+                .then(()=> { events.notify('resource created'); } );
         });
         this.querySelector('#resource-creation').addEventListener('click', ()=>{
             this.querySelector('#resource-creation-form').classList.toggle('hidden');
