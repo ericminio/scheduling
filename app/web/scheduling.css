@@ -78,6 +78,10 @@ yop-calendar-resource {
     left: 0px;
     width: 100%;
     height: var(--height);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
 }
 yop-calendar-event {
     background-color: lightsalmon;
