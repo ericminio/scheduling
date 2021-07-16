@@ -85,6 +85,9 @@ yop-calendar-event {
     position: absolute;   
     height: var(--height);  
     border-radius: var(--radius);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 992px) {
