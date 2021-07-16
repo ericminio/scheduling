@@ -66,7 +66,8 @@ class Server {
                 'calendar-event.js',
                 'calendar.js',
                 'resource-creation.js',
-                'event-creation.js'
+                'event-creation.js',
+                'show-event.js'
             ];
             body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {
@@ -105,7 +106,6 @@ class Server {
         }
         else if (request.method=='POST' && request.url == '/data/events/create') {
             let incoming = await payload(request);
-            console.log('incoming', incoming)
             try {
                 let event = await this.factory.createEvent(incoming, this.services['resources']);
                 await this.services['events'].save(event);

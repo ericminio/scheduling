@@ -61,8 +61,6 @@ let createEvent = async (data)=> {
     await World.robot.input('#new-event-start', data[1]);
     await World.robot.input('#new-event-end', data[2]);
     let resources = data[3].split(',').map(name => { return { id:World.getResourceId(name.trim()) }; })
-    console.log(resources);
-    console.log(World.resources);
     for (let i=0; i<World.resources.length; i++) {
         let resource = World.resources[i];
         let checkbox = await World.robot.findElement(`#new-event-resource-${resource.id}`)
@@ -197,44 +195,69 @@ Then('I see that {string} ends at {string}', async (label, time)=> {
     expect(Math.abs(actual-expected) < 2).to.equal(true)
 });
 Then('I see that {string} is scheduled with {string}', async (eventLabel, resourceName)=> {
-    let candidatesResources = await World.driver.findElements(By.css('yop-calendar-resource'));
-    let foundResource;
-    for (let i=0; i<candidatesResources.length; i++) {
-        let candidate = candidatesResources[i];
-        let text = await candidate.getText();
-        if (text == resourceName) {
-            foundResource = candidate;
-            break;
-        }
-    }
+    let foundResource = await getResourceElement(resourceName);
     let resourceId = await foundResource.getAttribute('id');
     let resourceSelector = '#' + resourceId;
     let resource = await World.driver.findElement(By.css(resourceSelector));
     let resourcePosition = await resource.getCssValue('top');
 
-    let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
-    let foundEventsWithLabel = [];
-    for (let i=0; i<candidatesEvents.length; i++) {
-        let candidate = candidatesEvents[i];
-        let text = await candidate.getText();
-        if (text == eventLabel) {
-            foundEventsWithLabel.push(candidate);
-        }
-    }
-
-    let found = false;
-    for (let i=0; i<foundEventsWithLabel.length; i++) {
-        let foundEvent = foundEventsWithLabel[i];
-        let eventId = await foundEvent.getAttribute('id');
-        let element = await World.driver.findElement(By.css("#"+eventId));
-        let elementPosition = await element.getCssValue('top');
-        if (elementPosition == resourcePosition) {
-            found = true;
-            break;
-        }    
-    }
+    let foundEventsWithLabel = await getEventElements(eventLabel);
+    let found = await getEventScheduledWith(foundResource, foundEventsWithLabel);
     
     if (!found) {
         throw Error('nope')
     }
 });
+When('I inspect event {string} scheduled with {string}', async (label, name)=> {
+    let resourceElement = await getResourceElement(name);
+    let eventsWithLabel = await getEventElements(label);
+    let event = await getEventScheduledWith(resourceElement, eventsWithLabel);
+    event.click();
+});
+Then('I see that this event start is {string}', async (expected)=> {
+    let element = await World.robot.findElement('#event-info-start');
+    let actual = await element.getAttribute('value');
+    expect(actual).to.equal(expected);
+});
+Then('I see that this event end is {string}', async (expected)=> {
+    let element = await World.robot.findElement('#event-info-end');
+    let actual = await element.getAttribute('value');
+    expect(actual).to.equal(expected);
+});
+
+let getResourceElement = async (name)=> {
+    let candidatesResources = await World.driver.findElements(By.css('yop-calendar-resource'));
+    let foundResource;
+    for (let i=0; i<candidatesResources.length; i++) {
+        let candidate = candidatesResources[i];
+        let text = await candidate.getText();
+        if (text == name) {
+            foundResource = candidate;
+            break;
+        }
+    }
+    return foundResource;
+};
+let getEventElements = async (label)=> {
+    let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
+    let foundEventsWithLabel = [];
+    for (let i=0; i<candidatesEvents.length; i++) {
+        let candidate = candidatesEvents[i];
+        let text = await candidate.getText();
+        if (text == label) {
+            foundEventsWithLabel.push(candidate);
+        }
+    }
+    return foundEventsWithLabel;
+}
+let getEventScheduledWith = async (resourceElement, candidates)=> {
+    let resourcePosition = await resourceElement.getCssValue('top');
+    for (let i=0; i<candidates.length; i++) {
+        let candidate = candidates[i];
+        let elementPosition = await candidate.getCssValue('top');
+        if (elementPosition == resourcePosition) {
+            return candidate;
+        }    
+    }
+    return undefined;
+}

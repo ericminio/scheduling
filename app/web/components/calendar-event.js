@@ -10,6 +10,10 @@ class CalendarEvent extends HTMLElement {
             left:${this.left(event)}; 
             width:${this.width(event)};
         `;
+        this.addEventListener('click', (e)=> {
+            e.stopPropagation();
+            events.notify('show event', event);
+        })
     }
     width(event) {
         let start = this.parse(event.start);

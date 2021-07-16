@@ -26,6 +26,9 @@ Feature: Scheduling events
         Then I see that "Alex" is scheduled with "GNEA"
         Then I see that "Alex" is scheduled with "Alain"
         Then I see that "Alex" is scheduled with "Headset #1"
+        When I inspect event "Alex" scheduled with "GNEA"
+        Then I see that this event start is "2015-10-01 18:00"
+        Then I see that this event end is "2015-10-01 20:00"
 
     @backlog
     Scenario: Modify event
