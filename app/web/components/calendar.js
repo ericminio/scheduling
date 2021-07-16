@@ -18,6 +18,7 @@ class Calendar extends HTMLElement {
             events.notify('event creation');
         });
         events.register(this, 'resource created');
+        events.register(this, 'event created');
     }
     update() {
         api.getResources().then(data => {

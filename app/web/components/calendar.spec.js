@@ -93,4 +93,28 @@ describe('Calendar', ()=>{
             done();
         }, 150);
     });
+    it('listens to event created event and refreshes', (done)=>{
+        window.api = {
+            getResources: ()=> {
+                return new Promise((resolve, reject)=>{
+                    resolve({ resources:[
+                        { id:'11', type:'plane', name:'GSDZ' }
+                    ]});
+                });
+            },
+            getEvents: ()=> {
+                return new Promise((resolve, reject)=>{
+                    resolve({ events:[
+                        { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                    ]});
+                });
+            }                        
+        };
+        window.events.notify('event created');
+        setTimeout(()=>{
+            expect(document.querySelector('yop-calendar > resources > #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar > events > #event-422-resource-11')).not.to.equal(null);
+            done();
+        }, 150);
+    });
 })
