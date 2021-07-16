@@ -2,33 +2,30 @@ const headerTemplate = document.createElement('template')
 
 headerTemplate.innerHTML = `
     <style>
-        .title {
+        .header {
+            margin-bottom: var(--vertical-margin);
+            padding: var(--padding);
             text-align: center;
             background-color: #184896;
             color: white;
         }
-        #header-table {
+        .header-table {
             width: 100%;
             color: white;
         }
-        #header-table td {
+        .header-table td {
             width: 30%;
         }
-        .big {
-            font-size: 42px;
-            text-align: center;
-        }
-        .logout-cell {
-            text-align: right;
-            padding-right: 20px;
+        .header-table .title {
+            font-size: 1.75em;
         }
     </style>
-    <div class="title">
-        <table id="header-table">
+    <div class="header">
+        <table class="header-table">
             <tbody>
                 <tr>
                     <td></td>
-                    <td class="big">Scheduling</td>
+                    <td class="title">Scheduling</td>
                     <td>
                         <system-status></system-status>
                     </td>

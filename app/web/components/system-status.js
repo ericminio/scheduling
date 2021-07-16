@@ -5,6 +5,7 @@ greenTemplate.innerHTML = `
             width: 100%;
             text-align: right;
             color: lightgreen;
+            font-size: 0.75em;
         }
     </style>
     <div class="status-green">online</div>
@@ -16,6 +17,7 @@ redTemplate.innerHTML = `
             width: 100%;
             text-align: right;
             color: red;
+            font-size: 0.75em;
         }
     </style>
     <div class="status-red">offline</div>
