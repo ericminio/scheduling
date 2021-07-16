@@ -10,7 +10,7 @@
     --minimalWidth: calc(var(--minimalWidthInMinutes) * (100% - 2 * var(--padding)) / 24 / 60);
     --height: 25px;        
     --radius: 3px;
-    --timelineHeigth: 20px;
+    --timelineHeigth: 25px;
 }
 body {
     margin: var(--body-margin);
@@ -75,8 +75,8 @@ yop-calendar-resource {
     background-color: lightseagreen;
     display: inline-block;
     position: absolute;
-    left: var(--padding);
-    width: calc(100% - 2 * var(--padding));
+    left: 0px;
+    width: 100%;
     height: var(--height);
 }
 yop-calendar-event {
