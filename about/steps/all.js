@@ -12,14 +12,14 @@ Before(async (testCase)=>{
     await clear(database);
     World.driver = await new Builder().forBrowser('firefox').build();
     World.robot = new Robot(World);
+    await login('secret key');
 });
 After(async (testCase)=>{
     await World.driver.quit();
     await World.server.stop();
 });
 
-Given('the following resources exist in the system', async (resources)=> {
-    await login('max');
+Given('I create the following resources', async (resources)=> {
     await World.robot.click('#resource-creation');
     let lines = resources.rawTable;
     for (let i=1; i<lines.length; i++) {
@@ -29,7 +29,7 @@ Given('the following resources exist in the system', async (resources)=> {
         await createResource(type, name);
     }
 });
-Given('the following events exist in the system', async (events)=> {
+Given('I create the following events', async (events)=> {
     let response = await request({
         hostname: 'localhost',
         port: World.server.port,
@@ -56,9 +56,6 @@ Given('the following events exist in the system', async (events)=> {
         }, payload);
         expect(response.statusCode).to.equal(201);
     }
-});
-Given('I authenticate with login {string}', async (value)=> {
-    await login(value);
 });
 let login = async (value)=> {
     await World.robot.open("/");
@@ -133,7 +130,7 @@ class Robot {
         }
     }
 }
-Given('I look at the events scheduled with {string}', async (resources)=> {
+Given('I look at the events', async ()=> {
     await World.driver.get('http://localhost:'+World.server.port+'/events');
     await World.driver.sleep(300);
 });
