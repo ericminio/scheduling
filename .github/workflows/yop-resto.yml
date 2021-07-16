@@ -1,4 +1,4 @@
-name: Lou Pecou
+name: yop-resto
 
 on:
   push:
@@ -15,11 +15,11 @@ jobs:
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "lou-pecou"
+        heroku_app_name: "yop-resto"
         heroku_email: "eric.mignot+scheduling@gmail.com"
         usedocker: true
         appdir: app
         docker_heroku_process_type: web
         stack: container
-        healthcheck: "https://lou-pecou.herokuapp.com/ping"
+        healthcheck: "https://yop-resto.herokuapp.com/ping"
         delay: 33
