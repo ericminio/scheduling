@@ -25,7 +25,7 @@ class CalendarEvent extends HTMLElement {
         return layout.left(start);
     }
     top(event) {
-        return `calc(${event.line} * var(--height) + var(--padding))`;
+        return layout.top(event.line);
     }
     parse(datetime) {
         let time = datetime.substring(datetime.indexOf(' ')).trim();

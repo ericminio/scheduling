@@ -1,8 +1,36 @@
 const calendarTemplate = document.createElement('template')
 calendarTemplate.innerHTML = `
-<resources></resources>
-<timeline></timeline>
-<events></events>
+
+<style>
+    .calendar-table {
+        width: 100%;    
+        border-spacing: 0px;    
+    }
+    .calendar-table td {
+        padding: 0px;
+    }
+    .column-one {
+        width: var(--resourceAreaWidth);
+    }
+    .column-two {
+        width: var(--agendaAreaWidth);
+    }
+</style>
+
+<div style="position: relative;">
+    <table class="calendar-table">
+        <tbody>
+            <tr>
+                <td class="column-one"></td>
+                <td class="column-two"><timeline></timeline></td>
+            </tr>
+            <tr>
+                <td class="column-one"><resources></resources></td>
+                <td class="column-two"><events></events></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 `;
 
 class Calendar extends HTMLElement {
@@ -39,7 +67,7 @@ class Calendar extends HTMLElement {
     }
     displayEvents(events, resources) {
         let view = this.querySelector('events');
-        view.style.height = `calc(${resources.length} * var(--height) + 2 * var(--padding))`;
+        view.style.height = layout.totalHeight(resources.length);
         view.innerHTML = '';
         events.forEach(event => {
             event.resources.forEach((eventResource)=> {
@@ -56,6 +84,7 @@ class Calendar extends HTMLElement {
     }
     displayResources(resources) {
         let view = this.querySelector('resources');
+        view.style.height = layout.totalHeight(resources.length);
         view.innerHTML = '';
         resources.forEach((data, index) => {
             let instance = new Resource();

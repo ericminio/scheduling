@@ -60,14 +60,14 @@ describe('Calendar', ()=>{
         expect(calendar).not.to.equal(null);
     })
     it('displays expected resources', ()=>{
-        expect(document.querySelector('yop-calendar > resources > #resource-1')).not.to.equal(null);
-        expect(document.querySelector('yop-calendar > resources > #resource-2')).not.to.equal(null);
-        expect(document.querySelector('yop-calendar > resources > #resource-3')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar resources #resource-1')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar resources #resource-2')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar resources #resource-3')).not.to.equal(null);
     })
     it('displays expected events', ()=>{
-        expect(document.querySelector('yop-calendar > events > #event-42-resource-1')).not.to.equal(null);
-        expect(document.querySelector('yop-calendar > events > #event-15-resource-2')).not.to.equal(null);
-        expect(document.querySelector('yop-calendar > events > #event-15-resource-3')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar events #event-42-resource-1')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar events #event-15-resource-2')).not.to.equal(null);
+        expect(document.querySelector('yop-calendar events #event-15-resource-3')).not.to.equal(null);
     })
     it('listens to resource created event and refreshes', (done)=>{
         window.api = {
@@ -88,8 +88,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('resource created');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar > resources > #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar > events > #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
         }, 150);
     });
@@ -112,8 +112,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('event created');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar > resources > #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar > events > #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
         }, 150);
     });

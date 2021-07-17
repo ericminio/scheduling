@@ -10,7 +10,7 @@ class Resource extends HTMLElement {
         `;
     }
     top(index) {
-        return `calc(${index} * var(--height) + var(--padding))`;
+        return layout.top(index);
     }
 };
 customElements.define('yop-calendar-resource', Resource);
