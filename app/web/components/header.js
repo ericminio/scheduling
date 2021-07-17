@@ -6,12 +6,11 @@ headerTemplate.innerHTML = `
             margin-bottom: var(--vertical-margin);
             padding: var(--padding);
             text-align: center;
-            background-color: #184896;
-            color: white;
+            background-color: var(--background-header);
+            color: var(--color-header);
         }
         .header-table {
             width: 100%;
-            color: white;
         }
         .header-table td {
             width: 30%;

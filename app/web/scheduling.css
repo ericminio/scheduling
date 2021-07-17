@@ -11,20 +11,35 @@
     --height: 25px;        
     --radius: 3px;
     --timelineHeigth: 25px;
+
+    --background-body: #e3e5e8;
+    --background-header: #184896;
+    --background-form: white;
+    --background-timeline: #acccff;
+    --background-resource: #184896;
+    --background-events: #d0e2ff;
+    --background-event: var(--background-resource);
+    --color-header: white;
+    --color-border: black;
+    --color-resource: white;
+    --color-event: white;
+    --color-status-green: lightgreen;
+    --color-status-red: red;
+    --color-add-ressource: var(--background-resource);
 }
 body {
     margin: var(--body-margin);
-    background-color: #e3e5e8;
+    background-color: var(--background-body);
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
 
 .vertical-form {
-    background-color: white;
+    background-color: var(--background-form);
     margin-top: var(--vertical-margin);
     margin-bottom: var(--vertical-margin);
     padding: var(--padding);
-    border: var(--border-size) solid black;
+    border: var(--border-size) solid var(--color-border);
 }
 
 .vertical-form label, .vertical-form input, .vertical-form button {
@@ -46,26 +61,28 @@ timeline, resources, events {
     position: relative;
 }
 timeline {
-    background-color: lightskyblue;
+    background-color: var(--background-timeline);
     height: var(--timelineHeigth);
 }
 resources {
-    background-color: lightseagreen;
+    background-color: var(--background-resource);
+    color: var(--color-resource);
 }
 events {
-    background-color: bisque;  
+    background-color: var(--background-events);  
 }
 yop-timeline-marker, yop-calendar-resource, yop-calendar-event {
     display: inline;
     position: absolute;
 }
 yop-calendar-resource {
-    background-color: lightseagreen;
+    background-color: var(--background-resource);
     height: var(--height);
     width: 100%;
 }
 yop-calendar-event {
-    background-color: lightsalmon;
+    background-color: var(--background-event);
+    color: var(--color-event);
     height: var(--height);  
     border-radius: var(--radius);
     cursor: pointer;

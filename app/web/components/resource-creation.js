@@ -10,7 +10,7 @@ resourceCreationTemplate.innerHTML = `
         width: 100%;
     }
     .plus {
-        color: darkgray;
+        color: var(--color-add-ressource);
     }
 </style>
 

@@ -4,7 +4,7 @@ greenTemplate.innerHTML = `
         .status-green {
             width: 100%;
             text-align: right;
-            color: lightgreen;
+            color: var(--color-status-green);
             font-size: 0.75em;
         }
     </style>
@@ -16,7 +16,7 @@ redTemplate.innerHTML = `
         .status-red {
             width: 100%;
             text-align: right;
-            color: red;
+            color: var(--color-status-red);
             font-size: 0.75em;
         }
     </style>
