@@ -3,12 +3,21 @@ resourceCreationTemplate.innerHTML = `
 
 <style>
     .resource-creation-area {
-        width: calc( 2.5 * var(--resourceAreaWidth));
+        position: absolute;
+        width: var(--resourceAreaWidth);
+    }
+    #resource-creation {
+        width: 100%;
+    }
+    .plus {
+        color: darkgray;
     }
 </style>
 
 <div class="resource-creation-area">
-    <label id="resource-creation">Create resource</label>
+    <div id="resource-creation">
+        <label class="plus">+</label>
+    </div>
     <div class="vertical-form hidden" id="resource-creation-form">
         <label>Type</label>
         <input id="resource-type" />
