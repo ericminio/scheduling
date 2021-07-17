@@ -28,6 +28,7 @@ Given('I create the following resources', async (resources)=> {
         let name = data[1];
         await createResource(type, name);
     }
+    await World.robot.click('#resource-creation');
 });
 Given('I create the following events', async (events)=> {
     let response = await request({
@@ -45,6 +46,7 @@ Given('I create the following events', async (events)=> {
         let data = lines[i];
         await createEvent(data);
     }
+    await World.robot.click('events');
 });
 let login = async (value)=> {
     await World.robot.open("/");
@@ -261,3 +263,13 @@ let getEventScheduledWith = async (resourceElement, candidates)=> {
     }
     return undefined;
 }
+
+When('I inspect resource {string}', async (name)=> {
+    let resourceElement = await getResourceElement(name);
+    await resourceElement.click();
+});
+Then('I see that this resource type is {string}', async (type)=> {
+    let element = await World.robot.findElement('#resource-info-type');
+    let actual = await element.getAttribute('value');
+    expect(actual).to.equal(type);
+});

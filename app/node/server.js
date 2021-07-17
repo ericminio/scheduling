@@ -67,7 +67,8 @@ class Server {
                 'calendar.js',
                 'resource-creation.js',
                 'event-creation.js',
-                'show-event.js'
+                'show-event.js',
+                'show-resource.js'
             ];
             body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {

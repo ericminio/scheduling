@@ -8,6 +8,7 @@ resourceCreationTemplate.innerHTML = `
     }
     #resource-creation {
         width: 100%;
+        cursor: pointer;
     }
     .plus {
         color: var(--color-add-ressource);

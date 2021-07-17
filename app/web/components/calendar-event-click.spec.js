@@ -9,7 +9,7 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
     ;
 
-describe('Calendar Event interaction', ()=>{
+describe('Calendar Event click', ()=>{
 
     let html = `
         <!DOCTYPE html>

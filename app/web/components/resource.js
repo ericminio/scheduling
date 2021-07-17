@@ -2,12 +2,16 @@ class Resource extends HTMLElement {
     constructor() {
         super()
     }
-    digest(data, index) {
-        this.id = `resource-${data.id}`;
-        this.innerHTML = data.name;
+    digest(resource, index) {
+        this.id = `resource-${resource.id}`;
+        this.innerHTML = resource.name;
         this.style = `
             top:${this.top(index)}; 
         `;
+        this.addEventListener('click', (e)=> {
+            e.stopPropagation();
+            events.notify('show resource', resource);
+        })
     }
     top(index) {
         return layout.top(index);

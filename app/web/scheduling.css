@@ -79,6 +79,7 @@ yop-calendar-resource {
     background-color: var(--background-resource);
     height: var(--height);
     width: 100%;
+    cursor: pointer;
 }
 yop-calendar-event {
     background-color: var(--background-event);

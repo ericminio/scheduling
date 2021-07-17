@@ -19,16 +19,20 @@ Feature: Scheduling events
             | Joe   | 2015-10-01 15:00 | 2015-10-01 18:00 | GITN, Vasile                 |
             | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
-    Scenario: Inspect event
+    Scenario: Inspect
         Given I look at the events
         Then I see that "Alex" starts at "18:00"
         Then I see that "Alex" ends at "20:00"
         Then I see that "Alex" is scheduled with "GNEA"
         Then I see that "Alex" is scheduled with "Alain"
         Then I see that "Alex" is scheduled with "Headset #1"
+        
         When I inspect event "Alex" scheduled with "GNEA"
         Then I see that this event start is "2015-10-01 18:00"
         Then I see that this event end is "2015-10-01 20:00"
+        
+        When I inspect resource "GNEA"
+        Then I see that this resource type is "plane"
 
     @backlog
     Scenario: Modify event
