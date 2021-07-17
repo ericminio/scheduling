@@ -103,7 +103,7 @@ yop-calendar-event {
         --timelineHeigth: 40px;
         }
     body, input, button {
-        font-size: 40px;
+        font-size: 30px;
     }
     .login-form {
         width: 75%;
