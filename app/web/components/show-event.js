@@ -5,7 +5,7 @@ showEventTemplate.innerHTML = `
     #show-event-form {
         position: absolute;
         right: var(--padding);
-        width: calc( 2.5 * var(--resourceAreaWidth));
+        width: calc( 2 * var(--resourceAreaWidth));
     }
 </style>
 

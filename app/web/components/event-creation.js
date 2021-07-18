@@ -4,8 +4,8 @@ eventCreationTemplate.innerHTML = `
 <style>
     #event-creation-form {
         position: absolute;
-        left: var(--resourceAreaWidth);
-        width: calc( 2.5 * var(--resourceAreaWidth));
+        left: calc(var(--body-margin) + var(--resourceAreaWidth));
+        width: calc( 2 * var(--resourceAreaWidth));
     }
     #new-event-resources input, #new-event-resources label {
         display: unset;
@@ -41,13 +41,13 @@ class EventCreation extends HTMLElement {
         for (let i=0 ; i<resources.length; i++) {
             let resource = resources[i];
             let fragment = `
+            <div style="display:inline-block;">
                 <input  type="checkbox"
                         id="new-event-resource-${resource.id}" 
                         value="${resource.id}"
                         >
                 <label for="new-event-resource-${resource.id}">${resource.name}</label>
-                <br/>
-                `;
+            </div>`;
             html += fragment;
         }
         this.querySelector('#new-event-resources').innerHTML = html;
