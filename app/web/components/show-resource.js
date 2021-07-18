@@ -5,6 +5,8 @@ showResourceTemplate.innerHTML = `
     #show-resource-form {
         position: absolute;
         width: var(--resourceAreaWidth);
+        top: var(--timelineHeigth);
+        margin-top: 0px;
     }
 </style>
 

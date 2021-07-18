@@ -22,11 +22,18 @@ calendarTemplate.innerHTML = `
         <tbody>
             <tr>
                 <td class="column-one"></td>
-                <td class="column-two"><timeline></timeline></td>
+                <td class="column-two">
+                    <timeline></timeline>
+                </td>
             </tr>
             <tr>
-                <td class="column-one"><resources></resources></td>
-                <td class="column-two"><events></events></td>
+                <td class="column-one">
+                    <resources></resources>
+                </td>
+                <td class="column-two">
+                    <events></events>                    
+                    <show-resource></show-resource>
+                </td>
             </tr>
         </tbody>
     </table>
