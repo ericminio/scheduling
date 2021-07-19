@@ -13,10 +13,10 @@
     --timelineHeigth: 25px;
 
     --background-body: #e3e5e8;
-    --background-header: #184896;
+    --background-header: #0058a3;
     --background-form: white;
     --background-timeline: #acccff;
-    --background-resource: #184896;
+    --background-resource: #0058a3;
     --background-events: #d0e2ff;
     --background-event: var(--background-resource);
     --background-delete: red;
