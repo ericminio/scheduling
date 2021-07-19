@@ -131,5 +131,14 @@ describe('Api client', ()=>{
         };
         let data = await api.deleteEvent({ id:'42' });
         expect(data).to.deep.equal({ message:'event deleted' });
-    })
+    });
+
+    it('exposes resource deletion', async ()=> {
+        server.services['resources'] = {
+            get: (id)=> { return {id:id}; },
+            delete: ()=> {}
+        };
+        let data = await api.deleteResource({ id:'42' });
+        expect(data).to.deep.equal({ message:'resource deleted' });
+    });
 })

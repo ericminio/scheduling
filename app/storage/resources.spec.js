@@ -1,6 +1,6 @@
 const { expect } = require('chai');
-const { Database, ResourcesRepository, drop, migrate } = require('.');
-const Resource = require('../domain/resource');
+const { Database, ResourcesRepository, drop, migrate, EventsRepository } = require('.');
+const { Resource, Event } = require('../domain');
 
 describe('Resources storage', ()=> {
     
@@ -54,5 +54,56 @@ describe('Resources storage', ()=> {
         expect(rows.length).to.equal(1);
         expect(rows[0].name).to.equal('name #2');
         expect(rows[0].type).to.equal('type #2');
+    });
+
+    it('can delete', async ()=> {
+        let resource = new Resource({ id:'this-id', type:'this-type', name:'this-name' })
+        await repository.save(resource);
+        await repository.delete('this-id');
+        let instance = await repository.get('this-id');
+
+        expect(instance).to.equal(undefined);
+    });
+
+    it('cascades deletion to event associated', async ()=> {
+        let r1 = new Resource({ id:'r1-id', type:'r1-type', name:'r1-name' });
+        let r2 = new Resource({ id:'r2-id', type:'r2-type', name:'r2-name' });
+        repository.save(r1);
+        repository.save(r2);
+        let eventsRepository = new EventsRepository(database);
+        await eventsRepository.save(new Event({ 
+            id:'event-id', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[{id:'r1-id'}, {id:'r2-id'}]
+        }));
+        await repository.delete('r2-id');
+        let event = await eventsRepository.get('event-id');
+
+        expect(event).to.deep.equal(new Event({ 
+            id:'event-id', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[{ id:'r1-id', type:'r1-type', name:'r1-name' }]
+        }));
+    });
+
+    it('cascades deletion to event itself when resource was the only one', async ()=> {
+        let r1 = new Resource({ id:'r1-id', type:'r1-type', name:'r1-name' });
+        repository.save(r1);
+        let eventsRepository = new EventsRepository(database);
+        await eventsRepository.save(new Event({ 
+            id:'event-id', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[{id:'r1-id'}]
+        }));
+        await repository.delete('r1-id');
+        let event = await eventsRepository.get('event-id');
+
+        expect(event).to.equal(undefined);
     });
 });

@@ -336,4 +336,68 @@ describe('Server', ()=>{
         response = await request(deletion);
         expect(response.statusCode).to.equal(404);
     });
+    it('is open to resource deletion', async ()=>{
+        let repository = new RepositoryUsingMap();
+        server.services['resources'] = repository;
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/create',
+            method: 'POST'
+        };
+        await post(creation, { id:'this-id', type:'table', name:'by the fireplace'});
+
+        const deletion = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/this-id',
+            method: 'DELETE'
+        }
+        let response = await request(deletion);
+        
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'resource deleted' });
+
+        response = await request({
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/this-id',
+            method: 'GET'
+        });
+        expect(response.statusCode).to.equal(404);
+
+        const all = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources',
+            method: 'GET'
+        }
+        response = await request(all);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ resources:[] });
+    });
+    it('resists missing resource deletion', async ()=>{
+        let repository = new RepositoryUsingMap();
+        server.services['resources'] = repository;
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/create',
+            method: 'POST'
+        };
+        await post(creation, { id:'this-id', type:'table', name:'by the fireplace'});
+
+        const deletion = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/resources/this-id',
+            method: 'DELETE'
+        }
+        await request(deletion);
+        let response = await request(deletion);
+        
+        expect(response.statusCode).to.equal(404);
+    });
 })

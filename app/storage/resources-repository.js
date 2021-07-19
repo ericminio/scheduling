@@ -1,8 +1,10 @@
 const Resource = require('../domain/resource');
+const EventsResourcesRepository = require('./events-resources-repository');
 
 class ResourcesRepository {
     constructor(database) {
         this.database = database;
+        this.eventsResourcesRepository = new EventsResourcesRepository(database);
     }
     async save(resource) {
         if (! await this.exists(resource.getId())) {
@@ -16,6 +18,7 @@ class ResourcesRepository {
     }
     async get(id) {
         let rows = await this.database.executeSync('select type, name from resources where id=$1 order by name', [id]);
+        if (rows.length == 0) { return undefined; }
         let record = rows[0];
         return new Resource({
             id:id,
@@ -39,6 +42,13 @@ class ResourcesRepository {
     async exists(id) {
         let rows = await this.database.executeSync('select id from resources where id=$1', [id]);
         return rows.length > 0;
+    }
+    async delete(id) {
+        await this.eventsResourcesRepository.deleteByResource(id);
+        await this.database.executeSync(`
+            delete from events 
+            where not exists (select 1 from events_resources where events_resources.event_id = events.id)`);
+        await this.database.executeSync('delete from resources where id=$1', [id]);
     }
 }
 

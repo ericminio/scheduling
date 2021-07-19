@@ -146,13 +146,31 @@ class Server {
         else if (request.method=='GET' && request.url.indexOf('/data/resources/')==0) {
             let id = request.url.substring('/data/resources/'.length);
             let instance = await this.services['resources'].get(id);
-            body = JSON.stringify(instance);
-            response.setHeader('content-type', 'application/json');
-            response.statusCode = 200;
+            if (instance) {
+                body = JSON.stringify(instance);
+                response.setHeader('content-type', 'application/json');
+                response.statusCode = 200;
+            } else {
+                response.statusCode = 404;
+            }
         }
+        else if (request.method=='DELETE' && request.url.indexOf('/data/resources/')==0) {
+            let id = request.url.substring('/data/resources/'.length);
+            let instance = await this.services['resources'].get(id);
+            if (instance) {
+                await this.services['resources'].delete(id);
+                body = JSON.stringify({ message:'resource deleted' });
+                response.setHeader('content-type', 'application/json');
+                response.statusCode = 200;
+            } else {
+                response.statusCode = 404;
+            }
+        }
+
         else if (request.url.indexOf('/data/')==0) {
-            response.statusCode = 404;
+            response.statusCode = 501;
         }
+
         else {
             body = fs.readFileSync(path.join(__dirname, '../web', 'index.html')).toString();
             response.setHeader('content-type', 'text/html');

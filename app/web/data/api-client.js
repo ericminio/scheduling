@@ -84,5 +84,9 @@ class ApiClient {
     deleteEvent(event) {
         return this.delete(`/data/events/${event.id}`);
     }
+
+    deleteResource(resource) {
+        return this.delete(`/data/resources/${resource.id}`);
+    }
 }
 var api = new ApiClient();

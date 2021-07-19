@@ -29,6 +29,9 @@ class EventsResourcesRepository {
     async add(eventId, resourceId) {
         await this.database.executeSync('insert into events_resources(event_id, resource_id) values($1, $2)', [eventId, resourceId]);
     }
+    async deleteByResource(id) {
+        await this.database.executeSync('delete from events_resources where resource_id=$1', [id]);
+    }
 }
 
 module.exports = EventsResourcesRepository;

@@ -18,7 +18,7 @@ describe('Event deletion', ()=>{
                 <script>
                     ${yop}
                     var api = {
-                        deleteEvent: (id)=> new Promise((resolve)=>{ resolve(); })  
+                        deleteEvent: (event)=> new Promise((resolve)=>{ resolve(); })  
                     };
                     ${sut}
                 </script>
@@ -41,7 +41,7 @@ describe('Event deletion', ()=>{
 
     it('sends the expected request', ()=>{
         let spy;
-        window.api = { deleteEvent:(id)=> { spy = id; return new Promise((resolve)=> { resolve(); })} }
+        window.api = { deleteEvent:(event)=> { spy = event; return new Promise((resolve)=> { resolve(); })} }
         window.events.notify('show event', {id:'42'});
         document.querySelector('#delete-event').click();
 
