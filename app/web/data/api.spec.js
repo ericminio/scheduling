@@ -42,7 +42,7 @@ let api = (new Function(sut + ' return api;'))();
 const RepositoryUsingMap = require('../../node/support/repository-using-map');
 const { Resource } = require('../../domain');
 
-describe.only('Api client', ()=>{
+describe('Api client', ()=>{
 
     let server;
 
