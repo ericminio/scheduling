@@ -7,6 +7,10 @@ showEventTemplate.innerHTML = `
         right: var(--padding);
         width: calc( 2 * var(--resourceAreaWidth));
     }
+    #delete-event {
+        background-color: var(--background-delete);
+        color: var(--color-delete);
+    }
 </style>
 
 <div class="vertical-form hidden" id="show-event-form">
@@ -16,6 +20,8 @@ showEventTemplate.innerHTML = `
     <input id="event-info-start" />
     <label>End</label>
     <input id="event-info-end" />
+
+    <button id="delete-event">Delete</button>
 <div>
 `;
 
@@ -33,6 +39,12 @@ class ShowEvent extends HTMLElement {
         this.querySelector('#event-info-label').value = event.label;
         this.querySelector('#event-info-start').value = event.start;
         this.querySelector('#event-info-end').value = event.end;
+        this.querySelector('#delete-event').addEventListener('click', ()=> {
+            api.deleteEvent(event).then(()=> { 
+                events.notify('event deleted'); 
+                this.querySelector('#show-event-form').classList.add('hidden');
+            });
+        });
     }
 };
 customElements.define('show-event', ShowEvent);

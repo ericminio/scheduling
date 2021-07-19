@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { Database, EventsRepository, ResourcesRepository, drop, migrate } = require('.');
 const Resource = require('../domain/resource');
 const Event = require('../domain/event');
+const EventsResourcesRepository = require('./events-resources-repository');
 
 describe('Events storage', ()=> {
     
@@ -96,5 +97,17 @@ describe('Events storage', ()=> {
             end:'2015-07-14T23:42:15',
             resources:[r1, r2]
         }));
+    });
+
+    it('can delete', async ()=> {
+        await repository.save(event);
+        await repository.delete('event-id');
+
+        let instance = await repository.get('event-id');
+        expect(instance).to.equal(undefined);
+
+        let eventsResourcesRepository = new EventsResourcesRepository(database);
+        let resources = await eventsResourcesRepository.getResourcesByEvent('event-id');
+        expect(resources).to.deep.equal([]);
     });
 })

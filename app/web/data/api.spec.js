@@ -42,7 +42,7 @@ let api = (new Function(sut + ' return api;'))();
 const RepositoryUsingMap = require('../../node/support/repository-using-map');
 const { Resource } = require('../../domain');
 
-describe('Api client', ()=>{
+describe.only('Api client', ()=>{
 
     let server;
 
@@ -123,4 +123,13 @@ describe('Api client', ()=>{
         });
         expect(data).to.deep.equal({ location:'/data/events/15' });
     });
+
+    it('exposes event deletion', async ()=> {
+        server.services['events'] = {
+            get: (id)=> { return {id:id}; },
+            delete: ()=> {}
+        };
+        let data = await api.deleteEvent({ id:'42' });
+        expect(data).to.deep.equal({ message:'event deleted' });
+    })
 })

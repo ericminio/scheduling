@@ -236,4 +236,104 @@ describe('Server', ()=>{
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/15');
     });
+    it('is open to event deletion', async ()=>{
+        let resources = new RepositoryUsingMap();
+        let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
+        let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
+        resources.save(r1);
+        resources.save(r2);
+        server.services['resources'] = resources;
+        let repository = new RepositoryUsingMap();
+        server.services['events'] = repository;
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/create',
+            method: 'POST'
+        };
+        let payload = {
+            id: 'this-event',
+            start: '08:30',
+            end: '12:00',
+            label: 'Bob',
+            resources: [{id:'R1'}, {id:'R2'}]
+        };
+        let response = await post(creation, payload);
+        
+        expect(response.statusCode).to.equal(201);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+        let stored = await repository.get('this-event');
+        expect(stored instanceof Event).to.equal(true);
+
+        const deletion = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/this-event',
+            method: 'DELETE'
+        }
+        response = await request(deletion);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'event deleted' });
+
+        response = await request({
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/this-event',
+            method: 'GET'
+        });
+        expect(response.statusCode).to.equal(404);
+
+        const all = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events',
+            method: 'GET'
+        }
+        response = await request(all);
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ events:[] });
+    });
+    it('resists missing event deletion', async ()=>{
+        let resources = new RepositoryUsingMap();
+        let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
+        let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
+        resources.save(r1);
+        resources.save(r2);
+        server.services['resources'] = resources;
+        let repository = new RepositoryUsingMap();
+        server.services['events'] = repository;
+        const creation = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/create',
+            method: 'POST'
+        };
+        let payload = {
+            id: 'this-event',
+            start: '08:30',
+            end: '12:00',
+            label: 'Bob',
+            resources: [{id:'R1'}, {id:'R2'}]
+        };
+        let response = await post(creation, payload);
+        
+        expect(response.statusCode).to.equal(201);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+        let stored = await repository.get('this-event');
+        expect(stored instanceof Event).to.equal(true);
+
+        const deletion = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events/this-event',
+            method: 'DELETE'
+        }
+        await request(deletion);
+        response = await request(deletion);
+        expect(response.statusCode).to.equal(404);
+    });
 })

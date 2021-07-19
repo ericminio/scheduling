@@ -26,6 +26,7 @@ class EventsRepository {
     }
     async get(id) {
         let rows = await this.database.executeSync('select label, start_time, end_time from events where id=$1 order by label', [id]);
+        if (rows.length == 0) { return undefined; }
         let record = rows[0];
         let event = new Event({
             id:id,
@@ -55,6 +56,10 @@ class EventsRepository {
     async exists(id) {
         let rows = await this.database.executeSync('select id from events where id=$1', [id]);
         return rows.length > 0;
+    }
+    async delete(id) {
+        await this.eventsResourcesRepository.deleteByEvent(id);
+        await this.database.executeSync('delete from events where id=$1', [id]);
     }
 }
 

@@ -41,6 +41,26 @@ class ApiClient {
         });
     }
 
+    delete(url) {
+        return new Promise((resolve, reject)=>{
+            let options = { 
+                method:'DELETE'
+            };
+            this.fetch(url, options)
+                .then((response) => {
+                    response.json()
+                        .then(json => {
+                            resolve(json);
+                        }).catch(error => {
+                            reject(error); 
+                        });
+                })
+                .catch((error)=> {
+                    reject(error);
+                });
+        });
+    }
+
     ping() {
         return this.get('/ping');
     }
@@ -59,6 +79,10 @@ class ApiClient {
 
     createEvent(payload) {
         return this.post('/data/events/create', payload)
+    }
+
+    deleteEvent(event) {
+        return this.delete(`/data/events/${event.id}`);
     }
 }
 var api = new ApiClient();

@@ -14,6 +14,10 @@ class RepositoryUsingMap {
     async exists(id) {
         return (await this.get(id)) !== undefined;
     }
+    async delete(id) {
+        let instance = this.get(id);
+        this.store.splice(this.store.indexOf(instance), 1);
+    }
 };
 
 module.exports = RepositoryUsingMap;

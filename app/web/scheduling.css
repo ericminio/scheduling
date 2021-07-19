@@ -19,6 +19,7 @@
     --background-resource: #184896;
     --background-events: #d0e2ff;
     --background-event: var(--background-resource);
+    --background-delete: red;
     --color-header: white;
     --color-border: black;
     --color-resource: white;
@@ -26,6 +27,7 @@
     --color-status-green: lightgreen;
     --color-status-red: red;
     --color-add-ressource: var(--background-resource);
+    --color-delete: white;
 }
 body {
     margin: var(--body-margin);
