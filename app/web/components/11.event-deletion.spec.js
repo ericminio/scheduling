@@ -73,4 +73,15 @@ describe('Event deletion', ()=>{
             done();
         }, 50);
     });
+
+    it('does not send extra deletion', ()=>{
+        let spy = 0;
+        window.api = { deleteEvent:(event)=> { spy ++ ; return new Promise((resolve)=> { resolve(); })} }
+        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', {id:'42'});
+        document.querySelector('#delete-event').click();
+
+        expect(spy).to.equal(1);
+    });
 })

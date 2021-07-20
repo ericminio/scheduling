@@ -43,6 +43,20 @@ describe('Resource creation', ()=>{
         expect(form).not.to.equal(null);
     });
 
+    it('sends expected payload', ()=> {
+        let spy = {};
+        window.api = { createResource:(payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })} }
+        window.events.notify('resource creation');
+        form.querySelector('#resource-type').value = 'this type';
+        form.querySelector('#resource-name').value = 'this name';
+        form.querySelector('#create-resource').click();
+
+        expect(spy).to.deep.equal({
+            type: 'this type',
+            name: 'this name',
+        });
+    });
+
     it('notifies on resource created', (done)=>{
         let wasCalled = false;
         let spy = {
@@ -54,5 +68,18 @@ describe('Resource creation', ()=>{
             expect(wasCalled).to.equal(true);
             done();
         }, 50);
+    });
+
+    it('does not send extra creation', ()=> {
+        let spy = 0;
+        window.api = { createResource:(payload)=> { spy ++; return new Promise((resolve)=> { resolve(); })} }
+        window.events.notify('resource creation');
+        form.querySelector('#resource-type').value = 'this type';
+        form.querySelector('#resource-name').value = 'this name';
+        window.events.notify('resource creation');
+        window.events.notify('resource creation');
+        form.querySelector('#create-resource').click();
+
+        expect(spy).to.equal(1);
     });
 })

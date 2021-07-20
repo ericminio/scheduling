@@ -78,5 +78,26 @@ describe('Event creation', ()=>{
             expect(wasCalled).to.equal(true);
             done();
         }, 50);
+    });
+
+    it('does not send extra creation', ()=> {
+        let spy = 0;
+        window.api = { createEvent:()=> { spy ++; return new Promise((resolve)=> { resolve(); })} }
+        window.store.saveObject('resources', [
+            { id:'one', name:'one' },
+            { id:'two', name:'two' },
+            { id:'three', name:'three' }
+        ])
+        window.events.notify('event creation');
+        window.events.notify('event creation');
+        window.events.notify('event creation');
+        form.querySelector('#new-event-label').value = 'that label';
+        form.querySelector('#new-event-start').value = 'that start';
+        form.querySelector('#new-event-end').value = 'that end';
+        form.querySelector('#new-event-resource-two').checked = true;
+        form.querySelector('#new-event-resource-three').checked = true;
+        form.querySelector('#create-event').click();
+
+        expect(spy).to.equal(1);
     })
 })

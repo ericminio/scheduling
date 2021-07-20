@@ -32,7 +32,8 @@ class EventCreation extends HTMLElement {
         super()
     }
     connectedCallback() {
-        this.appendChild(eventCreationTemplate.content.cloneNode(true))
+        this.appendChild(eventCreationTemplate.content.cloneNode(true));
+        this.querySelector('#create-event').addEventListener('click', ()=> { this.createEvent(); });
         events.register(this, 'event creation');
     }
     update() {
@@ -50,12 +51,12 @@ class EventCreation extends HTMLElement {
             </div>`;
             html += fragment;
         }
-        this.querySelector('#new-event-resources').innerHTML = html;
-        this.querySelector('#create-event').addEventListener('click', ()=>{
-            api.createEvent(this.payload())
-                .then(()=> { events.notify('event created'); } );;
-        });
+        this.querySelector('#new-event-resources').innerHTML = html;        
         this.querySelector('#event-creation-form').classList.toggle('hidden');
+    }
+    createEvent() {
+        api.createEvent(this.payload())
+                .then(()=> { events.notify('event created'); } );;
     }
     payload() {
         let candidates = this.querySelectorAll('#new-event-resources input');

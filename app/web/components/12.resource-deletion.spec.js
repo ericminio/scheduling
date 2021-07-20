@@ -74,4 +74,15 @@ describe('Resource deletion', ()=>{
             done();
         }, 50);
     });
+
+    it('does not send extra deletion', ()=>{
+        let spy = 0;
+        window.api = { deleteResource:(resource)=> { spy ++; return new Promise((resolve)=> { resolve(); })} }
+        window.events.notify('show resource', { id:'this-resource' });
+        window.events.notify('show resource', { id:'this-resource' });
+        window.events.notify('show resource', { id:'this-resource' });
+        document.querySelector('#delete-resource').click();
+
+        expect(spy).to.equal(1);
+    });
 })
