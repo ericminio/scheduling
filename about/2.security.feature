@@ -1,6 +1,7 @@
-Feature: Scheduling events
+@backlog
+Feature: Securing data
 
-    Plan the use of any type of resources
+    Some can read, some can write, some can configure
 
     Background: brand new system
         Given I create the following resources
@@ -19,17 +20,11 @@ Feature: Scheduling events
             | Joe   | 2015-10-01 15:00 | 2015-10-01 18:00 | GITN, Vasile                 |
             | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
-    Scenario: Inspect
+    Scenario: read only
+        Given anonymous user can only read
+        When I sign in as anonymous
         When I look at the events
-        Then I see that "Alex" starts at "18:00"
-        Then I see that "Alex" ends at "20:00"
-        Then I see that "Alex" is scheduled with "GNEA"
-        Then I see that "Alex" is scheduled with "Alain"
-        Then I see that "Alex" is scheduled with "Headset #1"
-        
         When I inspect event "Alex" scheduled with "GNEA"
-        Then I see that this event start is "2015-10-01 18:00"
-        Then I see that this event end is "2015-10-01 20:00"
+        When I try to delete this event
+        Then I receive the error message "insufficient privilege"
         
-        When I inspect resource "GNEA"
-        Then I see that this resource type is "plane"
