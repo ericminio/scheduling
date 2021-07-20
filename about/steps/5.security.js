@@ -1,8 +1,16 @@
-const { When, Then } = require('../../app/node_modules/@cucumber/cucumber/lib');
-When('I try to delete this event', function () {
-    return 'pending';
+const { Given, When, Then, World } = require('../../app/node_modules/@cucumber/cucumber/lib');
+const { expect } = require('../../app/node_modules/chai');
+
+Given('anonymous user can only read', async ()=> {
 });
 
-Then('I receive the error message {string}', function (string) {
-    return 'pending';
+When('I sign in as anonymous', async ()=> {
+});
+
+When('I try to delete this event', async ()=> {
+});
+
+Then('I receive the error message {string}', async (message)=> {
+    let actual = await World.robot.text("#error-message");
+    expect(actual).to.equal(message);
 });
