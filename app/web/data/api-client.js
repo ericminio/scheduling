@@ -1,22 +1,39 @@
 class ApiClient {
-    fetch(url, options) {
-        return window.fetch(url, options);
+    constructor(window) {
+        this.window = window;
     }
-    get(url) {
-        return new Promise((resolve, reject)=>{
-            this.fetch(url, { method:'GET' })
-                .then((response) => {
-                    response.json()
-                        .then(json => {
-                            resolve(json);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
+    fetch(url, options) {
+        return this.window.fetch(url, options);
+    }
+    then(resolve, reject) {
+        return (response)=> {
+            response.json()
+                .then(json => {
+                    if (response.status >= 400) {
+                        this.window.events.notify('error', json);
+                        reject(json);
+                    } else {
+                        resolve(json);
+                    }
                 })
-                .catch((error)=> {
+                .catch(error => {
                     reject(error);
                 });
+        };
+    }
+    catch(reject) {
+        return (error)=> {
+            reject(error);
+        }
+    }   
+    get(url) {
+        return new Promise((resolve, reject)=>{
+            let options = { 
+                method:'GET'
+            };
+            this.fetch(url, options)
+                .then(this.then(resolve, reject))
+                .catch(this.catch(reject));
         });
     }
     post(url, payload) {
@@ -24,20 +41,11 @@ class ApiClient {
             let options = { 
                 method:'POST', 
                 headers: { 'Content-Type': 'text/plain' },
-                body:JSON.stringify(payload)
+                body: JSON.stringify(payload)
             };
             this.fetch(url, options)
-                .then((response) => {
-                    response.json()
-                        .then(json => {
-                            resolve(json);
-                        }).catch(error => {
-                            reject(error); 
-                        });
-                })
-                .catch((error)=> {
-                    reject(error);
-                });
+                .then(this.then(resolve, reject))
+                .catch(this.catch(reject));
         });
     }
 
@@ -47,17 +55,8 @@ class ApiClient {
                 method:'DELETE'
             };
             this.fetch(url, options)
-                .then((response) => {
-                    response.json()
-                        .then(json => {
-                            resolve(json);
-                        }).catch(error => {
-                            reject(error); 
-                        });
-                })
-                .catch((error)=> {
-                    reject(error);
-                });
+                .then(this.then(resolve, reject))
+                .catch(this.catch(reject));
         });
     }
 
@@ -88,5 +87,10 @@ class ApiClient {
     deleteResource(resource) {
         return this.delete(`/data/resources/${resource.id}`);
     }
+
+    signIn(credentials) {
+        let payload = { encoded: window.btoa(JSON.stringify(credentials)) };
+        return this.post('/sign-in', payload);
+    }
 }
-var api = new ApiClient();
+var api = new ApiClient(window);

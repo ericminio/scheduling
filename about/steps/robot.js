@@ -18,7 +18,7 @@ class Robot {
     }
     async text(selector) {
         let field = await this.findElement(selector);
-        await field.getText();
+        return await field.getText();
     }
     async click(selector) {
         let element = await this.findElement(selector);

@@ -6,16 +6,11 @@
         <link  href="scheduling.css" rel="StyleSheet" type="text/css"> 
     </head>
     <body>
+        <yop-error-message></yop-error-message>
         <yop-header></yop-header>        
 
         <yop-route when="/">
-            <div class="vertical-form login-form">
-                <label >Login</label>
-                <input id="login" type="password"/>
-                <yop-link to="/events">
-                    <button id="signin">Sign in</button>
-                </yop-link>
-            </div>
+            <yop-sign-in></yop-sign-in>
         </yop-route>
         <yop-route when="/events">
             <yop-calendar></yop-calendar>

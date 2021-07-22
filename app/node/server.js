@@ -26,6 +26,20 @@ class Server {
         this.services = {
             ping: { status: async ()=>{ return { alive:true }; } }
         };
+        this.guard = {
+            connect: (credentials)=> {
+                return {
+                    status: 'authorized',
+                    username: credentials.username,
+                    key: 'this-key'
+                }
+            },
+            isAuthorized: async (request)=> {
+                return {
+                    status: 'not authorized'
+                }
+            }
+        };
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -69,7 +83,9 @@ class Server {
                 'resource-creation.js',
                 'event-creation.js',
                 'show-event.js',
-                'show-resource.js'
+                'show-resource.js',
+                'sign-in.js',
+                'error-message.js'
             ];
             body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
             files.forEach((file)=> {
@@ -82,6 +98,20 @@ class Server {
             response.setHeader('content-type', 'text/css');
         }
         
+        else if (request.method=='POST' && request.url.indexOf('/sign-in')==0) {
+            let incoming = await payload(request);
+            let decoded = Buffer.from(incoming.encoded, 'base64').toString('ascii');
+            let credentials = JSON.parse(decoded);
+            let answer = await this.guard.connect(credentials);
+            body = JSON.stringify({
+                username: answer.username,
+                key: answer.key
+            });
+            response.statusCode = answer.status == 'authorized' ? 200: 403;
+            response.setHeader('content-type', 'application/json');
+        }
+        
+
         else if (request.method=='OPTIONS' && request.url.indexOf('/data/')==0) {
             response.statusCode = 200;
         }
@@ -118,15 +148,22 @@ class Server {
             }
         }
         else if (request.method=='DELETE' && request.url.indexOf('/data/events/')==0) {
-            let id = request.url.substring('/data/events/'.length);
-            let instance = await this.services['events'].get(id);
-            if (instance) {
-                await this.services['events'].delete(id);
-                body = JSON.stringify({ message:'event deleted' });
-                response.setHeader('content-type', 'application/json');
-                response.statusCode = 200;
-            } else {
-                response.statusCode = 404;
+            let answer = await this.guard.isAuthorized(request);
+            if (answer.status == 'authorized') {
+                let id = request.url.substring('/data/events/'.length);
+                let instance = await this.services['events'].get(id);
+                if (instance) {
+                    await this.services['events'].delete(id);
+                    body = JSON.stringify({ message:'event deleted' });
+                    response.setHeader('content-type', 'application/json');
+                    response.statusCode = 200;
+                } else {
+                    response.statusCode = 404;
+                }
+            }
+            else {
+                response.statusCode = 403;
+                body = JSON.stringify({ message: 'forbidden: insufficient privilege' });
             }
         }
         
