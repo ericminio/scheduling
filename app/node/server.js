@@ -3,6 +3,7 @@ let path = require('path');
 let fs = require('fs');
 const payload = require('./support/payload');
 const Factory = require('../domain/factory');
+const Guard = require('./guard');
 
 class Server {
     constructor(port) {
@@ -26,20 +27,7 @@ class Server {
         this.services = {
             ping: { status: async ()=>{ return { alive:true }; } }
         };
-        this.guard = {
-            connect: (credentials)=> {
-                return {
-                    status: 'authorized',
-                    username: credentials.username,
-                    key: 'this-key'
-                }
-            },
-            isAuthorized: async (request)=> {
-                return {
-                    status: 'not authorized'
-                }
-            }
-        };
+        this.guard = new Guard();
     }
     start(done) {
         this.internal.listen(this.port, done);

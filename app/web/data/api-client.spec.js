@@ -44,6 +44,7 @@ window.fetch = (uri, options)=> {
         request.on('error', error => {
             reject(error);
         })
+        request.setHeader('x-user-key', options.headers.get('x-user-key'))
         if (options.body) { request.write(options.body); }
         request.end();
     });
@@ -76,6 +77,7 @@ describe('Api client', ()=>{
             }));
             response.end();
         }
+        store.saveObject('user', { user:'username', key:'any-key' })        
     });
     afterEach((done)=> {
         server.stop(done);
@@ -90,7 +92,8 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006'
+                        host: 'localhost:8006',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -107,7 +110,8 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006'
+                        host: 'localhost:8006',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -124,7 +128,8 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006'
+                        host: 'localhost:8006',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -142,7 +147,8 @@ describe('Api client', ()=>{
                     headers: {
                         connection: 'close',
                         host: 'localhost:8006',
-                        "transfer-encoding": "chunked"
+                        "transfer-encoding": "chunked",
+                        'x-user-key': 'any-key'
                     },
                 });            
                 done();
@@ -167,7 +173,8 @@ describe('Api client', ()=>{
                     headers: {
                         connection: 'close',
                         host: 'localhost:8006',
-                        "transfer-encoding": "chunked"
+                        "transfer-encoding": "chunked",
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -184,7 +191,8 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006'
+                        host: 'localhost:8006',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -201,7 +209,8 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006'
+                        host: 'localhost:8006',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();
@@ -224,7 +233,8 @@ describe('Api client', ()=>{
                     headers: {
                         connection: 'close',
                         host: 'localhost:8006',
-                        "transfer-encoding": "chunked"
+                        "transfer-encoding": "chunked",
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();

@@ -3,6 +3,12 @@ class ApiClient {
         this.window = window;
     }
     fetch(url, options) {
+        let user = this.window.store.getObject('user');
+        if (user !== null) {
+            let headers = new this.window.Headers();
+            headers.append('x-user-key', user.key);
+            options.headers = headers;
+        }
         return this.window.fetch(url, options);
     }
     then(resolve, reject) {
