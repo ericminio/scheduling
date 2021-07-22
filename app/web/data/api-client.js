@@ -11,7 +11,7 @@ class ApiClient {
                 .then(json => {
                     if (response.status >= 400) {
                         this.window.events.notify('error', json);
-                        reject(json);
+                        reject();
                     } else {
                         resolve(json);
                     }

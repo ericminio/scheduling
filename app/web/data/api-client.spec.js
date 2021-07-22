@@ -248,8 +248,9 @@ describe('Api client', ()=>{
         };
         api.getEvents()
             .then(()=> done('should fail'))
-            .catch(()=> {
+            .catch((pointless)=> {
                 try {
+                    expect(pointless).to.equal(undefined);
                     expect(value).to.deep.equal({ message:'forbidden' });
                     done();
                 }
