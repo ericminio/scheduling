@@ -76,17 +76,8 @@ class Server {
         }
         if (! found) {
             response.statusCode = 200;
-            let body = 'NOT FOUND';
-
-            if (request.url.indexOf('/data/')==0) {
-                response.statusCode = 501;
-            }
-
-            else {
-                body = fs.readFileSync(path.join(__dirname, '../web', 'index.html')).toString();
-                response.setHeader('content-type', 'text/html');
-            }
-            // console.log('--> returning', body)
+            response.setHeader('content-type', 'text/html');
+            let body = fs.readFileSync(path.join(__dirname, '../web', 'index.html')).toString();
             response.write(body);
             response.end();
         }
