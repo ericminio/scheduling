@@ -15,8 +15,6 @@ class Server {
         this.factory = new Factory();
         this.internal = http.createServer(async (request, response)=>{
             try {
-                response.setHeader('Access-Control-Allow-Origin', '*');
-                response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, DELETE');
                 await this.route(request, response);                
             }
             catch (error) {
