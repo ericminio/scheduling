@@ -1,4 +1,4 @@
-class Ping {
+class PingRoute {
 
     matches(request) {
         return request.url == '/ping'
@@ -11,4 +11,4 @@ class Ping {
     }
 }
 
-module.exports = Ping;
+module.exports = PingRoute;

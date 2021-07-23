@@ -4,7 +4,7 @@ let fs = require('fs');
 const payload = require('./support/payload');
 const Factory = require('../domain/factory');
 const Guard = require('./guard');
-const { Ping } = require('./routes');
+const { Ping, Yop, Scripts, Styles } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -37,6 +37,7 @@ class Server {
             }
         });
         this.services = {};
+        this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles() ];
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -54,46 +55,20 @@ class Server {
         this.internal.close(done);
     }
     async route(request, response) {
-        let route = new Ping();
-        if (route.matches(request)) {
-            await route.go(request, response);
+        let found = false;
+        for (let i =0; i<this.routes.length; i++) {
+            let route = this.routes[i];
+            if (route.matches(request)) {
+                await route.go(request, response);
+                found = true;
+                break;
+            }
         }
-        else {
+        if (! found) {
             response.statusCode = 200;
             let body = 'NOT FOUND';
 
-            if (request.url == '/yop.js') {
-                body = require('../web/yop');
-                response.setHeader('content-type', 'application/javascript');
-            }
-            else if (request.url == '/scheduling.js') {
-                let files = [
-                    'system-status.js',
-                    'header.js',
-                    'layout.js',
-                    'resource.js',
-                    'timeline-marker.js',
-                    'calendar-event.js',
-                    'calendar.js',
-                    'resource-creation.js',
-                    'event-creation.js',
-                    'show-event.js',
-                    'show-resource.js',
-                    'sign-in.js',
-                    'error-message.js'
-                ];
-                body = fs.readFileSync(path.join(__dirname, '../web/data', 'api-client.js')).toString();
-                files.forEach((file)=> {
-                    body += fs.readFileSync(path.join(__dirname, '../web/components', file)).toString();
-                })
-                response.setHeader('content-type', 'application/javascript');
-            }
-            else if (request.url == '/scheduling.css') {
-                body = fs.readFileSync(path.join(__dirname, '../web', 'scheduling.css')).toString();
-                response.setHeader('content-type', 'text/css');
-            }
-            
-            else if (request.method=='POST' && request.url.indexOf('/sign-in')==0) {
+            if (request.method=='POST' && request.url.indexOf('/sign-in')==0) {
                 let incoming = await payload(request);
                 let decoded = Buffer.from(incoming.encoded, 'base64').toString('ascii');
                 let credentials = JSON.parse(decoded);

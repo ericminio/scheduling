@@ -6,7 +6,7 @@ const RepositoryUsingMap = require('./support/repository-using-map');
 const { Resource, Event } = require('../domain');
 const AlwaysSameId = require('./support/always-same-id');
 
-describe('Server', ()=>{
+describe.only('Server', ()=>{
 
     let server;
 
