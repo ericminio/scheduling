@@ -1,13 +1,11 @@
 let http = require('http');
-let path = require('path');
-let fs = require('fs');
-const payload = require('./support/payload');
 const Factory = require('../domain/factory');
 const Guard = require('./guard');
 const { Ping, Yop, Scripts, Styles, 
         SignIn, 
         GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
-        GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource } = require('./routes');
+        GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
+        DefaultRoute } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -46,7 +44,8 @@ class Server {
         this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles(), 
             new SignIn(),
             new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
-            new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource()
+            new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource(),
+            new DefaultRoute()
         ];
     }
     start(done) {
@@ -65,21 +64,12 @@ class Server {
         this.internal.close(done);
     }
     async route(request, response) {
-        let found = false;
         for (let i =0; i<this.routes.length; i++) {
             let route = this.routes[i];
             if (route.matches(request)) {
                 await route.go(request, response, this);
-                found = true;
                 break;
             }
-        }
-        if (! found) {
-            response.statusCode = 200;
-            response.setHeader('content-type', 'text/html');
-            let body = fs.readFileSync(path.join(__dirname, '../web', 'index.html')).toString();
-            response.write(body);
-            response.end();
         }
     }
 }
