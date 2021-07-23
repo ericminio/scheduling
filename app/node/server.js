@@ -6,25 +6,21 @@ const { SecurityRoute,
         SignIn, 
         GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
         GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
-        DefaultRoute } = require('./routes');
+        DefaultRoute, ErrorRoute } = require('./routes');
 
 class Server {
     constructor(port) {
         this.port = port;
         this.sockets = [];
-        this.factory = new Factory();
         this.internal = http.createServer(async (request, response)=>{
             try {
                 await this.route(request, response);                
             }
             catch (error) {
-                console.log(error);
-                response.setHeader('content-type', 'text/plain');
-                response.statusCode = 500;
-                response.write('oops');
-                response.end()
+                new ErrorRoute(error).go(response);                
             }
         });
+        this.factory = new Factory();
         this.services = {};
         this.guard = new Guard();
         this.routes = [ 

@@ -17,5 +17,6 @@ module.exports = {
     GetOneResource: require('./resources/get-one-resource'),
     DeleteOneResource: require('./resources/delete-one-resource'),
 
-    DefaultRoute: require('./defaut-route')
+    DefaultRoute: require('./defaut-route'),
+    ErrorRoute: require('./error-route')
 };
