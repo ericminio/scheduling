@@ -4,14 +4,13 @@ let fs = require('fs');
 const payload = require('./support/payload');
 const Factory = require('../domain/factory');
 const Guard = require('./guard');
-const { Ping, Yop, Scripts, Styles } = require('./routes');
+const { Ping, Yop, Scripts, Styles, SignIn } = require('./routes');
 
 class Server {
     constructor(port) {
         this.port = port;
         this.sockets = [];
         this.factory = new Factory();
-        this.guard = new Guard();
         this.internal = http.createServer(async (request, response)=>{
             try {
                 response.setHeader('Access-Control-Allow-Origin', '*');
@@ -40,7 +39,10 @@ class Server {
             }
         });
         this.services = {};
-        this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles() ];
+        this.guard = new Guard();
+        this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles(), 
+            new SignIn(this.guard)
+        ];
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -71,20 +73,7 @@ class Server {
             response.statusCode = 200;
             let body = 'NOT FOUND';
 
-            if (request.method=='POST' && request.url.indexOf('/sign-in')==0) {
-                let incoming = await payload(request);
-                let decoded = Buffer.from(incoming.encoded, 'base64').toString('ascii');
-                let credentials = JSON.parse(decoded);
-                let answer = await this.guard.connect(credentials);
-                response.statusCode = answer.key !== undefined ? 200: 403;
-                body = JSON.stringify({
-                    username: answer.username,
-                    key: answer.key
-                });
-                response.setHeader('content-type', 'application/json');
-            }
-            
-            else if (request.method=='GET' && request.url == '/data/events') {
+            if (request.method=='GET' && request.url == '/data/events') {
                 let events = await this.services['events'].all();
                 body = JSON.stringify({ events:events });
                 response.setHeader('content-type', 'application/json');
