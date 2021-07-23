@@ -25,10 +25,6 @@ class Server {
                     response.end();
                     return;                    
                 }
-                if (request.method=='OPTIONS' && request.url.indexOf('/data/')==0) {
-                    response.statusCode = 200;
-                    return;
-                }
                 await this.route(request, response);                
             }
             catch (error) {
