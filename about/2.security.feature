@@ -1,4 +1,3 @@
-@only
 Feature: Securing data
 
     Some can read, some can write, some can configure
