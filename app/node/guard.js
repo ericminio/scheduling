@@ -1,18 +1,23 @@
 class Guard {
     
     async connect(credentials) {
+        if (credentials.username == 'Joe') {
+            return {
+                username: credentials.username,
+                key: 'key-for-joe'
+            }
+        }
         return {
-            status: 'authorized',
             username: credentials.username,
             key: 'this-key'
         }
     }
     async isAuthorized(request) {
-        let debug = `${request.method} ${request.url} ${request.headers['x-user-key']}`;
-        console.log(debug)
-        return {
-            status: 'not authorized'
+        if (request.method=='DELETE' && request.url.indexOf('/data/events/')==0) {
+            let key = request.headers['x-user-key'];
+            return key == 'key-for-joe' ? false : true;
         }
+        return true;
     }
     
 }

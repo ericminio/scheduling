@@ -17,20 +17,6 @@ describe('Server', ()=>{
             'resources': new RepositoryUsingMap(),
             'events': new RepositoryUsingMap()
         };
-        server.guard = {
-            connect: (credentials)=> {
-                return {
-                    status: 'authorized',
-                    username: credentials.username,
-                    key: 'this-key'
-                }
-            },
-            isAuthorized: async (request)=> {
-                return {
-                    status: 'authorized'
-                }
-            }
-        };
         server.start(async () => {
             done();
         });
@@ -250,7 +236,8 @@ describe('Server', ()=>{
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/15');
     });
-    it('is open to event deletion', async ()=>{
+    it('is open to event deletion when guard is', async ()=>{
+        server.guard.isAuthorized = ()=> { return true; }
         let resources = new RepositoryUsingMap();
         let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
         let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
@@ -311,6 +298,7 @@ describe('Server', ()=>{
         expect(JSON.parse(response.body)).to.deep.equal({ events:[] });
     });
     it('resists missing event deletion', async ()=>{
+        server.guard.isAuthorized = ()=> { return true; }
         let resources = new RepositoryUsingMap();
         let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
         let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
@@ -414,17 +402,7 @@ describe('Server', ()=>{
         
         expect(response.statusCode).to.equal(404);
     });
-    it('may accept sign-in', async ()=>{
-        server.guard = {
-            connect: async (credentials)=> {
-                return {
-                    status: 'authorized',
-                    username: credentials.username,
-                    key: 'this-key'
-                }
-            }
-        };
-        
+    it('is open to sign-in', async ()=>{
         let credentials = {
             username: 'this-username',
             password: 'this-password'
@@ -444,53 +422,5 @@ describe('Server', ()=>{
             username: 'this-username',
             key: 'this-key'
         });
-    });
-    it('may refuse delete', async ()=>{
-        server.guard = {
-            isAuthorized: async (key, incoming)=> {
-                return {
-                    status: 'not authorized'
-                }
-            }
-        };
-        
-        let resources = new RepositoryUsingMap();
-        let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
-        let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
-        resources.save(r1);
-        resources.save(r2);
-        server.services['resources'] = resources;
-        let repository = new RepositoryUsingMap();
-        server.services['events'] = repository;
-        const creation = {
-            hostname: 'localhost',
-            port: port,
-            path: '/data/events/create',
-            method: 'POST'
-        };
-        let payload = {
-            id: 'this-event',
-            start: '08:30',
-            end: '12:00',
-            label: 'Bob',
-            resources: [{id:'R1'}, {id:'R2'}]
-        };
-        let response = await post(creation, payload);
-        
-        expect(response.statusCode).to.equal(201);
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
-
-        const deletion = {
-            hostname: 'localhost',
-            port: port,
-            path: '/data/events/this-event',
-            method: 'DELETE'
-        }
-        response = await request(deletion);
-        expect(response.statusCode).to.equal(403);
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'forbidden: insufficient privilege'});
     });
 })

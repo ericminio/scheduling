@@ -10,11 +10,22 @@ class Server {
         this.port = port;
         this.sockets = [];
         this.factory = new Factory();
+        this.guard = new Guard();
         this.internal = http.createServer(async (request, response)=>{
             try {
                 response.setHeader('Access-Control-Allow-Origin', '*');
                 response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, DELETE');
-                await this.route(request, response);
+                let isAuthorized = await this.guard.isAuthorized(request);
+                if (isAuthorized) {
+                    await this.route(request, response);
+                }
+                else {
+                    response.statusCode = 403;
+                    let body = JSON.stringify({ message: 'forbidden: insufficient privilege' });
+                    response.setHeader('content-type', 'application/json');
+                    response.write(body);
+                    response.end();
+                }
             }
             catch (error) {
                 console.log(error);
@@ -27,7 +38,6 @@ class Server {
         this.services = {
             ping: { status: async ()=>{ return { alive:true }; } }
         };
-        this.guard = new Guard();
     }
     start(done) {
         this.internal.listen(this.port, done);
@@ -45,8 +55,6 @@ class Server {
         this.internal.close(done);
     }
     async route(request, response) {
-        console.log(request.method, request.url)
-
         response.statusCode = 200;
         let body = 'NOT FOUND';
 
@@ -91,11 +99,11 @@ class Server {
             let decoded = Buffer.from(incoming.encoded, 'base64').toString('ascii');
             let credentials = JSON.parse(decoded);
             let answer = await this.guard.connect(credentials);
+            response.statusCode = answer.key !== undefined ? 200: 403;
             body = JSON.stringify({
                 username: answer.username,
                 key: answer.key
             });
-            response.statusCode = answer.status == 'authorized' ? 200: 403;
             response.setHeader('content-type', 'application/json');
         }
         
@@ -136,22 +144,15 @@ class Server {
             }
         }
         else if (request.method=='DELETE' && request.url.indexOf('/data/events/')==0) {
-            let answer = await this.guard.isAuthorized(request);
-            if (answer.status == 'authorized') {
-                let id = request.url.substring('/data/events/'.length);
-                let instance = await this.services['events'].get(id);
-                if (instance) {
-                    await this.services['events'].delete(id);
-                    body = JSON.stringify({ message:'event deleted' });
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 200;
-                } else {
-                    response.statusCode = 404;
-                }
-            }
-            else {
-                response.statusCode = 403;
-                body = JSON.stringify({ message: 'forbidden: insufficient privilege' });
+            let id = request.url.substring('/data/events/'.length);
+            let instance = await this.services['events'].get(id);
+            if (instance) {
+                await this.services['events'].delete(id);
+                body = JSON.stringify({ message:'event deleted' });
+                response.setHeader('content-type', 'application/json');
+                response.statusCode = 200;
+            } else {
+                response.statusCode = 404;
             }
         }
         
