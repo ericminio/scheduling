@@ -4,7 +4,7 @@ const path = require('path');
 class StylesRoute {
 
     matches(request) {
-        return request.url == '/scheduling.css'
+        return request.url == '/scheduling.css';
     }
     async go(request, response) {
         let body = fs.readFileSync(path.join(__dirname, '../../web', 'scheduling.css')).toString();                

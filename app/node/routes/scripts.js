@@ -4,7 +4,7 @@ const path = require('path');
 class ScriptsRoute {
 
     matches(request) {
-        return request.url == '/scheduling.js'
+        return request.url == '/scheduling.js';
     }
     async go(request, response) {
         let files = [

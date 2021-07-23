@@ -6,7 +6,8 @@ const Factory = require('../domain/factory');
 const Guard = require('./guard');
 const { Ping, Yop, Scripts, Styles, 
         SignIn, 
-        GetAllEvents, CreateEvent, GetOneEvent, DeleteOneEvent } = require('./routes');
+        GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
+        GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -44,7 +45,8 @@ class Server {
         this.guard = new Guard();
         this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles(), 
             new SignIn(),
-            new GetAllEvents(), new CreateEvent(), new GetOneEvent(), new DeleteOneEvent()
+            new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
+            new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource()
         ];
     }
     start(done) {
@@ -76,44 +78,7 @@ class Server {
             response.statusCode = 200;
             let body = 'NOT FOUND';
 
-            if (request.method=='GET' && request.url == '/data/resources') {
-                let resources = await this.services['resources'].all();
-                body = JSON.stringify({ resources:resources });
-                response.setHeader('content-type', 'application/json');
-            }
-            else if (request.method=='POST' && request.url == '/data/resources/create') {
-                let incoming = await payload(request);
-                let resource = await this.factory.createResource(incoming);
-                await this.services['resources'].save(resource);
-                body = JSON.stringify({ location:'/data/resources/' + resource.id });
-                response.setHeader('content-type', 'application/json');
-                response.statusCode = 201;
-            }
-            else if (request.method=='GET' && request.url.indexOf('/data/resources/')==0) {
-                let id = request.url.substring('/data/resources/'.length);
-                let instance = await this.services['resources'].get(id);
-                if (instance) {
-                    body = JSON.stringify(instance);
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 200;
-                } else {
-                    response.statusCode = 404;
-                }
-            }
-            else if (request.method=='DELETE' && request.url.indexOf('/data/resources/')==0) {
-                let id = request.url.substring('/data/resources/'.length);
-                let instance = await this.services['resources'].get(id);
-                if (instance) {
-                    await this.services['resources'].delete(id);
-                    body = JSON.stringify({ message:'resource deleted' });
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 200;
-                } else {
-                    response.statusCode = 404;
-                }
-            }
-
-            else if (request.url.indexOf('/data/')==0) {
+            if (request.url.indexOf('/data/')==0) {
                 response.statusCode = 501;
             }
 

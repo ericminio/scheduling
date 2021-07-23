@@ -1,7 +1,7 @@
 class YopRoute {
 
     matches(request) {
-        return request.url == '/yop.js'
+        return request.url == '/yop.js';
     }
     async go(request, response) {
         response.statusCode = 200;

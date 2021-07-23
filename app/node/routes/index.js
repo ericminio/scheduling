@@ -6,7 +6,12 @@ module.exports = {
     SignIn: require('./sign-in'),
 
     GetAllEvents: require('./events/get-all-events'),
-    CreateEvent: require('./events/create-event'),
+    CreateOneEvent: require('./events/create-one-event'),
     GetOneEvent: require('./events/get-one-event'),
-    DeleteOneEvent: require('./events/delete-one-event')
+    DeleteOneEvent: require('./events/delete-one-event'),
+
+    GetAllResources: require('./resources/get-all-resources'),
+    CreateOneResource: require('./resources/create-one-resource'),
+    GetOneResource: require('./resources/get-one-resource'),
+    DeleteOneResource: require('./resources/delete-one-resource')
 };
