@@ -1,7 +1,8 @@
 let http = require('http');
 const Factory = require('../domain/factory');
 const Guard = require('./guard');
-const { Ping, Yop, Scripts, Styles, 
+const { SecurityRoute,
+        Ping, Yop, Scripts, Styles, 
         SignIn, 
         GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
         GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
@@ -16,15 +17,6 @@ class Server {
             try {
                 response.setHeader('Access-Control-Allow-Origin', '*');
                 response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, DELETE');
-                let isAuthorized = await this.guard.isAuthorized(request);
-                if (! isAuthorized) {
-                    response.statusCode = 403;
-                    let body = JSON.stringify({ message: 'forbidden: insufficient privilege' });
-                    response.setHeader('content-type', 'application/json');
-                    response.write(body);
-                    response.end();
-                    return;                    
-                }
                 await this.route(request, response);                
             }
             catch (error) {
@@ -37,7 +29,9 @@ class Server {
         });
         this.services = {};
         this.guard = new Guard();
-        this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles(), 
+        this.routes = [ 
+            new SecurityRoute(),
+            new Ping(), new Yop(), new Scripts(), new Styles(), 
             new SignIn(),
             new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
             new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource(),
@@ -62,7 +56,8 @@ class Server {
     async route(request, response) {
         for (let i =0; i<this.routes.length; i++) {
             let route = this.routes[i];
-            if (route.matches(request)) {
+            let matching = await route.matches(request, this);
+            if (matching) {
                 await route.go(request, response, this);
                 break;
             }

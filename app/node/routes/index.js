@@ -1,5 +1,6 @@
 module.exports = {
-    
+    SecurityRoute: require('./security-route'),
+
     Ping: require('./ping'),
     Yop: require('./yop'),
     Scripts: require('./scripts'),
