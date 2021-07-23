@@ -1,4 +1,5 @@
 module.exports = {
     Resource: require('./resource'),
-    Event: require('./event')
+    Event: require('./event'),
+    User: require('./user')
 }

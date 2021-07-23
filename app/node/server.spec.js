@@ -3,7 +3,7 @@ const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map');
-const { Resource, Event } = require('../domain');
+const { Resource, Event, User } = require('../domain');
 const AlwaysSameId = require('./support/always-same-id');
 
 describe('Server', ()=>{
@@ -14,7 +14,8 @@ describe('Server', ()=>{
         server = new Server(port);
         server.services = {
             'resources': new RepositoryUsingMap(),
-            'events': new RepositoryUsingMap()
+            'events': new RepositoryUsingMap(),
+            'users': new RepositoryUsingMap()
         };
         server.start(async () => {
             done();
@@ -402,6 +403,10 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(404);
     });
     it('is open to sign-in', async ()=>{
+        server.routes[5].keyGenerator = new AlwaysSameId('42');
+        server.services['users'].getUserByCredentials = async (credentials)=> { 
+            return new User({ username:'this-username' }); 
+        }
         let credentials = {
             username: 'this-username',
             password: 'this-password'
@@ -419,7 +424,7 @@ describe('Server', ()=>{
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({
             username: 'this-username',
-            key: 'this-key'
+            key: '42'
         });
     });
 })
