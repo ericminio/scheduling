@@ -4,7 +4,9 @@ let fs = require('fs');
 const payload = require('./support/payload');
 const Factory = require('../domain/factory');
 const Guard = require('./guard');
-const { Ping, Yop, Scripts, Styles, SignIn } = require('./routes');
+const { Ping, Yop, Scripts, Styles, 
+        SignIn, 
+        GetAllEvents, CreateEvent, GetOneEvent, DeleteOneEvent } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -41,7 +43,8 @@ class Server {
         this.services = {};
         this.guard = new Guard();
         this.routes = [ new Ping(), new Yop(), new Scripts(), new Styles(), 
-            new SignIn(this.guard)
+            new SignIn(),
+            new GetAllEvents(), new CreateEvent(), new GetOneEvent(), new DeleteOneEvent()
         ];
     }
     start(done) {
@@ -64,7 +67,7 @@ class Server {
         for (let i =0; i<this.routes.length; i++) {
             let route = this.routes[i];
             if (route.matches(request)) {
-                await route.go(request, response);
+                await route.go(request, response, this);
                 found = true;
                 break;
             }
@@ -73,51 +76,7 @@ class Server {
             response.statusCode = 200;
             let body = 'NOT FOUND';
 
-            if (request.method=='GET' && request.url == '/data/events') {
-                let events = await this.services['events'].all();
-                body = JSON.stringify({ events:events });
-                response.setHeader('content-type', 'application/json');
-            }
-            else if (request.method=='POST' && request.url == '/data/events/create') {
-                let incoming = await payload(request);
-                try {
-                    let event = await this.factory.createEvent(incoming, this.services['resources']);
-                    await this.services['events'].save(event);
-                    body = JSON.stringify({ location:'/data/events/' + event.id });
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 201;
-                }
-                catch (error) {
-                    body = JSON.stringify({ message:error.message });
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 406;
-                }
-            }
-            else if (request.method=='GET' && request.url.indexOf('/data/events/')==0) {
-                let id = request.url.substring('/data/events/'.length);
-                let instance = await this.services['events'].get(id);
-                if (instance) {
-                    body = JSON.stringify(instance);
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 200;
-                } else {
-                    response.statusCode = 404;
-                }
-            }
-            else if (request.method=='DELETE' && request.url.indexOf('/data/events/')==0) {
-                let id = request.url.substring('/data/events/'.length);
-                let instance = await this.services['events'].get(id);
-                if (instance) {
-                    await this.services['events'].delete(id);
-                    body = JSON.stringify({ message:'event deleted' });
-                    response.setHeader('content-type', 'application/json');
-                    response.statusCode = 200;
-                } else {
-                    response.statusCode = 404;
-                }
-            }
-            
-            else if (request.method=='GET' && request.url == '/data/resources') {
+            if (request.method=='GET' && request.url == '/data/resources') {
                 let resources = await this.services['resources'].all();
                 body = JSON.stringify({ resources:resources });
                 response.setHeader('content-type', 'application/json');

@@ -1,18 +1,16 @@
 const payload = require('../support/payload');
 
 class SignInRoute {
-    constructor(guard) {
-        this.guard = guard;
-    }
-
     matches(request) {
         return request.method=='POST' && request.url.indexOf('/sign-in')==0;
     }
-    async go(request, response) {
+    async go(request, response, server) {
+        let guard = server.guard;
+
         let incoming = await payload(request);
         let decoded = Buffer.from(incoming.encoded, 'base64').toString('ascii');
         let credentials = JSON.parse(decoded);
-        let answer = await this.guard.connect(credentials);
+        let answer = await guard.connect(credentials);
         let body = JSON.stringify({
             username: answer.username,
             key: answer.key

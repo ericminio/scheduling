@@ -1,7 +1,7 @@
 class PingRoute {
 
     matches(request) {
-        return request.url == '/ping'
+        return request.url == '/ping';
     }
     async go(request, response) {
         response.statusCode = 200;
