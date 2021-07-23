@@ -17,16 +17,19 @@ class Server {
                 response.setHeader('Access-Control-Allow-Origin', '*');
                 response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, DELETE');
                 let isAuthorized = await this.guard.isAuthorized(request);
-                if (isAuthorized) {
-                    await this.route(request, response);
-                }
-                else {
+                if (! isAuthorized) {
                     response.statusCode = 403;
                     let body = JSON.stringify({ message: 'forbidden: insufficient privilege' });
                     response.setHeader('content-type', 'application/json');
                     response.write(body);
                     response.end();
+                    return;                    
                 }
+                if (request.method=='OPTIONS' && request.url.indexOf('/data/')==0) {
+                    response.statusCode = 200;
+                    return;
+                }
+                await this.route(request, response);                
             }
             catch (error) {
                 console.log(error);
@@ -79,11 +82,6 @@ class Server {
                     key: answer.key
                 });
                 response.setHeader('content-type', 'application/json');
-            }
-            
-
-            else if (request.method=='OPTIONS' && request.url.indexOf('/data/')==0) {
-                response.statusCode = 200;
             }
             
             else if (request.method=='GET' && request.url == '/data/events') {
