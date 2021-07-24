@@ -75,7 +75,8 @@ describe('Sign-In route', ()=>{
         expect(response.statusCode).to.equal(401);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({
-            username: 'this-username'
+            username: 'this-username',
+            message: 'invalid credentials'
         })
     });
     

@@ -19,6 +19,7 @@ describe('Sign in', ()=>{
                 <yop-sign-in></yop-sign-in>
                 <script>
                     ${yop}
+                    store.saveObject('user', { any:42 });
                     var api = {
                         signIn: (credentials)=> new Promise((resolve)=>{ resolve(); })  
                     };
@@ -93,5 +94,9 @@ describe('Sign in', ()=>{
             });
             done();
         });
+    });
+
+    it('deletes locally stored user', ()=>{
+        expect(window.store.getObject('user')).to.equal(null);
     });
 })

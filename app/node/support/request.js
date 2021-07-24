@@ -18,6 +18,9 @@ const request = (options)=> {
         request.on('error', error => {
             reject(error);
         })
+        if (options.headers) {
+            request.setHeader('x-user-key', options.headers['x-user-key'])
+        }
         request.end();
     })
 };

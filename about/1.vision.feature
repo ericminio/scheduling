@@ -3,6 +3,9 @@ Feature: Scheduling events
     Plan the use of any type of resources
 
     Background: brand new system
+        Given the following users and privileges
+            | Username  | Password | Priviledges  |
+            | I         | secret   | read, write  |
         Given I create the following resources
             | Type       | Name       |
             | plane      | GITN       |
@@ -20,6 +23,7 @@ Feature: Scheduling events
             | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
     Scenario: Inspect
+        When "I" signs in with password "secret"
         When I look at the events
         Then I see that "Alex" starts at "18:00"
         Then I see that "Alex" ends at "20:00"

@@ -23,6 +23,7 @@ class SignIn extends HTMLElement {
          });
         this.querySelector('#signin').addEventListener('click', ()=>{ this.login(); });
         this.querySelector('#username').focus();
+        store.delete('user');
     }
     login() {
         let credentials = {

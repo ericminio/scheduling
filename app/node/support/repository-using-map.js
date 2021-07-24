@@ -18,6 +18,14 @@ class RepositoryUsingMap {
         let instance = this.get(id);
         this.store.splice(this.store.indexOf(instance), 1);
     }
+
+    async getUserByCredentials(credentials) { 
+        return this.store.find(instance => instance.username == credentials.username);
+    }
+    async getUserByKey(key) { 
+        return this.store.find(instance => instance.key == key);
+    }
+    
 };
 
 module.exports = RepositoryUsingMap;

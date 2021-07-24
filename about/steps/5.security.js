@@ -3,8 +3,18 @@ const { getEventElements, getResourceElement, getEventScheduledWith } = require(
 const { expect } = require('../../app/node_modules/chai');
 const login = require('./login')
 const { openEvents } = require('./navigation')
+const { User } = require('../../app/domain')
 
-Given('the following users and priviledges', async (dataTable)=> {
+Given('the following users and privileges', async (table)=> {
+    let lines = table.rawTable;
+    for (let i=1; i<lines.length; i++) {
+        let data = lines[i];
+        let username = data[0];
+        let password = data[1];
+        let privileges = data[2];
+        let user = new User({ username:username, password:password, privileges:privileges });
+        await World.server.services['users'].save(user);
+    }
 });
 
 When('{string} signs in with password {string}', async (username, password)=> {

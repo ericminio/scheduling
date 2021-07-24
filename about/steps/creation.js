@@ -1,9 +1,10 @@
 const { Given, World } = require('../../app/node_modules/@cucumber/cucumber');
 const { request } = require('../../app/node/support/request');
 const login = require('./login')
+const { expect } = require('../../app/node_modules/chai');
 
 Given('I create the following resources', async (resources)=> {
-    await login('secret key');
+    await login('I', 'secret');
     await World.robot.click('#resource-creation');
     let lines = resources.rawTable;
     for (let i=1; i<lines.length; i++) {
@@ -15,13 +16,20 @@ Given('I create the following resources', async (resources)=> {
     await World.robot.click('#resource-creation');
 });
 Given('I create the following events', async (events)=> {
-    await login('secret key');
+    await login('I', 'secret');
+    let user = await World.driver.executeScript("return window.localStorage.getItem('user');");
+    let key = JSON.parse(user).key;
+
     let response = await request({
         hostname: 'localhost',
         port: World.server.port,
         path: '/data/resources',
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            'x-user-key': key
+        }
     });
+    expect(response.statusCode).to.equal(200);
     World.resources = JSON.parse(response.body).resources;
     World.getResourceId = (name)=> World.resources.find(r => name == r.name).id;
     await World.robot.click('events');

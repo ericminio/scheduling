@@ -8,11 +8,7 @@ server.services['resources'] = new ResourcesRepository(database);
 server.services['events'] = new EventsRepository(database);
 
 const RepositoryUsingMap = require('./node/support/repository-using-map');
-const { User } = require('./domain');
-const  AlwaysSameId = require('./node/support/always-same-id');
 server.services['users'] = new RepositoryUsingMap();
-server.services['users'].getUserByCredentials = (credentials)=> new User({ username:'Joe' })
-server.routes[5].keyGenerator = new AlwaysSameId('key-for-joe')
 
 const { migrate } = require('./storage');
 new Promise(async (resolve, reject)=> {

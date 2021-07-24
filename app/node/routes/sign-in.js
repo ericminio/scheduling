@@ -26,7 +26,7 @@ class SignInRoute {
         else {
             response.statusCode = 401;
             response.setHeader('content-type', 'application/json');
-            response.write(JSON.stringify({ username: credentials.username }));
+            response.write(JSON.stringify({ username: credentials.username, message: 'invalid credentials' }));
         }
         response.end();
     }
