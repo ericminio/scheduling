@@ -4,5 +4,6 @@ module.exports = {
     clear: require('./migrations/clear'),
     Database: require('./database'),
     ResourcesRepository: require('./resources-repository'),
-    EventsRepository: require('./events-repository')
+    EventsRepository: require('./events-repository'),
+    UsersRepository: require('./users-repository')
 }

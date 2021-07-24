@@ -1,4 +1,4 @@
-const { Database, ResourcesRepository, EventsRepository } = require('./storage');
+const { Database, ResourcesRepository, EventsRepository, UsersRepository } = require('./storage');
 let database = new Database();
 
 const { Server } = require('./node/server');
@@ -6,9 +6,7 @@ const port = process.env.PORT || 8015;
 let server = new Server(port);
 server.services['resources'] = new ResourcesRepository(database);
 server.services['events'] = new EventsRepository(database);
-
-const RepositoryUsingMap = require('./node/support/repository-using-map');
-server.services['users'] = new RepositoryUsingMap();
+server.services['users'] = new UsersRepository(database);
 
 const { migrate } = require('./storage');
 new Promise(async (resolve, reject)=> {
