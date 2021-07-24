@@ -48,22 +48,24 @@ class Calendar extends HTMLElement {
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
-        this.update();
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation');
         });
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
-        events.register(this, 'resource deleted');
+        events.register(this, 'resource deleted');        
+        this.update();        
     }
     update() {
-        api.getResources().then(data => {
-            let resources = data.resources;
-            this.displayResources(resources)
-            api.getEvents().then(data => this.displayEvents(data.events, resources));
-            store.saveObject('resources', resources);
-        });
+        api.getResources()
+            .then(data => {
+                let resources = data.resources;
+                this.displayResources(resources)
+                api.getEvents().then(data => this.displayEvents(data.events, resources));
+                store.saveObject('resources', resources);
+            })
+            .catch(()=> { store.delete('resources'); });
     }
     displayTimelineMarks(starts) {
         let view = this.querySelector('timeline');
