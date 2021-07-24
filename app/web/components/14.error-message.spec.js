@@ -8,7 +8,7 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'error-message.js')).toString()
     ;
 
-describe('Error message', ()=>{
+describe.only('Error message', ()=>{
 
     let html = `
         <!DOCTYPE html>
@@ -51,6 +51,12 @@ describe('Error message', ()=>{
     it('will close on click', ()=>{
         window.events.notify('error', { message: 'oops' });
         document.querySelector('#error-message').click();
+        expect(document.querySelector('#error-message').classList.toString()).to.equal('hidden');
+    });
+
+    it('will close on expected notification', ()=>{
+        window.events.notify('error', { message: 'oops' });
+        window.events.notify('acknowledge error');
         expect(document.querySelector('#error-message').classList.toString()).to.equal('hidden');
     });
 })

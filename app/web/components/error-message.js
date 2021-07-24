@@ -25,10 +25,16 @@ class ErrorMessage extends HTMLElement {
         this.appendChild(errorMessageTemplate.content.cloneNode(true));
         this.querySelector('#error-message').addEventListener('click', ()=> { this.acknowledge(); } );
         events.register(this, 'error');
+        events.register(this, 'acknowledge error')
     }
-    update(error) {
-        this.querySelector('#error-message').classList.remove('hidden');
-        this.querySelector('#error-message').innerHTML = error.message;
+    update(error, event) {
+        console.log(event, error);
+        if (event == 'acknowledge error') {
+            this.acknowledge();
+        } else {
+            this.querySelector('#error-message').classList.remove('hidden');
+            this.querySelector('#error-message').innerHTML = error.message;
+        }
     }
     acknowledge() {
         this.querySelector('#error-message').classList.add('hidden');
