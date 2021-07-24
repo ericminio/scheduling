@@ -11,7 +11,8 @@ BeforeAll(async ()=>{
 Before(async (testCase)=>{
     let maybeLoaded = require.resolve('../../app/start');
     delete require.cache[maybeLoaded];
-    let { server, database } = require('../../app/start');
+    let { server, database, ready } = require('../../app/start');
+    await ready;
     World.server = server;
     await clear(database);
     World.robot = new Robot(World, By);

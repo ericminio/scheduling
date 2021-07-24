@@ -30,6 +30,18 @@ describe('Users storage', ()=> {
         expect(rows.length).to.equal(1);
     });
 
+    it('does not create twice', async ()=> {
+        let user = new User({ 
+            id:'this-id',
+            username:'this-username', password:'this-password',
+            privileges:'read, write', key:'this-key' });
+        await repository.save(user);
+        await repository.save(user);
+        var rows = await database.executeSync('select id from users')
+
+        expect(rows.length).to.equal(1);
+    });
+
     it('updates key when saving the key', async ()=> {
         let user = new User({ 
             username:'this-username', password:'this-password',
@@ -52,7 +64,7 @@ describe('Users storage', ()=> {
         let fetched = await repository.getUserByKey('this-key');
 
         expect(fetched).to.deep.equal(new User({ 
-            id:'this-id', key:'this-key', username:'this-username', privileges:'read, write' }));
+            id:'this-id', username:'this-username', privileges:'read, write' }));
     });
 
     it('returns undefined when key is unknown', async ()=> {
@@ -74,7 +86,8 @@ describe('Users storage', ()=> {
         let fetched = await repository.getUserByCredentials({ 
             username:'this-username', password:'this-password' });
 
-        expect(fetched).to.deep.equal(new User({ id:'this-id', username:'this-username' }));
+        expect(fetched).to.deep.equal(new User({ 
+            id:'this-id', username:'this-username', privileges:'read, write' }));
     });
 
     it('returns undefined when credentials dont match', async ()=> {
@@ -97,6 +110,34 @@ describe('Users storage', ()=> {
         let fetched = await repository.getUserByCredentials({ 
             username:'this-username', password:'this-password' });
 
-        expect(fetched).to.deep.equal(new User({ id:'this-id', username:'this-username' }));
+        expect(fetched).to.deep.equal(new User({ 
+            id:'this-id', username:'this-username', privileges:'read, write' }));
+    });
+
+    it('can check existance by username', async ()=> {
+        let before = await repository.getUserByUsername('this-username');
+        expect(before).to.equal(undefined);
+
+        await repository.save(new User({ 
+            id:'this-id',
+            username:'this-username', password:'this-password',
+            privileges:'read, write' }));
+        let fetched = await repository.getUserByUsername('this-username');
+        expect(fetched).to.deep.equal(new User({ 
+            id:'this-id', username:'this-username', privileges:'read, write' }));
+    });
+
+    it('can update encrypted password', async ()=> {
+        let user = new User({ 
+            id:'this-id',
+            username:'this-username', password:'this-password',
+            privileges:'read, write' });
+        await repository.save(user);
+        user.password = new Hash().encrypt('this-other-password');
+        await repository.savePasswordAssumingAlreadyEncrypted(user);
+        let fetched = await repository.getUserByCredentials({ 
+            username:'this-username', password:'this-other-password' });
+        
+        expect(fetched).not.to.deep.equal(undefined);
     });
 });
