@@ -47,13 +47,17 @@ describe('When access to calendar is forbidden', ()=>{
     let calendar;
 
     beforeEach((done)=>{
-        window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+        window = (new JSDOM(html, { url:'http://localhost/events', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar');
         setTimeout(done, 150);
-    })
+    });
 
     it('deletes locally stored resources', ()=>{
         expect(window.store.getObject('resources')).to.equal(null);
     });
+
+    it('navigates to /', ()=> {
+        expect(window.location.pathname).to.equal('/');
+    })
 })

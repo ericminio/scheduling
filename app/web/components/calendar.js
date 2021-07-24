@@ -65,7 +65,10 @@ class Calendar extends HTMLElement {
                 api.getEvents().then(data => this.displayEvents(data.events, resources));
                 store.saveObject('resources', resources);
             })
-            .catch(()=> { store.delete('resources'); });
+            .catch(()=> { 
+                store.delete('resources'); 
+                navigate.to('/');
+            });
     }
     displayTimelineMarks(starts) {
         let view = this.querySelector('timeline');

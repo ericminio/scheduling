@@ -8,7 +8,7 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'error-message.js')).toString()
     ;
 
-describe.only('Error message', ()=>{
+describe('Error message', ()=>{
 
     let html = `
         <!DOCTYPE html>
