@@ -22,6 +22,7 @@ describe('Server', ()=>{
         });
         server.guard.isAuthorized = ()=> { return true; }
         server.services['users'].getUserByCredentials = (credentials)=> new User(credentials)
+        server.services['users'].saveKey = async (user)=> server.services['users'].save(user);
     });
     afterEach((done)=> {
         server.stop(done);

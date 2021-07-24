@@ -18,7 +18,7 @@ class SignInRoute {
         if (user) {
             let key = this.keyGenerator.next();
             user.setKey(key);
-            await server.services['users'].save(user);
+            await server.services['users'].saveKey(user);
             response.statusCode = 200;
             response.setHeader('content-type', 'application/json');
             response.write(JSON.stringify({ username: user.username, key:key }));

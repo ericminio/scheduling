@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { Database, drop, migrate, UsersRepository } = require('.');
 const { User } = require('../domain');
+const Hash = require('./hash');
 
 describe('Users storage', ()=> {
     
@@ -29,13 +30,13 @@ describe('Users storage', ()=> {
         expect(rows.length).to.equal(1);
     });
 
-    it('updates key when saving same id', async ()=> {
+    it('updates key when saving the key', async ()=> {
         let user = new User({ 
             username:'this-username', password:'this-password',
             privileges:'read, write' });
         await repository.save(user);
         user.setKey('this-other-key');
-        await repository.save(user);
+        await repository.saveKey(user);
         var rows = await database.executeSync('select key from users')
 
         expect(rows.length).to.equal(1);
@@ -85,5 +86,17 @@ describe('Users storage', ()=> {
             username:'this-username', password:'guess' });
 
         expect(fetched).to.equal(undefined);
-    })
+    });
+
+    it('can take an already encrypted password', async ()=> {
+        let user = new User({ 
+            id:'this-id',
+            username:'this-username', password:new Hash().encrypt('this-password'),
+            privileges:'read, write' });
+        await repository.saveAssumingPasswordAlreadyEncrypted(user);
+        let fetched = await repository.getUserByCredentials({ 
+            username:'this-username', password:'this-password' });
+
+        expect(fetched).to.deep.equal(new User({ id:'this-id', username:'this-username' }));
+    });
 });

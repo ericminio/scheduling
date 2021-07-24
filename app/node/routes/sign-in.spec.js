@@ -42,7 +42,8 @@ describe('Sign-In route', ()=>{
         });
         
         user = new User(credentials);
-        users.getUserByCredentials = async (credentials)=> { return user; }
+        users.getUserByCredentials = async (credentials)=> user;
+        users.saveKey = async (user)=> users.save(user);
     });
     afterEach((done)=> {
         server.stop(done);
