@@ -1,7 +1,7 @@
 class SecurityRoute {
 
     async matches(request, server) {
-        let isAuthorized = await server.guard.isAuthorized(request);
+        let isAuthorized = await server.guard.isAuthorized(request, server);
         return ! isAuthorized;
     }
     async go(request, response) {

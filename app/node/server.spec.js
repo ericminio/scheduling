@@ -20,6 +20,8 @@ describe('Server', ()=>{
         server.start(async () => {
             done();
         });
+        server.guard.isAuthorized = ()=> { return true; }
+        server.services['users'].getUserByCredentials = (credentials)=> new User(credentials)
     });
     afterEach((done)=> {
         server.stop(done);
@@ -236,8 +238,7 @@ describe('Server', ()=>{
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/15');
     });
-    it('is open to event deletion when guard is', async ()=>{
-        server.guard.isAuthorized = ()=> { return true; }
+    it('is open to event deletion', async ()=>{
         let resources = new RepositoryUsingMap();
         let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
         let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
@@ -298,7 +299,6 @@ describe('Server', ()=>{
         expect(JSON.parse(response.body)).to.deep.equal({ events:[] });
     });
     it('resists missing event deletion', async ()=>{
-        server.guard.isAuthorized = ()=> { return true; }
         let resources = new RepositoryUsingMap();
         let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
         let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
@@ -404,9 +404,6 @@ describe('Server', ()=>{
     });
     it('is open to sign-in', async ()=>{
         server.routes[5].keyGenerator = new AlwaysSameId('42');
-        server.services['users'].getUserByCredentials = async (credentials)=> { 
-            return new User({ username:'this-username' }); 
-        }
         let credentials = {
             username: 'this-username',
             password: 'this-password'
