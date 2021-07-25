@@ -38,25 +38,29 @@ unknownTemplate.innerHTML = `
 class SystemStatus extends HTMLElement {
     constructor() {
         super();
-        this.greenContent = greenTemplate.content.cloneNode(true);
-        this.redContent = redTemplate.content.cloneNode(true);
-        this.unknownContent = unknownTemplate.content.cloneNode(true);
+        this.refresh = parseInt(this.getAttribute("refresh") || (5 * 60 * 1000));
+        this.greenContent = greenTemplate.innerHTML;
+        this.redContent = redTemplate.innerHTML;
+        this.unknownContent = unknownTemplate.innerHTML;
     }
     connectedCallback() {
-        this.innerHTML = ``;
-        this.appendChild(this.unknownContent);;
+        this.innerHTML = this.unknownContent;
         this.update();
     }
     update() {
         api.ping()
             .then(() => {
-                this.innerHTML = ``;
-                this.appendChild(this.greenContent);
+                this.innerHTML = this.greenContent;
             })
             .catch(() => {
-                this.innerHTML = ``;
-                this.appendChild(this.redContent);
+                this.innerHTML = this.redContent;
             })
+            .finally(()=> {
+                this.again();
+            });
+    }
+    again() {
+        setTimeout(()=> { this.update(); }, this.refresh);
     }
 };
 customElements.define('system-status', SystemStatus);

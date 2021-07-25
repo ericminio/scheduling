@@ -75,4 +75,47 @@ describe('System status', ()=>{
             expect(status.querySelector(".status-red")).not.to.equal(null);
         });
     });
+
+    describe('refresh', ()=>{
+        
+        beforeEach((done)=>{
+            let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <system-status refresh="50"></system-status>
+                    <script>
+                        var api = {
+                            ping: ()=> {
+                                return new Promise((resolve, reject)=>{
+                                    resolve({ alive:true });
+                                });
+                            }                        
+                        };
+                        ${sut}
+                    </script>
+                </body>
+            </html>
+            `;
+            window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
+            document = window.document;
+            status = document.querySelector('system-status');
+            setTimeout(done, 150);
+        });
+    
+        it('can be configured', (done)=>{
+            let count = 0;
+            window.api.ping = ()=> {                
+                return new Promise((resolve, reject)=>{                    
+                    count ++;
+                    resolve();
+                });
+            };
+            setTimeout(()=>{
+                expect(count).to.equal(3);
+                expect(status.querySelector(".status-green")).not.to.equal(null);
+                done();
+            }, 150);
+        });
+    });
 });
