@@ -14,7 +14,8 @@ logoutTemplate.innerHTML = `
     }
 </style>
 <div id="logout" class="logout inline-block">
-    <label id="logout-greetings" class="logout-greetings">Welcome, ? | </label>
+    <label id="logout-greetings" class="logout-greetings">Welcome, ?</label>
+    <label class="logout-separator">&nbsp;|&nbsp;</label>
     <label id="logout-link" class="logout-link">logout</label>
 </div>
 `;
@@ -45,7 +46,7 @@ class Logout extends HTMLElement {
         }
         else {
             this.querySelector('#logout').classList.remove('hidden');
-            this.querySelector('#logout-greetings').innerHTML = `Welcome, ${user.username} | `;
+            this.querySelector('#logout-greetings').innerHTML = `Welcome, ${user.username}`;
         }
     }
 };
