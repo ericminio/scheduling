@@ -35,12 +35,16 @@ describe('Logout', ()=>{
     });
 
     it('navigates to /', ()=>{
-        document.querySelector('#logout').click();
+        window.store.saveObject('user', { any:42 });
+        window.events.notify('connected');
+        document.querySelector('#logout-link').click();
         expect(window.location.pathname).to.equal('/');
     });
 
     it('becomes hidden', ()=>{
-        document.querySelector('#logout').click();
+        window.store.saveObject('user', { any:42 });
+        window.events.notify('connected');
+        document.querySelector('#logout-link').click();
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
     });
 
