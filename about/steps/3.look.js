@@ -1,4 +1,5 @@
 const { When, Then, World } = require('../../app/node_modules/@cucumber/cucumber/lib');
+const { By } = require('../../app/node_modules/selenium-webdriver');
 const { markerPosition, getEventElements, getResourceElement, getEventScheduledWith } = require('./support');
 const { expect } = require('../../app/node_modules/chai');
 
@@ -34,4 +35,8 @@ Then('I see that {string} is scheduled with {string}', async (label, name)=> {
     if (!event) {
         throw Error('nope')
     }
+});
+Then('he sees that the calendar is empty', async ()=> {
+    let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
+    expect(candidatesEvents.length).to.equal(0);
 });

@@ -7,6 +7,7 @@ Feature: Securing data
             | Username  | Password | Priviledges  |
             | I         | secret   | read, write  |
             | Joe       | secret   | read         |
+            | Max       | secret   | read, write  |
         Given I create the following resources
             | Type         | Name           |
             | bicycle      | blue bicycle   |
@@ -26,3 +27,8 @@ Feature: Securing data
         When he tries to delete this event
         Then he receives the error message "forbidden: insufficient privilege"
         
+    Scenario: delete authorized
+        When "Max" signs in with password "secret"
+        When he inspects event "Alex" scheduled with "blue bicycle"
+        When he tries to delete this event
+        Then he sees that the calendar is empty
