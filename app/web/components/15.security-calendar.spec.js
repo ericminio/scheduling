@@ -12,20 +12,23 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
     ;
 
-describe('When access to calendar is forbidden', ()=>{
+describe('When resource load fails', ()=>{
 
     let html = `
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar></yop-container>
+                <yop-calendar></yop-calendar>
                 <script>
                     ${yop}
-                    store.saveObject('resources', { any:42 });
                     var api = {
                         getResources: ()=> {
                             return new Promise((resolve, reject)=>{
-                                reject({ message:'forbidden' });
+                                resolve({ resources:[
+                                    { id:'1', type:'plane', name:'GSDZ' },
+                                    { id:'2', type:'plane', name:'GKMY' },
+                                    { id:'3', type:'instructor', name:'Vasile' }
+                                ]});
                             });
                         },
                         getEvents: ()=> {
@@ -53,11 +56,34 @@ describe('When access to calendar is forbidden', ()=>{
         setTimeout(done, 150);
     });
 
-    it('deletes locally stored resources', ()=>{
-        expect(window.store.getObject('resources')).to.equal(null);
+    it('deletes locally stored resources', (done)=>{
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                reject();
+            });
+        };
+        window.events.notify('resource created');
+        setTimeout(()=>{
+            expect(window.store.getObject('resources')).to.equal(null);
+            done();
+        }, 150);
     });
 
-    it('navigates to /', ()=> {
-        expect(window.location.pathname).to.equal('/');
+    it('may be because we are signed out', (done)=> {
+        let wasCalled = false;
+        let spy = {
+            update: ()=> { wasCalled = true; }
+        };
+        window.events.register(spy, 'maybe signed-out');
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                reject();
+            });
+        };
+        window.events.notify('resource created');
+        setTimeout(()=>{
+            expect(wasCalled).to.equal(true);
+            done();
+        }, 150);
     })
 })

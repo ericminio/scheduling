@@ -2,10 +2,10 @@ const greenTemplate = document.createElement('template')
 greenTemplate.innerHTML = `
     <style>
         .status-green {
-            width: 100%;
-            text-align: right;
             color: var(--color-status-green);
+            text-align: right;
             font-size: 0.75em;
+            display: inline-block;
         }
     </style>
     <div class="status-green">online</div>
@@ -14,13 +14,25 @@ const redTemplate = document.createElement('template')
 redTemplate.innerHTML = `
     <style>
         .status-red {
-            width: 100%;
-            text-align: right;
             color: var(--color-status-red);
+            text-align: right;
             font-size: 0.75em;
+            display: inline-block;
         }
     </style>
     <div class="status-red">offline</div>
+`;
+const unknownTemplate = document.createElement('template')
+unknownTemplate.innerHTML = `
+    <style>
+        .status-unknown {
+            color: var(--color-status-unknown);
+            text-align: right;
+            font-size: 0.75em;
+            display: inline-block;
+        }
+    </style>
+    <div class="status-unknown">unknown</div>
 `;
 
 class SystemStatus extends HTMLElement {
@@ -28,9 +40,11 @@ class SystemStatus extends HTMLElement {
         super();
         this.greenContent = greenTemplate.content.cloneNode(true);
         this.redContent = redTemplate.content.cloneNode(true);
+        this.unknownContent = unknownTemplate.content.cloneNode(true);
     }
     connectedCallback() {
-        this.innerHTML = 'unknown';
+        this.innerHTML = ``;
+        this.appendChild(this.unknownContent);;
         this.update();
     }
     update() {

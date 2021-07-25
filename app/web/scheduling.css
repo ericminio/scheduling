@@ -26,6 +26,7 @@
     --color-event: white;
     --color-status-green: lightgreen;
     --color-status-red: red;
+    --color-status-unknown: lightgray;
     --color-add-ressource: var(--background-resource);
     --color-delete: white;
 }
@@ -115,6 +116,9 @@ yop-calendar-resource, yop-calendar-event {
     }
 }
 
+.inline-block {
+    display: inline-block;
+}
 .hidden {
     display: none;
 }

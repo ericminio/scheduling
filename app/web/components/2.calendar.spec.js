@@ -18,7 +18,7 @@ describe('Calendar', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar></yop-container>
+                <yop-calendar></yop-calendar>
                 <script>
                     ${yop}
                     var api = {

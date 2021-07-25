@@ -42,6 +42,10 @@ describe('Page Sign in', ()=>{
         expect(document.querySelector('#signin')).not.to.equal(null);
     });
 
+    it('deletes locally stored user', ()=>{
+        expect(window.store.getObject('user')).to.equal(null);
+    });
+
     it('sends the expected request', ()=>{
         let spy;
         window.api = { signIn:(credentials)=> { spy = credentials; return new Promise((resolve)=> { resolve(); })} };
@@ -96,7 +100,21 @@ describe('Page Sign in', ()=>{
         });
     });
 
-    it('deletes locally stored user', ()=>{
-        expect(window.store.getObject('user')).to.equal(null);
+    it('notifies on success', (done)=>{
+        let wasCalled = false;
+        let spy = {
+            update: ()=> { wasCalled = true; }
+        };
+        window.events.register(spy, 'connected');
+        window.api = { signIn:()=> { return new Promise((resolve)=> { resolve({ 
+            username:'this-username', 
+            key:'send-me' 
+        }); })} };
+        document.querySelector('#username').value = 'this-username';
+        document.querySelector('#signin').click();
+        setTimeout(()=>{
+            expect(wasCalled).to.equal(true);
+            done();
+        });
     });
 })

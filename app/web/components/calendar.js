@@ -67,7 +67,7 @@ class Calendar extends HTMLElement {
             })
             .catch(()=> { 
                 store.delete('resources'); 
-                navigate.to('/');
+                events.notify('maybe signed-out')
             });
     }
     displayTimelineMarks(starts) {

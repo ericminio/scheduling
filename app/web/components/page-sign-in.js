@@ -33,6 +33,7 @@ class PageSignIn extends HTMLElement {
         api.signIn(credentials)
             .then((data)=> { 
                 store.saveObject('user', data);
+                events.notify('connected');
                 navigate.to('/events'); 
             })
             .catch((error)=> { events.notify('error', error); })

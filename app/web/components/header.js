@@ -25,7 +25,8 @@ headerTemplate.innerHTML = `
                 <tr>
                     <td></td>
                     <td class="title">Scheduling</td>
-                    <td>
+                    <td style="text-align:right;">
+                        <yop-logout></yop-logout>
                         <system-status></system-status>
                     </td>
                 </tr>

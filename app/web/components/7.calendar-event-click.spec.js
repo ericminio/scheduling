@@ -15,7 +15,7 @@ describe('Calendar Event click', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar-event></yop-container-event>
+                <yop-calendar-event></yop-calendar-event>
                 <script>
                     ${yop}
                     ${sut}
