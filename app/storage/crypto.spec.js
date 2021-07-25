@@ -16,6 +16,10 @@ describe('Hash', function() {
         hash = new Hash();
     });
 
+    it('can encrypt my favorite local admin password', ()=> {
+        expect(hash.encrypt('admin')).to.equal('8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+    })
+
     it('encrypts', ()=> {
         var secret = 'my secret, can be long or short ; as you wish';
         expect(hash.encrypt(secret)).not.to.equal(secret);
