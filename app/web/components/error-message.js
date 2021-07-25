@@ -7,7 +7,7 @@ errorMessageTemplate.innerHTML = `
         right: 0px;
         margin: 5px;
         padding: 10px;
-        background-color: red;
+        background-color: var(--color-red);
         color: white;
         cursor: pointer;
     }

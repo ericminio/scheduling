@@ -19,13 +19,14 @@
     --background-resource: #0058a3;
     --background-events: #d0e2ff;
     --background-event: var(--background-resource);
-    --background-delete: red;
+    --background-delete: var(--color-red);
+    --color-red: tomato;
     --color-header: white;
     --color-border: black;
     --color-resource: white;
     --color-event: white;
     --color-status-green: lightgreen;
-    --color-status-red: red;
+    --color-status-red: var(--color-red);
     --color-status-unknown: lightgray;
     --color-add-ressource: var(--background-resource);
     --color-delete: white;
