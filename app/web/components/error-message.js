@@ -28,7 +28,6 @@ class ErrorMessage extends HTMLElement {
         events.register(this, 'acknowledge error')
     }
     update(error, event) {
-        console.log(event, error);
         if (event == 'acknowledge error') {
             this.acknowledge();
         } else {

@@ -5,18 +5,18 @@ const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
 const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'sign-in.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'page-sign-in.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'error-message.js')).toString()
     ;
 
-describe('Sign in', ()=>{
+describe('Page Sign in', ()=>{
 
     let html = `
         <!DOCTYPE html>
         <html lang="en">
             <body>
                 <yop-error-message></yop-error-message>
-                <yop-sign-in></yop-sign-in>
+                <page-sign-in></page-sign-in>
                 <script>
                     ${yop}
                     store.saveObject('user', { any:42 });

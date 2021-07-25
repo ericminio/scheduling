@@ -19,8 +19,9 @@ class ScriptsRoute {
             'event-creation.js',
             'show-event.js',
             'show-resource.js',
-            'sign-in.js',
-            'error-message.js'
+            'error-message.js',
+            'page-sign-in.js',
+            'page-events.js'            
         ];
         let body = fs.readFileSync(path.join(__dirname, '../../web/data', 'api-client.js')).toString();
         files.forEach((file)=> {

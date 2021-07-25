@@ -9,16 +9,9 @@
         <yop-error-message></yop-error-message>
         <yop-header></yop-header>        
 
-        <yop-route when="/">
-            <yop-sign-in></yop-sign-in>
-        </yop-route>
-        <yop-route when="/events">
-            <yop-calendar></yop-calendar>
-            <resource-creation></resource-creation>
-            <event-creation></event-creation>
-            <show-event></show-event>
-        </yop-route>
-
+        <yop-route when="/" then="page-sign-in"></yop-route>
+        <yop-route when="/events" then="page-events"></yop-route>
+            
         <script src="yop.js"></script>
         <script src="scheduling.js"></script>
     </body>

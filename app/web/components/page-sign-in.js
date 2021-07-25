@@ -1,5 +1,5 @@
-const signInTemplate = document.createElement('template')
-signInTemplate.innerHTML = `
+const pageSignInTemplate = document.createElement('template')
+pageSignInTemplate.innerHTML = `
 
 <div class="vertical-form login-form">
     <label >Login</label>
@@ -11,13 +11,13 @@ signInTemplate.innerHTML = `
 </div>
 `;
 
-class SignIn extends HTMLElement {
+class PageSignIn extends HTMLElement {
 
     constructor() {
         super();
     }
     connectedCallback() {
-        this.appendChild(signInTemplate.content.cloneNode(true));
+        this.appendChild(pageSignInTemplate.content.cloneNode(true));
         this.querySelector('#password').addEventListener('keypress', (e)=>{ 
             if (e.key == 'Enter') { this.login(); }
          });
@@ -39,5 +39,5 @@ class SignIn extends HTMLElement {
             ;
     }
 };
-customElements.define('yop-sign-in', SignIn);
+customElements.define('page-sign-in', PageSignIn);
 
