@@ -146,4 +146,18 @@ describe('Guard', ()=>{
         
         expect(authorized).to.equal(false);
     });
+
+    it('additionnal privileges are ignored', async ()=>{
+        users.getUserByKey = async ()=> { return new User({ privileges:'read, write, configure' }); }
+        let request = {
+            method: 'POST',
+            url: '/data/any',
+            headers: {
+                'x-user-key': 'any'
+            }
+        };
+        let authorized = await guard.isAuthorized(request, server);
+        
+        expect(authorized).to.equal(true);
+    });
 });

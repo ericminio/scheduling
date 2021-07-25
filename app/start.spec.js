@@ -28,13 +28,18 @@ describe('start', ()=> {
         });
         afterEach((done)=> {
             server.stop(done)
-        })
+        });
 
         it('is created', async ()=> {
             let user = await users.getUserByCredentials({ username:'admin', password:'admin' });
 
             expect(user).not.to.equal(undefined);
-            expect(user.privileges).to.equal('read, write');
+        });
+
+        it('is created with expected privileges', async ()=> {
+            let user = await users.getUserByCredentials({ username:'admin', password:'admin' });
+
+            expect(user.privileges).to.equal('read, write, configure');
         })
     });
 
