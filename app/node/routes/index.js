@@ -6,7 +6,8 @@ module.exports = {
     Styles: require('./styles'),
 
     Ping: require('./ping'),
-    Configuration: require('./configuration'),
+    GetConfiguration: require('./configuration/get-configuration'),
+    UpdateConfiguration: require('./configuration/update-configuration'),
 
     SignIn: require('./sign-in'),
 

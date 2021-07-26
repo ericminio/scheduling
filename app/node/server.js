@@ -3,7 +3,7 @@ const Factory = require('../domain/factory');
 const Guard = require('./guard');
 const { SecurityRoute,
         Yop, Scripts, Styles, 
-        Ping, Configuration, 
+        Ping, GetConfiguration, UpdateConfiguration,
         SignIn, 
         GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
         GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
@@ -27,7 +27,7 @@ class Server {
         this.routes = [ 
             new SecurityRoute(),
             new Yop(), new Scripts(), new Styles(), 
-            new Ping(), new Configuration(),
+            new Ping(), new GetConfiguration(), new UpdateConfiguration(),
             new SignIn(),
             new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
             new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource(),

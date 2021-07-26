@@ -15,7 +15,8 @@ describe('Server', ()=>{
         server.services = {
             'resources': new RepositoryUsingMap(),
             'events': new RepositoryUsingMap(),
-            'users': new RepositoryUsingMap()
+            'users': new RepositoryUsingMap(),
+            'configuration': new RepositoryUsingMap()
         };
         server.start(async () => {
             done();
@@ -404,7 +405,7 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(404);
     });
     it('is open to sign-in', async ()=>{
-        server.routes[6].keyGenerator = new AlwaysSameId('42');
+        server.routes[7].keyGenerator = new AlwaysSameId('42');
         let credentials = {
             username: 'this-username',
             password: 'this-password'
@@ -425,19 +426,25 @@ describe('Server', ()=>{
             key: '42'
         });
     });
-    it('answers to configuration request', async ()=> {
-        server.services['configuration'] = new RepositoryUsingMap();
-        server.services['configuration'].save(new Configuration({ title:'Resto' }));
-        const configuration = {
+    it('is open to configuration update', async ()=> {
+        let updateResponse = await post({
+            hostname: 'localhost',
+            port: port,
+            path: '/configuration',
+            method: 'POST'
+        }, { title:'title'});
+        expect(updateResponse.statusCode).to.equal(200);
+        expect(updateResponse.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(updateResponse.body)).to.deep.equal({ message:'configuration updated' });
+
+        let getResponse = await request({
             hostname: 'localhost',
             port: port,
             path: '/configuration',
             method: 'GET'
-        };
-        let response = await request(configuration);
-        
-        expect(response.statusCode).to.equal(200);
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ title:'Resto' });
-    })
+        });
+        expect(getResponse.statusCode).to.equal(200);
+        expect(getResponse.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'title' });
+    });
 })
