@@ -1,10 +1,13 @@
 module.exports = {
     SecurityRoute: require('./security-route'),
 
-    Ping: require('./ping'),
     Yop: require('./yop'),
     Scripts: require('./scripts'),
     Styles: require('./styles'),
+
+    Ping: require('./ping'),
+    Configuration: require('./configuration'),
+
     SignIn: require('./sign-in'),
 
     GetAllEvents: require('./events/get-all-events'),

@@ -44,7 +44,9 @@ window.fetch = (uri, options)=> {
         request.on('error', error => {
             reject(error);
         })
-        request.setHeader('x-user-key', options.headers.get('x-user-key'))
+        if (options.headers !== undefined) {
+            request.setHeader('x-user-key', options.headers.get('x-user-key'));
+        }
         if (options.body) { request.write(options.body); }
         request.end();
     });
@@ -119,7 +121,8 @@ describe('Api client', ()=>{
             .catch(error => done(error));
     });
 
-    it('exposes ping', (done)=> {
+    it('exposes ping even disconnected', (done)=> {
+        store.delete('user');
         api.ping()
             .then((data) => {
                 expect(data).to.deep.equal({ 
@@ -128,8 +131,7 @@ describe('Api client', ()=>{
                     payload: '',
                     headers: {
                         connection: 'close',
-                        host: 'localhost:8006',
-                        'x-user-key': 'any-key'
+                        host: 'localhost:8006'
                     }
                 });            
                 done();
@@ -268,5 +270,23 @@ describe('Api client', ()=>{
                     done(error);
                 }
             })
-    })
+    });
+
+    it('exposes configuration even disconnected', (done)=> {
+        store.delete('user');
+        api.configuration()
+            .then((data) => {
+                expect(data).to.deep.equal({ 
+                    method: 'GET',
+                    url: '/configuration',
+                    payload: '',
+                    headers: {
+                        connection: 'close',
+                        host: 'localhost:8006'
+                    }
+                });            
+                done();
+            })
+            .catch(error => done(error));
+    });
 })

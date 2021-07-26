@@ -404,7 +404,7 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(404);
     });
     it('is open to sign-in', async ()=>{
-        server.routes[5].keyGenerator = new AlwaysSameId('42');
+        server.routes[6].keyGenerator = new AlwaysSameId('42');
         let credentials = {
             username: 'this-username',
             password: 'this-password'
@@ -425,4 +425,17 @@ describe('Server', ()=>{
             key: '42'
         });
     });
+    it('answers to configuration', async ()=> {
+        const ping = {
+            hostname: 'localhost',
+            port: port,
+            path: '/configuration',
+            method: 'GET'
+        };
+        let response = await request(ping);
+        
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(response.body)).to.deep.equal({ title:'The world of Max' });
+    })
 })

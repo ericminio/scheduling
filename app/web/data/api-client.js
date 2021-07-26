@@ -100,7 +100,7 @@ class ApiClient {
     }
 
     configuration() {
-        return new Promise((resolve)=>{ resolve({ title: 'The world of Max' }); })  
+        return this.get('/configuration');
     }
 }
 var api = new ApiClient(window);
