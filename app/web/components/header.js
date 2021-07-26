@@ -24,7 +24,7 @@ headerTemplate.innerHTML = `
             <tbody>
                 <tr>
                     <td></td>
-                    <td id="title" class="title">Scheduling</td>
+                    <td id="title" class="title">The world of Max</td>
                     <td style="text-align:right;">
                         <yop-logout></yop-logout>
                         <system-status></system-status>
