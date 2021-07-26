@@ -15,6 +15,7 @@ let migrate = async (database)=> {
     await run('2.create-table-events.sql', database);
     await run('3.create-table-events-resources.sql', database);
     await run('4.create-table-users.sql', database);
+    await run('5.create-table-configuration.sql', database);
 }
 
 
