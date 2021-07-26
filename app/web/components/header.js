@@ -24,7 +24,7 @@ headerTemplate.innerHTML = `
             <tbody>
                 <tr>
                     <td></td>
-                    <td id="title" class="title">The world of Max</td>
+                    <td id="title" class="title">Scheduling</td>
                     <td style="text-align:right;">
                         <yop-logout></yop-logout>
                         <system-status></system-status>
@@ -42,6 +42,16 @@ class Header extends HTMLElement {
 
     connectedCallback() {
         this.appendChild(headerTemplate.content.cloneNode(true))
+        this.update();
+    }
+
+    async update() {
+        let configuration = store.getObject('configuration');
+        if (configuration === null || configuration.title === undefined) {
+            configuration = await api.configuration();
+            store.saveObject('configuration', configuration);            
+        }
+        this.querySelector('#title').innerHTML = configuration.title;
     }
 }
 customElements.define('yop-header', Header)

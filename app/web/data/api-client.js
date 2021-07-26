@@ -98,5 +98,9 @@ class ApiClient {
         let payload = { encoded: window.btoa(JSON.stringify(credentials)) };
         return this.post('/sign-in', payload);
     }
+
+    configuration() {
+        return new Promise((resolve)=>{ resolve({ title: 'The world of Max' }); })  
+    }
 }
 var api = new ApiClient(window);
