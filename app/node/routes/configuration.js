@@ -3,10 +3,11 @@ class ConfigurationRoute {
     matches(request) {
         return request.url == '/configuration';
     }
-    async go(request, response) {
+    async go(request, response, server) {
+        let configuration = await server.services['configuration'].get();
         response.statusCode = 200;
         response.setHeader('content-type', 'application/json');
-        response.write(JSON.stringify({ title:'The world of Max' }));
+        response.write(JSON.stringify(configuration));
         response.end();
     }
 }

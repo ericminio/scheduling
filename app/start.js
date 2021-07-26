@@ -1,5 +1,6 @@
 const { Database, migrate,
-        ResourcesRepository, EventsRepository, UsersRepository } = require('./storage');
+        ResourcesRepository, EventsRepository, UsersRepository,
+        ConfigurationRepository } = require('./storage');
 let database = new Database();
 
 const { Server } = require('./node/server');
@@ -8,6 +9,7 @@ let server = new Server(port);
 server.services['resources'] = new ResourcesRepository(database);
 server.services['events'] = new EventsRepository(database);
 server.services['users'] = new UsersRepository(database);
+server.services['configuration'] = new ConfigurationRepository(database);
 
 const User = require('./domain/user');
 let ready = new Promise(async (resolve, reject)=> {

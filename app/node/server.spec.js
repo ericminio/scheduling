@@ -3,7 +3,7 @@ const { request, post } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
 const RepositoryUsingMap = require('./support/repository-using-map');
-const { Resource, Event, User } = require('../domain');
+const { Resource, Event, User, Configuration } = require('../domain');
 const AlwaysSameId = require('./support/always-same-id');
 
 describe('Server', ()=>{
@@ -425,17 +425,19 @@ describe('Server', ()=>{
             key: '42'
         });
     });
-    it('answers to configuration', async ()=> {
-        const ping = {
+    it('answers to configuration request', async ()=> {
+        server.services['configuration'] = new RepositoryUsingMap();
+        server.services['configuration'].save(new Configuration({ title:'Resto' }));
+        const configuration = {
             hostname: 'localhost',
             port: port,
             path: '/configuration',
             method: 'GET'
         };
-        let response = await request(ping);
+        let response = await request(configuration);
         
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ title:'The world of Max' });
+        expect(JSON.parse(response.body)).to.deep.equal({ title:'Resto' });
     })
 })
