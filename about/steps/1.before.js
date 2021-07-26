@@ -5,6 +5,9 @@ const { Configuration } = require('../../app/domain');
 const code = require('fs').readFileSync(require('path').join(__dirname, 'robot.js')).toString();
 const Robot = (new Function(`${code}; return Robot`))();
 
+var {setDefaultTimeout} = require('../../app/node_modules/@cucumber/cucumber');
+setDefaultTimeout(60 * 1000);
+
 BeforeAll(async ()=>{
     World.driver = await new Builder().forBrowser('firefox').build();
 });

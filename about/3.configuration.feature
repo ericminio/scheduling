@@ -8,7 +8,6 @@ Feature: Configuration
             | Joe       | secret   | read, write             |
             | Max       | secret   | read, write, configure  |
     
-    @only
     Scenario: change title
         When "Max" signs in with password "secret"
         When he navigates to configuration
