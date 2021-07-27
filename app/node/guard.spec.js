@@ -14,7 +14,7 @@ describe('Guard', ()=>{
         server = new Server(8001);
         users = new RepositoryUsingMap();
         server.services['users'] = users;
-    })
+    });
 
     it('allows any sign-in request', async ()=>{
         let request = {
@@ -152,6 +152,43 @@ describe('Guard', ()=>{
         let request = {
             method: 'POST',
             url: '/data/any',
+            headers: {
+                'x-user-key': 'any'
+            }
+        };
+        let authorized = await guard.isAuthorized(request, server);
+        
+        expect(authorized).to.equal(true);
+    });
+
+    it('allows any configuration read request', async ()=>{
+        let request = {
+            method: 'GET',
+            url: '/data/configuration'
+        };
+        let authorized = await guard.isAuthorized(request);
+        expect(authorized).to.equal(true);
+    });
+
+    it('blocks user without configure privilege trying to save configuration', async ()=>{
+        users.getUserByKey = async ()=> { return new User({ privileges:'read, write' }); }
+        let request = {
+            method: 'POST',
+            url: '/data/configuration',
+            headers: {
+                'x-user-key': 'any'
+            }
+        };
+        let authorized = await guard.isAuthorized(request, server);
+        
+        expect(authorized).to.equal(false);
+    });
+
+    it('allows user with configure privilege trying to save configuration', async ()=>{
+        users.getUserByKey = async ()=> { return new User({ privileges:'write configure' }); }
+        let request = {
+            method: 'POST',
+            url: '/data/configuration',
             headers: {
                 'x-user-key': 'any'
             }

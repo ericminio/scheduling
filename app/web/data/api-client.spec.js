@@ -278,11 +278,30 @@ describe('Api client', ()=>{
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'GET',
-                    url: '/configuration',
+                    url: '/data/configuration',
                     payload: '',
                     headers: {
                         connection: 'close',
                         host: 'localhost:8006'
+                    }
+                });            
+                done();
+            })
+            .catch(error => done(error));
+    });
+
+    it('exposes save configuration', (done)=> {
+        api.saveConfiguration({ any:42 })
+            .then((data) => {
+                expect(data).to.deep.equal({ 
+                    method: 'POST',
+                    url: '/data/configuration',
+                    payload: JSON.stringify({ any:42 }),
+                    headers: {
+                        connection: 'close',
+                        host: 'localhost:8006',
+                        'transfer-encoding': 'chunked',
+                        'x-user-key': 'any-key'
                     }
                 });            
                 done();

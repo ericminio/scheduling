@@ -1,7 +1,10 @@
+const { SignIn, GetConfiguration, UpdateConfiguration } = require('./routes');
+
 class Guard {
     
     async isAuthorized(request, server) {
-        if (request.url == '/sign-in') { return true; }
+        if (new SignIn().matches(request)) { return true; }
+        if (new GetConfiguration().matches(request)) { return true; }
         if (! (request.url.indexOf('/data/') == 0)) { return true; }
 
         let key = request.headers ? request.headers['x-user-key'] : undefined;
@@ -12,6 +15,8 @@ class Guard {
 
         if (request.method == 'GET' && user.getPrivileges().indexOf('read') == -1) { return false; }
         if (request.method != 'GET' && user.getPrivileges().indexOf('write') == -1) { return false; }
+
+        if (new UpdateConfiguration().matches(request) && user.getPrivileges().indexOf('configure') == -1) { return false; }
 
         return true;
     }

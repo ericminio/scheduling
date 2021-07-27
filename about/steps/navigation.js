@@ -5,6 +5,12 @@ let openEvents = async ()=> {
     await World.driver.sleep(300);
 };
 
+let openConfiguration = async ()=> {
+    await World.driver.get('http://localhost:'+World.server.port+'/configuration');
+    await World.driver.sleep(300);
+};
+
 module.exports = {
-    openEvents: openEvents
+    openEvents: openEvents,
+    openConfiguration: openConfiguration
 };

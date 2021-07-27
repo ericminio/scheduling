@@ -1,9 +1,9 @@
 const payload = require("../../support/payload");
 
-class GetConfigurationRoute {
+class UpdateConfigurationRoute {
 
     matches(request) {
-        return request.method == 'POST' && request.url == '/configuration';
+        return request.method == 'POST' && request.url == '/data/configuration';
     }
     async go(request, response, server) {
         let incoming = await payload(request);
@@ -15,4 +15,4 @@ class GetConfigurationRoute {
     }
 }
 
-module.exports = GetConfigurationRoute;
+module.exports = UpdateConfigurationRoute;

@@ -430,7 +430,7 @@ describe('Server', ()=>{
         let updateResponse = await post({
             hostname: 'localhost',
             port: port,
-            path: '/configuration',
+            path: '/data/configuration',
             method: 'POST'
         }, { title:'title'});
         expect(updateResponse.statusCode).to.equal(200);
@@ -440,7 +440,7 @@ describe('Server', ()=>{
         let getResponse = await request({
             hostname: 'localhost',
             port: port,
-            path: '/configuration',
+            path: '/data/configuration',
             method: 'GET'
         });
         expect(getResponse.statusCode).to.equal(200);

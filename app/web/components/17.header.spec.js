@@ -107,4 +107,33 @@ describe('Header', ()=>{
             expect(document.querySelector('yop-header #title').innerHTML).to.equal('Home');
         });
     });
+
+    describe('when configuration is updated', ()=>{
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <yop-header></yop-header>
+                    <script>
+                        ${yop}
+                        store.saveObject('configuration', { title:'Resto' });
+                        ${sut}
+                    </script>
+                </body>
+            </html>
+            `;
+        let window;
+        let document;
+
+        beforeEach(()=>{
+            window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+            document = window.document;        
+        })
+
+        it('uses the new title', ()=>{
+            window.store.saveObject('configuration', { title:'Agenda' });
+            window.events.notify('configuration updated')
+            expect(document.querySelector('yop-header #title').innerHTML).to.equal('Agenda');
+        });
+    });
 })

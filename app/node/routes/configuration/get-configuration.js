@@ -1,7 +1,7 @@
 class GetConfigurationRoute {
 
     matches(request) {
-        return request.method == 'GET' && request.url == '/configuration';
+        return request.method == 'GET' && request.url == '/data/configuration';
     }
     async go(request, response, server) {
         let configuration = await server.services['configuration'].get();

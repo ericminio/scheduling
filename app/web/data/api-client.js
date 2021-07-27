@@ -100,7 +100,10 @@ class ApiClient {
     }
 
     configuration() {
-        return this.get('/configuration');
+        return this.get('/data/configuration');
+    }
+    saveConfiguration(payload) {
+        return this.post('/data/configuration', payload)
     }
 }
 var api = new ApiClient(window);
