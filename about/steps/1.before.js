@@ -19,6 +19,5 @@ Before(async (testCase)=>{
     await ready;
     World.server = server;
     await clear(database);
-    await World.server.services['configuration'].save(new Configuration({ title:'The world of Max' }));
     World.robot = new Robot(World, By);
 });

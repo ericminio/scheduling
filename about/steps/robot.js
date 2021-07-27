@@ -11,6 +11,9 @@ class Robot {
     async open(uri) {
         await this.World.driver.get(`http://localhost:${this.World.server.port}${uri}`);
     }
+    async wait(ms) {
+        await this.World.driver.sleep(ms);
+    }
     async input(selector, value) {
         let field = await this.findElement(selector);
         await field.clear();
