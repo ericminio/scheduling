@@ -1,4 +1,4 @@
-name: yop-resto
+name: yop-agenda
 
 on:
   push:
