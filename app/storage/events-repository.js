@@ -1,6 +1,7 @@
 const ResourcesRepository = require('./resources-repository');
 const EventsResourcesRepository = require('./events-resources-repository');
 const Event = require('../domain/event');
+const Resource = require('../domain/resource');
 
 class EventsRepository {
     constructor(database) {
@@ -38,18 +39,30 @@ class EventsRepository {
         return event;
     }
     async all() {
-        let rows = await this.database.executeSync('select id, label, start_time, end_time from events');
+        let rows = await this.database.executeSync(`
+            select event_id, label, start_time, end_time, resource_id 
+            from events_resources, events
+            where events_resources.event_id = events.id 
+            order by event_id
+            `);
+
         let collection = [];
+        let currentId = -1;
+        let currentEvent;
         for (let i=0; i<rows.length; i++) {
             let record = rows[i];
-            let event = new Event({
-                id:record.id,
-                label:record.label,
-                start:record.start_time,
-                end:record.end_time
-            });
-            event.setResources(await this.eventsResourcesRepository.getResourcesByEvent(record.id))
-            collection.push(event);
+            if (record.event_id != currentId) {
+                currentId = record.event_id;
+                currentEvent = new Event({
+                    id:record.event_id,
+                    label:record.label,
+                    start:record.start_time,
+                    end:record.end_time
+                });
+                currentEvent.resources = [];
+                collection.push(currentEvent);
+            }
+            currentEvent.resources.push({ id:record.resource_id });
         }
         return collection;
     }

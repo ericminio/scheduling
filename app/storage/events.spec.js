@@ -66,13 +66,13 @@ describe('Events storage', ()=> {
 
         expect(collection.length).to.equal(1);
         expect(collection[0] instanceof Event).to.equal(true);
-        expect(collection[0]).to.deep.equal(new Event({ 
+        expect(collection[0]).to.deep.equal({ 
             id:'event-id', 
             label:'event-label', 
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
-            resources:[r1, r2]
-        }));
+            resources:[{id:'r1-id'}, {id:'r2-id'}]
+        });
     });
 
     it('updates when saving same id', async ()=> {
