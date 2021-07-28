@@ -447,4 +447,16 @@ describe('Server', ()=>{
         expect(getResponse.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'title' });
     });
+    it('provides default configuration', async ()=> {
+        server.services['configuration'].get = async()=> new Configuration({});
+        let getResponse = await request({
+            hostname: 'localhost',
+            port: port,
+            path: '/data/configuration',
+            method: 'GET'
+        });
+        expect(getResponse.statusCode).to.equal(200);
+        expect(getResponse.headers['content-type']).to.equal('application/json');
+        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'Yop' });
+    });
 })
