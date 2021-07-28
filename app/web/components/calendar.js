@@ -80,20 +80,21 @@ class Calendar extends HTMLElement {
         })
     }
     displayEvents(events, resources) {
+        let resourcesMap = {};
+        resources.forEach((resource, line)=> {
+            resource.line = line;
+            resourcesMap[resource.id] = resource;
+        });
         let view = this.querySelector('events');
         view.style.height = layout.totalHeight(resources.length);
         view.innerHTML = '';
         events.forEach(event => {
             event.resources.forEach((eventResource)=> {
-                resources.forEach((resource, index)=>{
-                    if (eventResource.id == resource.id) {
-                        event.line = index;
-                        let instance = new CalendarEvent();
-                        instance.digest(event, resource);
-                        view.appendChild(instance);   
-                    }
-                });            
-            })
+                let resource = resourcesMap[eventResource.id];
+                let instance = new CalendarEvent();
+                instance.digest(event, resource);
+                view.appendChild(instance);
+            });
         });
     }
     displayResources(resources) {

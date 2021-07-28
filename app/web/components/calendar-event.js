@@ -6,7 +6,7 @@ class CalendarEvent extends HTMLElement {
         this.id = `event-${event.id}-resource-${resource.id}`;
         this.innerHTML = event.label;
         this.style = `
-            top:${this.top(event)}; 
+            top:${this.top(resource)}; 
             left:${this.left(event)}; 
             width:${this.width(event)};
         `;
@@ -24,8 +24,8 @@ class CalendarEvent extends HTMLElement {
         let start = this.parse(event.start);
         return layout.left(start);
     }
-    top(event) {
-        return layout.top(event.line);
+    top(resource) {
+        return layout.top(resource.line);
     }
     parse(datetime) {
         let time = datetime.substring(datetime.indexOf(' ')).trim();
