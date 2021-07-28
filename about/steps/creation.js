@@ -5,6 +5,19 @@ const { expect } = require('../../app/node_modules/chai');
 
 Given('I create the following resources', async (resources)=> {
     await login('I', 'secret');
+    await createResources(resources);
+});
+Given('he creates the following resources', async (resources)=> {
+    await createResources(resources);
+});
+Given('I create the following events', async (events)=> {
+    await login('I', 'secret');
+    await createEvents(events);
+});
+Given('he creates the following events', async (events)=> {
+    await createEvents(events);
+});
+let createResources = async(resources)=> {
     await World.robot.click('#resource-creation');
     let lines = resources.rawTable;
     for (let i=1; i<lines.length; i++) {
@@ -14,9 +27,13 @@ Given('I create the following resources', async (resources)=> {
         await createResource(type, name);
     }
     await World.robot.click('#resource-creation');
-});
-Given('I create the following events', async (events)=> {
-    await login('I', 'secret');
+}
+let createResource = async (type, name)=> {
+    await World.robot.input('#resource-type', type);
+    await World.robot.input('#resource-name', name);
+    await World.robot.click('#create-resource');
+}
+let createEvents = async(events)=> {
     let user = await World.driver.executeScript("return window.localStorage.getItem('user');");
     let key = JSON.parse(user).key;
 
@@ -40,11 +57,6 @@ Given('I create the following events', async (events)=> {
         await createEvent(data);
     }
     await World.robot.click('events');
-});
-let createResource = async (type, name)=> {
-    await World.robot.input('#resource-type', type);
-    await World.robot.input('#resource-name', name);
-    await World.robot.click('#create-resource');
 }
 let createEvent = async (data)=> {
     await World.robot.input('#new-event-label', data[0]);

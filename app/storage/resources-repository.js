@@ -27,7 +27,7 @@ class ResourcesRepository {
         });
     }
     async all() {
-        let rows = await this.database.executeSync('select id, type, name from resources');
+        let rows = await this.database.executeSync('select id, type, name from resources order by type, name');
         let collection = [];
         for (let i=0; i<rows.length; i++) {
             let record = rows[i];

@@ -40,3 +40,11 @@ Then('he sees that the calendar is empty', async ()=> {
     let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
     expect(candidatesEvents.length).to.equal(0);
 });
+Then('he sees that the resources are ordered as follows', async (expected)=> {
+    let resources = await World.driver.findElements(By.css('yop-calendar-resource'));
+    for (let i=0; i<resources.length; i++) {
+        let candidate = resources[i];
+        let actual = await candidate.getText();
+        expect(actual).to.equal(expected.rawTable[i][0]);
+    }
+});

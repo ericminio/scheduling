@@ -106,4 +106,18 @@ describe('Resources storage', ()=> {
 
         expect(event).to.equal(undefined);
     });
+
+    it('exposes resources ordered by type and name', async ()=> {
+        await repository.save(new Resource({ id:'1', type:'B', name:'BB2' }));
+        await repository.save(new Resource({ id:'2', type:'B', name:'AA2' }));
+        await repository.save(new Resource({ id:'3', type:'A', name:'BB1' }));
+        await repository.save(new Resource({ id:'4', type:'A', name:'AA1' }));
+        let collection = await repository.all();
+
+        expect(collection.length).to.equal(4);
+        expect(collection[0].name).to.equal('AA1');
+        expect(collection[1].name).to.equal('BB1');
+        expect(collection[2].name).to.equal('AA2');
+        expect(collection[3].name).to.equal('BB2');
+    });
 });
