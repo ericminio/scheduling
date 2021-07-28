@@ -84,18 +84,9 @@ class Calendar extends HTMLElement {
         view.style.height = layout.totalHeight(resources.length);
         view.innerHTML = '';
         
-        let resourcesMap = {};
-        let findResource = (id)=> {
-            let resource = resourcesMap[id];
-            if (resource === undefined) {
-                resource = resources.find(r => r.id == id);
-                resourcesMap[id] = resource;
-            }
-            return resource;
-        }
         events.forEach(event => {
             event.resources.forEach((eventResource)=> {
-                let resource = findResource(eventResource.id);
+                let resource = this.resourceMap[eventResource.id];
                 let instance = new CalendarEvent();
                 instance.digest(event, resource);
                 view.appendChild(instance);
@@ -106,9 +97,11 @@ class Calendar extends HTMLElement {
         let view = this.querySelector('resources');
         view.style.height = layout.totalHeight(resources.length);
         view.innerHTML = '';
-        resources.forEach((data, index) => {
+        this.resourceMap = {};
+        resources.forEach((resource, index) => {
+            this.resourceMap[resource.id] = resource; 
             let instance = new Resource();
-            instance.digest(data, index);
+            instance.digest(resource, index);
             view.appendChild(instance);
         })
     }
