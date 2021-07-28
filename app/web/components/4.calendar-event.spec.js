@@ -85,4 +85,17 @@ describe('Calendar Event', ()=>{
                 'calc(var(--padding) + var(--minimalWidth) * (12 * 60 + 15) / var(--minimalWidthInMinutes))')
         })
     })
+    describe('Calendar Event Top', ()=>{
+
+        let event;
+        beforeEach(()=>{
+            event = (new Function(wrapper))();
+        })
+
+        it('is based on given index', ()=>{
+            let top = event.top({ line:15 })
+            
+            expect(top).to.equal('calc(15 * var(--height) + var(--padding))')
+        })
+    })
 })

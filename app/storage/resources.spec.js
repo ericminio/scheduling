@@ -28,22 +28,23 @@ describe('Resources storage', ()=> {
     });
 
     it('can fetch', async ()=> {
-        let resource = new Resource({ id:'this-id', type:'this-type', name:'this-name' })        
-        await repository.save(resource);
+        await repository.save(new Resource({ id:'this-id', type:'this-type', name:'this-name' }));
         let instance = await repository.get('this-id');
 
-        expect(instance).to.deep.equal(resource);
+        expect(instance).to.deep.equal(new Resource({ line:undefined, id:'this-id', type:'this-type', name:'this-name' }));
         expect(instance instanceof Resource).to.equal(true);
     });
 
-    it('can fetch all', async ()=> {
-        let resource = new Resource({ id:'this-id', type:'this-type', name:'this-name' })        
-        await repository.save(resource);
+    it('can fetch all and populates index as line', async ()=> {
+        await repository.save(new Resource({ id:'1', type:'type-1', name:'name-1' }));
+        await repository.save(new Resource({ id:'2', type:'type-2', name:'name-2' }));
         let collection = await repository.all();
 
-        expect(collection.length).to.equal(1);
-        expect(collection[0]).to.deep.equal(resource);
+        expect(collection.length).to.equal(2);
+        expect(collection[0]).to.deep.equal(new Resource({ line:0, id:'1', type:'type-1', name:'name-1' }));
         expect(collection[0] instanceof Resource).to.equal(true);
+        expect(collection[1]).to.deep.equal(new Resource({ line:1, id:'2', type:'type-2', name:'name-2' }));
+        expect(collection[1] instanceof Resource).to.equal(true);
     });
 
     it('updates when saving same id', async ()=> {
@@ -86,7 +87,7 @@ describe('Resources storage', ()=> {
             label:'event-label', 
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
-            resources:[{ id:'r1-id', type:'r1-type', name:'r1-name' }]
+            resources:[{ line:undefined, id:'r1-id', type:'r1-type', name:'r1-name' }]
         }));
     });
 

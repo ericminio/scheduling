@@ -17,13 +17,13 @@ class ResourcesRepository {
         }
     }
     async get(id) {
-        let rows = await this.database.executeSync('select type, name from resources where id=$1 order by name', [id]);
+        let rows = await this.database.executeSync('select id, type, name from resources where id=$1 order by name', [id]);
         if (rows.length == 0) { return undefined; }
         let record = rows[0];
         return new Resource({
-            id:id,
-            type:record.type,
-            name:record.name
+            id: record.id,
+            type: record.type,
+            name: record.name
         });
     }
     async all() {
@@ -31,10 +31,12 @@ class ResourcesRepository {
         let collection = [];
         for (let i=0; i<rows.length; i++) {
             let record = rows[i];
+            record.line = i;
             collection.push(new Resource({
-                id:record.id,
-                type:record.type,
-                name:record.name
+                line: record.line,
+                id: record.id,
+                type: record.type,
+                name: record.name
             }));
         }
         return collection;
