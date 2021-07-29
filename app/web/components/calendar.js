@@ -72,7 +72,9 @@ class Calendar extends HTMLElement {
     }
     async displayTimelineMarks() {
         let configuration = store.getObject('configuration');
-        if (configuration === null || configuration.title === undefined) {
+        if (configuration === null || 
+            configuration.title === undefined ||
+            configuration['opening-hours'] === undefined) {
             configuration = await api.configuration();
             store.saveObject('configuration', configuration);            
         }

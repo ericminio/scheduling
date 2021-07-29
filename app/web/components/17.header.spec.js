@@ -44,7 +44,7 @@ describe('Header', ()=>{
         });
     });
 
-    describe('When configuration is not already avalable', ()=> {
+    describe('When configuration is not already available', ()=> {
         let html = `
             <!DOCTYPE html>
             <html lang="en">
@@ -57,6 +57,49 @@ describe('Header', ()=>{
                                 title: 'Agenda'
                             }); })  
                         };
+                        ${sut}
+                    </script>
+                </body>
+            </html>
+            `;
+        let window;
+        let document;
+
+        beforeEach(()=>{
+            window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+            document = window.document;        
+        });
+
+        it('goes to api', (done)=>{
+            setTimeout(()=> {
+                expect(document.querySelector('yop-header #title').innerHTML).to.equal('Agenda');
+                done();
+            }, 50);
+        });
+
+        it('stores it', (done)=>{
+            setTimeout(()=> {
+                expect(window.store.getObject('configuration')).to.deep.equal({ title:'Agenda' });
+                done();
+            }, 50);
+        });
+    });
+
+    describe('When configuration is not completely available', ()=> {
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <yop-header></yop-header>
+                    <script>
+                        ${yop}
+                        var api = {
+                            configuration: ()=> new Promise((resolve)=>{ resolve({
+                                title: 'Agenda'
+                            }); })  
+                        };
+                        store.saveObject('configuration', 
+                            { title:'Resto' });
                         ${sut}
                     </script>
                 </body>
@@ -107,7 +150,7 @@ describe('Header', ()=>{
         });
 
         it('lets that happen', ()=>{
-            window.store.saveObject('configuration', { title:'Home' });
+            window.store.saveObject('configuration', { title:'Home', 'opening-hours':'11-13' });
             let header = document.querySelector('yop-header');
             header.update();
             
@@ -138,7 +181,7 @@ describe('Header', ()=>{
         })
 
         it('uses the new title', ()=>{
-            window.store.saveObject('configuration', { title:'Agenda' });
+            window.store.saveObject('configuration', { title:'Agenda', 'opening-hours':'8-18' });
             window.events.notify('configuration updated')
             expect(document.querySelector('yop-header #title').innerHTML).to.equal('Agenda');
         });

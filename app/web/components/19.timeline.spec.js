@@ -114,4 +114,50 @@ describe('Timeline', ()=>{
             }, 50);
         });
     })
+
+    describe('when configuration is not completely availble', ()=> {
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <yop-calendar></yop-calendar>
+                    <script>
+                        ${yop}
+                        var api = {
+                            getResources: ()=> {
+                                return new Promise((resolve, reject)=>{
+                                    resolve({ resources:[]});
+                                });
+                            },
+                            getEvents: ()=> {
+                                return new Promise((resolve, reject)=>{
+                                    resolve({ events:[]});
+                                });
+                            },
+                            configuration: ()=> new Promise((resolve)=>{ resolve({
+                                title: 'Agenda', 'opening-hours':'8-15'
+                            }); })  
+                        };
+                        store.saveObject('configuration', { title:'Resto' });
+                        ${sut}
+                    </script>
+                </body>
+            </html>
+            `;
+
+        beforeEach((done)=>{
+            window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+            document = window.document;
+            calendar = document.querySelector('yop-calendar');
+            setTimeout(done, wait);
+        })
+
+        it('goes to api', (done)=>{
+            setTimeout(()=> {
+                expect(window.store.getObject('configuration')).to.deep.equal(
+                    { title:'Agenda', 'opening-hours':'8-15'});
+                done();
+            }, 50);
+        });
+    })
 })
