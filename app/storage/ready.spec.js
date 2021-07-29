@@ -17,4 +17,11 @@ describe('database', ()=>{
         await clear(database);
     });
 
+    it('can be run again', async ()=> {
+        let database = new Database();
+        await drop(database);
+        await migrate(database);
+        await migrate(database);
+    });
+
 });
