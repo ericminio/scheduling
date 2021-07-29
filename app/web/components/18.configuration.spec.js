@@ -18,7 +18,7 @@ describe('Page Configuration', ()=>{
                 <script>
                     ${yop}
                     var api = {
-                        configuration: ()=> new Promise((resolve)=>{ resolve({ title:'welcome' }); })  
+                        configuration: ()=> new Promise((resolve)=>{ resolve({ title:'welcome', 'opening-hours':'11-22' }); })  
                     };
                     ${sut}
                 </script>
@@ -44,22 +44,32 @@ describe('Page Configuration', ()=>{
         }, 50);        
     });
 
+    it('displays current opening hours', (done)=>{
+        setTimeout(()=> {
+            expect(document.querySelector('#configuration-opening-hours').value).to.equal('11-22');
+            done();
+        }, 50);        
+    });
+
     it('sends the expected save request', ()=>{
         let spy;
         window.api = { saveConfiguration:(configuration)=> { spy = configuration; return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#configuration-title').value = 'new-title';
+        document.querySelector('#configuration-opening-hours').value = '12-18';
         document.querySelector('#save-configuration').click();
 
         expect(spy).to.deep.equal(
-            { title:'new-title' });
+            { title:'new-title', 'opening-hours':'12-18' });
     });
 
     it('stores the configuration on success', (done)=>{
         window.api = { saveConfiguration:(configuration)=> { return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#configuration-title').value = 'new-title';
+        document.querySelector('#configuration-opening-hours').value = '12-18';
         document.querySelector('#save-configuration').click();
         setTimeout(()=> {
-            expect(window.store.getObject('configuration')).to.deep.equal({ title:'new-title' });
+            expect(window.store.getObject('configuration')).to.deep.equal(
+                { title:'new-title' , 'opening-hours':'12-18' });
             done();
         }, 50);
     });

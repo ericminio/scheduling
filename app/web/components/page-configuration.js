@@ -5,6 +5,9 @@ pageConfigurationTemplate.innerHTML = `
     #configuration-panel {
         margin-left: var(--resourceAreaWidth);
     }
+    #configuration-save-section {
+        margin-top: var(--vertical-margin);
+    }
 </style>
 
 <div id="configuration-panel">
@@ -13,7 +16,10 @@ pageConfigurationTemplate.innerHTML = `
     <h3>Title</h3>
     <input id="configuration-title" />
 
-    <div>
+    <h3>Opening hours</h3>
+    <input id="configuration-opening-hours" />
+
+    <div id="configuration-save-section">
         <button id="save-configuration">Save</button>
     </div>
 </div>
@@ -36,6 +42,7 @@ class PageConfiguration extends HTMLElement {
             .then((configuration)=>{
                 this.querySelector('#configuration-title').value = configuration.title;
                 this.querySelector('#configuration-title').focus();
+                this.querySelector('#configuration-opening-hours').value = configuration['opening-hours'];
             })
             .catch(()=> {
                 events.notify('maybe signed-out');
@@ -43,7 +50,8 @@ class PageConfiguration extends HTMLElement {
     }
     save() {
         let configuration = {
-            title: this.querySelector('#configuration-title').value
+            title: this.querySelector('#configuration-title').value,
+            'opening-hours': this.querySelector('#configuration-opening-hours').value
         };
         api.saveConfiguration(configuration)
             .then(()=> {

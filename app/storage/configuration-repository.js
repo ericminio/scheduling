@@ -5,7 +5,8 @@ class ConfigurationRepository {
         this.database = database;
     }
     async save(configuration) {
-        await this.saveOrUpdate(configuration, 'title');        
+        await this.saveOrUpdate(configuration, 'title');
+        await this.saveOrUpdate(configuration, 'opening-hours');
     }
     async saveOrUpdate(configuration, key) {
         if (! await this.exists(key)) {

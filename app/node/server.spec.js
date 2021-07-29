@@ -432,7 +432,7 @@ describe('Server', ()=>{
             port: port,
             path: '/data/configuration',
             method: 'POST'
-        }, { title:'title'});
+        }, { title:'title', 'opening-hours':'8-18' });
         expect(updateResponse.statusCode).to.equal(200);
         expect(updateResponse.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(updateResponse.body)).to.deep.equal({ message:'configuration updated' });
@@ -445,7 +445,7 @@ describe('Server', ()=>{
         });
         expect(getResponse.statusCode).to.equal(200);
         expect(getResponse.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'title' });
+        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'title', 'opening-hours':'8-18' });
     });
     it('provides default configuration', async ()=> {
         server.services['configuration'].get = async()=> new Configuration({});
@@ -457,6 +457,6 @@ describe('Server', ()=>{
         });
         expect(getResponse.statusCode).to.equal(200);
         expect(getResponse.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'Yop' });
+        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'Yop', 'opening-hours':'0-24' });
     });
 })
