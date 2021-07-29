@@ -18,7 +18,8 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
-                        store.saveObject('configuration', { title:'Resto' });
+                        store.saveObject('configuration', 
+                            { title:'Resto', 'opening-hours':'12-15' });
                         ${sut}
                     </script>
                 </body>
@@ -34,6 +35,12 @@ describe('Header', ()=>{
 
         it('uses the available title', ()=>{
             expect(document.querySelector('yop-header #title').innerHTML).to.equal('Resto');
+        });
+
+        it('uses opening hours', ()=>{
+            let root = document.documentElement;
+            let start = root.style.cssText;
+            expect(start).to.equal('--opening-hours-start: 12; --opening-hours-end: 15;');
         });
     });
 
@@ -134,6 +141,14 @@ describe('Header', ()=>{
             window.store.saveObject('configuration', { title:'Agenda' });
             window.events.notify('configuration updated')
             expect(document.querySelector('yop-header #title').innerHTML).to.equal('Agenda');
+        });
+
+        it('uses new opening hours', ()=>{
+            window.store.saveObject('configuration', { title:'Agenda', 'opening-hours':'8-18' });
+            window.events.notify('configuration updated')
+            let root = document.documentElement;
+            let start = root.style.cssText;
+            expect(start).to.equal('--opening-hours-start: 8; --opening-hours-end: 18;');
         });
     });
 })

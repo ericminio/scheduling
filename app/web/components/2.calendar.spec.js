@@ -40,6 +40,7 @@ describe('Calendar', ()=>{
                             });
                         }                        
                     };
+                    store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
                     ${sut}
                 </script>
             </body>
@@ -48,12 +49,13 @@ describe('Calendar', ()=>{
     let window;
     let document;
     let calendar;
+    let wait = 10;
 
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar');
-        setTimeout(done, 150);
+        setTimeout(done, wait);
     })
 
     it('is available', ()=>{
@@ -91,7 +93,7 @@ describe('Calendar', ()=>{
             expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
-        }, 150);
+        }, wait);
     });
     it('listens to event created event and refreshes', (done)=>{
         window.api = {
@@ -115,7 +117,7 @@ describe('Calendar', ()=>{
             expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
-        }, 150);
+        }, wait);
     });
     it('listens to event deleted event and refreshes', (done)=>{
         window.api = {
@@ -139,7 +141,7 @@ describe('Calendar', ()=>{
             expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
-        }, 150);
+        }, wait);
     });
     it('listens to resource deleted event and refreshes', (done)=>{
         window.api = {
@@ -163,6 +165,6 @@ describe('Calendar', ()=>{
             expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
             done();
-        }, 150);
+        }, wait);
     });
 })

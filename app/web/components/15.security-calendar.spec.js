@@ -40,6 +40,7 @@ describe('When resource load fails', ()=>{
                             });
                         }                        
                     };
+                    store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
                     ${sut}
                 </script>
             </body>
@@ -48,12 +49,13 @@ describe('When resource load fails', ()=>{
     let window;
     let document;
     let calendar;
+    let wait = 10;
 
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost/events', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar');
-        setTimeout(done, 150);
+        setTimeout(done, wait);
     });
 
     it('deletes locally stored resources', (done)=>{
@@ -66,7 +68,7 @@ describe('When resource load fails', ()=>{
         setTimeout(()=>{
             expect(window.store.getObject('resources')).to.equal(null);
             done();
-        }, 150);
+        }, wait);
     });
 
     it('may be because we are signed out', (done)=> {
@@ -84,6 +86,6 @@ describe('When resource load fails', ()=>{
         setTimeout(()=>{
             expect(wasCalled).to.equal(true);
             done();
-        }, 150);
+        }, wait);
     })
 })

@@ -53,6 +53,13 @@ class Header extends HTMLElement {
             store.saveObject('configuration', configuration);            
         }
         this.querySelector('#title').innerHTML = configuration.title;
+        
+        let parts = configuration['opening-hours'].split('-');
+        let end = parseInt(parts[1])
+        let start = parseInt(parts[0])
+        let root = document.documentElement;
+        root.style.setProperty('--opening-hours-start', start);
+        root.style.setProperty('--opening-hours-end', end);
     }
 }
 customElements.define('yop-header', Header)

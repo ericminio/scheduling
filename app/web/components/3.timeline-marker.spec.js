@@ -55,7 +55,7 @@ describe('TimelineMarker', ()=>{
         })
 
         it('is as expected', ()=>{
-            let expected = 'calc(var(--padding) + var(--minimalWidth) * (18 * 60 + 0) / var(--minimalWidthInMinutes))'
+            let expected = 'calc(var(--padding) + var(--minimalWidth) * ((18 - var(--opening-hours-start)) * 60 + 0) / var(--minimalWidthInMinutes))'
             expect(marker.left(mark)).to.equal(expected)
         })
     })

@@ -48,3 +48,21 @@ Then('he sees that the resources are ordered as follows', async (expected)=> {
         expect(actual).to.equal(expected.rawTable[i][0]);
     }
 });
+Then('he sees that the first timeline marker is {string}', async (expected)=> {
+    let markers = await World.driver.findElements(By.css('yop-timeline-marker'));
+    let first = markers[0];
+    let actual = await first.getText();
+
+    expect(actual).to.equal(expected);
+});
+Then('he sees that the last timeline marker is {string}', async (expected)=> {
+    let markers = await World.driver.findElements(By.css('yop-timeline-marker'));
+    let last = markers[markers.length - 1];
+    let actual = await last.getText();
+
+    expect(actual).to.equal(expected);
+});
+Then('he sees that the header displays {string}', async (expected)=> {
+    let actual = await World.robot.text('#title');
+    expect(actual).to.equal(expected);
+});

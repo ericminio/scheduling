@@ -47,7 +47,7 @@ class Calendar extends HTMLElement {
     }
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
-        this.displayTimelineMarks([0, 1, 8, 10, 12, 14, 16, 18, 20, 23]);
+        await this.displayTimelineMarks();
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation');
         });
@@ -70,7 +70,22 @@ class Calendar extends HTMLElement {
                 events.notify('maybe signed-out')
             });
     }
-    displayTimelineMarks(starts) {
+    async displayTimelineMarks() {
+        let configuration = store.getObject('configuration');
+        if (configuration === null || configuration.title === undefined) {
+            configuration = await api.configuration();
+            store.saveObject('configuration', configuration);            
+        }
+        let openingHours = configuration['opening-hours'];
+        let parts = openingHours.split('-');
+        let end = parseInt(parts[1])
+        let current = parseInt(parts[0])
+        let starts = [];
+        while (current < end) {
+            starts = starts.concat(current);
+            current ++;
+        }
+
         let view = this.querySelector('timeline');
         view.innerHTML = '';
         starts.forEach((start)=>{
