@@ -3,7 +3,6 @@ const headerTemplate = document.createElement('template')
 headerTemplate.innerHTML = `
     <style>
         .header {
-            margin-bottom: var(--vertical-margin);
             padding: var(--padding);
             text-align: center;
             background-color: var(--background-header);

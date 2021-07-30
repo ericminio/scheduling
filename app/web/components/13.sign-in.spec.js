@@ -79,7 +79,7 @@ describe('Page Sign in', ()=>{
         window.api = { signIn:()=> { return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#signin').click();
         setTimeout(()=>{
-            expect(window.location.pathname).to.equal('/events');
+            expect(window.location.pathname).to.equal('/calendar');
             done();
         });
     });

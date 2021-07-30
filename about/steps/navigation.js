@@ -8,7 +8,7 @@ When('he navigates to configuration', async ()=> {
 });
 
 let openEvents = async ()=> {
-    await World.driver.get('http://localhost:'+World.server.port+'/events');
+    await World.driver.get('http://localhost:'+World.server.port+'/calendar');
     await World.driver.sleep(300);
 };
 

@@ -35,7 +35,7 @@ class PageSignIn extends HTMLElement {
             .then((data)=> { 
                 store.saveObject('user', data);
                 events.notify('connected');
-                navigate.to('/events'); 
+                navigate.to('/calendar'); 
             })
             .catch((error)=> { events.notify('error', error); })
             ;

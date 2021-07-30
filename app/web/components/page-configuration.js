@@ -10,6 +10,8 @@ pageConfigurationTemplate.innerHTML = `
     }
 </style>
 
+<yop-menu></yop-menu>
+
 <div id="configuration-panel">
     <h2>Configuration</h2>
     

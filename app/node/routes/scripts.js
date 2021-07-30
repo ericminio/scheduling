@@ -23,7 +23,8 @@ class ScriptsRoute {
             'logout.js',
             'page-sign-in.js',
             'page-events.js',
-            'page-configuration.js'        
+            'page-configuration.js',
+            'menu.js'       
         ];
         let body = fs.readFileSync(path.join(__dirname, '../../web/data', 'api-client.js')).toString();
         files.forEach((file)=> {

@@ -21,3 +21,9 @@ Feature: Configuration
         When he navigates to calendar
         Then he sees that the first timeline marker is "8"
         Then he sees that the last timeline marker is "20"
+
+    Scenario: change configuration forbidden
+        When "Joe" signs in with password "secret"
+        When he navigates to configuration
+        When he modifies the opening hours to "18-21"
+        Then he receives the error message "forbidden: insufficient privilege"
