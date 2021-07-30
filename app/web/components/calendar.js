@@ -61,8 +61,13 @@ class Calendar extends HTMLElement {
         let resourcesLoaded = api.getResources();
         resourcesLoaded
             .then(data => {
-                this.displayResources(data.resources)
+                this.resources = data.resources;
+                this.resourceMap = {};
+                this.resources.forEach((resource, index) => {
+                    this.resourceMap[resource.id] = resource; 
+                });
                 store.saveObject('resources', data.resources);
+                this.clear(this.resources.length);
             })
             .catch(()=> { 
                 store.delete('resources'); 
@@ -71,7 +76,10 @@ class Calendar extends HTMLElement {
         let eventsLoaded = api.getEvents();
         eventsLoaded.then(data => this.events = data.events);
 
-        Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { this.displayEvents(); })
+        Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
+            this.displayResources();
+            this.displayEvents(); 
+        })
     }
     async displayTimelineMarks() {
         let configuration = store.getObject('configuration');
@@ -99,12 +107,9 @@ class Calendar extends HTMLElement {
             view.appendChild(marker);
         })
     }
-    displayResources(resources) {
-        this.clear(resources.length);
+    displayResources() {
         let view = this.querySelector('resources');
-        this.resourceMap = {};
-        resources.forEach((resource, index) => {
-            this.resourceMap[resource.id] = resource; 
+        this.resources.forEach((resource, index) => {
             let instance = new Resource();
             instance.digest(resource, index);
             view.appendChild(instance);
