@@ -54,21 +54,24 @@ class Calendar extends HTMLElement {
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
-        events.register(this, 'resource deleted');        
+        events.register(this, 'resource deleted');   
         this.update();        
     }
     update() {
-        api.getResources()
+        let resourcesLoaded = api.getResources();
+        resourcesLoaded
             .then(data => {
-                let resources = data.resources;
-                this.displayResources(resources)
-                api.getEvents().then(data => this.displayEvents(data.events, resources));
-                store.saveObject('resources', resources);
+                this.displayResources(data.resources)
+                store.saveObject('resources', data.resources);
             })
             .catch(()=> { 
                 store.delete('resources'); 
                 events.notify('maybe signed-out')
             });
+        let eventsLoaded = api.getEvents();
+        eventsLoaded.then(data => this.events = data.events);
+
+        Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { this.displayEvents(); })
     }
     async displayTimelineMarks() {
         let configuration = store.getObject('configuration');
@@ -96,12 +99,20 @@ class Calendar extends HTMLElement {
             view.appendChild(marker);
         })
     }
-    displayEvents(events, resources) {
+    displayResources(resources) {
+        this.clear(resources.length);
+        let view = this.querySelector('resources');
+        this.resourceMap = {};
+        resources.forEach((resource, index) => {
+            this.resourceMap[resource.id] = resource; 
+            let instance = new Resource();
+            instance.digest(resource, index);
+            view.appendChild(instance);
+        });
+    }
+    displayEvents() {
         let view = this.querySelector('events');
-        view.style.height = layout.totalHeight(resources.length);
-        view.innerHTML = '';
-        
-        events.forEach(event => {
+        this.events.forEach(event => {
             event.resources.forEach((eventResource)=> {
                 let resource = this.resourceMap[eventResource.id];
                 let instance = new CalendarEvent();
@@ -110,17 +121,13 @@ class Calendar extends HTMLElement {
             });
         });
     }
-    displayResources(resources) {
-        let view = this.querySelector('resources');
-        view.style.height = layout.totalHeight(resources.length);
-        view.innerHTML = '';
-        this.resourceMap = {};
-        resources.forEach((resource, index) => {
-            this.resourceMap[resource.id] = resource; 
-            let instance = new Resource();
-            instance.digest(resource, index);
-            view.appendChild(instance);
-        })
+    clear(size) {
+        let events = this.querySelector('events');
+        events.innerHTML = '';
+        events.style.height = layout.totalHeight(size);
+        let resources = this.querySelector('resources');
+        resources.innerHTML = '';
+        resources.style.height = layout.totalHeight(size);
     }
 };
 customElements.define('yop-calendar', Calendar);
