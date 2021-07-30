@@ -1,14 +1,17 @@
 const { Database, migrate,
-        ResourcesRepository, EventsRepository, UsersRepository,
+        ResourcesRepository, EventsRepository, 
+        UsersRepository, 
         ConfigurationRepository } = require('./storage');
 let database = new Database();
+
+const UsersService = require('./node/services/users-service');
 
 const { Server } = require('./node/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
 server.services['resources'] = new ResourcesRepository(database);
 server.services['events'] = new EventsRepository(database);
-server.services['users'] = new UsersRepository(database);
+server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
 
 const User = require('./domain/user');

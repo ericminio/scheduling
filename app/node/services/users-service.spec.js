@@ -4,33 +4,103 @@ const { User } = require('../../domain');
 
 describe('User service', ()=> {
 
-    let service;
-    let written;
-    let reading;
-    beforeEach(()=> {
-        written = undefined;
-        reading = undefined;
-        service = new UsersService({
-            save: async (user)=> { written = user; },
-            saveKey: async (user)=> { written = user; },
-            getUserByKey: async (key)=> { reading = key; }
+    describe('Write operations', ()=> {
+        
+        describe('saveAssumingPasswordAlreadyEncrypted', ()=> {
+            it('saves to store', async ()=>{
+                let written;
+                let service = new UsersService({});
+                service.store.saveAssumingPasswordAlreadyEncrypted = async (user)=> { written = user; };
+                let user = new User({ username:'username', password:'password', privileges:'any' });
+                await service.saveAssumingPasswordAlreadyEncrypted(user);
+                expect(written).to.deep.equal(user);
+            })
+        });
+        describe('savePasswordAssumingAlreadyEncrypted', ()=> {
+            it('saves to store', async ()=>{
+                let written;
+                let service = new UsersService({});
+                service.store.savePasswordAssumingAlreadyEncrypted = async (user)=> { written = user; };
+                let user = new User({ username:'username', password:'password', privileges:'any' });
+                await service.savePasswordAssumingAlreadyEncrypted(user);
+                expect(written).to.deep.equal(user);
+            })
+        });
+        describe('saveKey', ()=> {
+            it('saves to store', async ()=>{
+                let written;
+                let service = new UsersService({});
+                service.store.saveKey = async (user)=> { written = user; };
+                let user = new User({ username:'username', key:'key' });
+                await service.saveKey(user);
+                expect(written).to.deep.equal(user);
+            })
+        });
+        describe('save', ()=> {
+            it('saves to store', async ()=>{
+                let written;
+                let service = new UsersService({});
+                service.store.save = async (user)=> { written = user; };
+                let user = new User({ username:'username', privileges:'any' });
+                await service.save(user);
+                expect(written).to.deep.equal(user);
+            })
         });
     });
 
-    it('saves to repository', async ()=>{
-        let user = new User({ username:'this-username', password:'this-password' });
-        await service.save(user);
-        expect(written).to.deep.equal(user);
+    describe('Pass-through Read operations', ()=> {
+        
+        describe('getUserByUsername', ()=> {
+            it('reads from the store', async ()=>{
+                let reading;
+                let service = new UsersService({});
+                service.store.getUserByUsername = async (username)=> { reading = username; return 'any'; };
+                let answer = await service.getUserByUsername('please');
+                expect(reading).to.equal('please');
+                expect(answer).to.equal('any');
+            });
+        });
+        describe('getUserByCredentials', ()=> {
+            it('reads from the store', async ()=>{
+                let reading;
+                let service = new UsersService({});
+                service.store.getUserByCredentials = async (username)=> { reading = username; return 'any'; };
+                let answer = await service.getUserByCredentials('please');
+                expect(reading).to.equal('please');
+                expect(answer).to.equal('any');
+            });
+        });
+    });
+
+    describe('Caching', ()=> {
+        it('kicks in with key access', async ()=> {
+            let reading;
+            let service = new UsersService({});
+            service.store.getUserByKey = async (key)=> { reading = key; return 'cached'; };
+            let answer = await service.getUserByKey('please');
+            expect(reading).to.equal('please');
+            expect(answer).to.equal('cached');
+
+            expect(service.cacheByKey['please']).to.equal('cached');
+        });
+        it('is leveraged by next call', async ()=> {
+            let reading;
+            let service = new UsersService({});
+            service.store.getUserByKey = async (key)=> { reading = key; return 'cached'; };
+            await service.getUserByKey('please');
+            reading = undefined;
+            let answer = await service.getUserByKey('please');
+            expect(reading).to.equal(undefined);
+            expect(answer).to.equal('cached');
+        });
+        it('is reset by saving a new key', async ()=> {
+            let service = new UsersService({});
+            service.store.getUserByKey = async (key)=> { return 'cached'; };
+            await service.getUserByKey('please');
+            
+            service.store.saveKey = async ()=> {};
+            await service.saveKey({ key:'please' });
+            expect(service.cacheByKey['please']).to.equal(undefined);
+        });
     })
-    it('saves key to repository', async ()=>{
-        let user = new User({ username:'this-username', password:'this-password', key:'this-key' });
-        await service.saveKey(user);
-        expect(written).to.deep.equal(user);
-    })
-    it('caches user when saving key', async ()=>{
-        await service.saveKey(new User({ id:'this-id', username:'this-username', privileges:'any', key:'this-key' }));
-        let user = await service.getUserByKey('this-key');
-        expect(reading).to.equal(undefined);
-        expect(user).to.deep.equal(new User({ id:'this-id', username:'this-username', privileges:'any', key:'this-key' }))
-    })
-})
+});

@@ -1,20 +1,35 @@
 class UsersService {
-    constructor(repository) {
-        this.repository = repository;
-        this.keyMap = {};
+    constructor(store) {
+        this.store = store;
+        this.cacheByKey = {};
     }
 
-    async save(user) {
-        await this.repository.save(user);
+    async saveAssumingPasswordAlreadyEncrypted(user) {
+        await this.store.saveAssumingPasswordAlreadyEncrypted(user);
     }
-
+    async savePasswordAssumingAlreadyEncrypted(user) {
+        await this.store.savePasswordAssumingAlreadyEncrypted(user);
+    }
     async saveKey(user) {
-        await this.repository.saveKey(user);
-        this.keyMap[user.key] = user;
+        await this.store.saveKey(user);
+        delete this.cacheByKey[user.key];
     }
-
+    async save(user) {
+        await this.store.save(user);
+    }
+    async getUserByUsername(username) {
+        return await this.store.getUserByUsername(username);
+    }
+    async getUserByCredentials(credentials) {
+        return await this.store.getUserByCredentials(credentials);
+    }
     async getUserByKey(key) {
-        return this.keyMap[key];
+        let user = this.cacheByKey[key];
+        if (user === undefined) {
+            user = await this.store.getUserByKey(key);
+            this.cacheByKey[key] = user;    
+        }
+        return user;
     }
 }
 
