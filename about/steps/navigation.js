@@ -8,12 +8,14 @@ When('he navigates to configuration', async ()=> {
 });
 
 let openEvents = async ()=> {
-    await World.driver.get('http://localhost:'+World.server.port+'/calendar');
+    let menu = await World.robot.findElement('#menu-calendar');
+    await menu.click();
     await World.driver.sleep(300);
 };
 
 let openConfiguration = async ()=> {
-    await World.driver.get('http://localhost:'+World.server.port+'/configuration');
+    let menu = await World.robot.findElement('#menu-configuration');
+    await menu.click();
     await World.driver.sleep(300);
 };
 

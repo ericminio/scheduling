@@ -22,6 +22,7 @@
     --background-events: #d0e2ff;
     --background-event: var(--background-resource);
     --background-delete: var(--color-red);
+    --background-menu: white;
     --color-red: tomato;
     --color-header: white;
     --color-border: black;
@@ -32,6 +33,7 @@
     --color-status-unknown: lightgray;
     --color-add-ressource: var(--background-resource);
     --color-delete: white;
+    --color-menu: black;
 }
 body {
     margin: var(--body-margin);

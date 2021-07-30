@@ -12,27 +12,26 @@ menuTemplate.innerHTML = `
             vertical-align: top;
         }
         .ribbon {
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-            background-color: white;
-            padding-top: 10px;
-            padding-left: 10px;
-            margin-bottom: 25px;
+            background-color: var(--background-menu);
+            color: var(--color-menu);
+            border-top: 2px solid var(--color-menu);
+            border-bottom: 2px solid var(--color-menu);
+            margin-bottom: var(--vertical-margin);
+            font-size: 0.8em;
         }
         .menu {
-            color: black;
-            font-size: 13px;
-            margin-right: 25px;
+            padding-top: var(--padding);
+            padding-bottom: var(--padding);
+            padding-left: var(--padding);
             cursor: pointer;
         }
         .with-separator {
-            border-left: 1px solid black;
-            padding-left: 25px;
+            border-left: 1px solid var(--color-menu);
         }
     </style>
     <div class="ribbon">
         <ul>
-            <yop-link to="/events">
+            <yop-link to="/calendar">
                 <li class="menu" id="menu-calendar">CALENDAR</li>
             </yop-link>
             <yop-link to="/configuration">
