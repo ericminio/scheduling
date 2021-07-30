@@ -65,6 +65,14 @@ describe('Logout', ()=>{
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
     });
 
+    it('hidden when signing-in', ()=>{
+        window.store.saveObject('user', { username:'Alex' });
+        window.events.notify('connected');
+        window.events.notify('signing-in');
+
+        expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
+    });
+
     it('navigates when disconnected', ()=>{
         window.store.delete('user');
         window.events.notify('maybe signed-out');

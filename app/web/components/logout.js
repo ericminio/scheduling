@@ -28,15 +28,21 @@ class Logout extends HTMLElement {
     connectedCallback() {
         this.appendChild(logoutTemplate.content.cloneNode(true));
         this.querySelector('#logout-link').addEventListener('click', ()=> { this.logout(); });
+        this.update();
         events.register(this, 'maybe signed-out');
         events.register(this, 'connected');
-        this.update();
+        events.register(this, 'signing-in');
     }
     logout() {
         store.delete('user');
         this.update(undefined, 'maybe signed-out');
     }
     update(value, event) {
+        if (event == 'signing-in') {
+            this.querySelector('#logout-greetings').innerHTML = '';
+            this.querySelector('#logout').classList.add('hidden');
+            return;
+        }
         let user = store.getObject('user');
         if (user == null) {
             this.querySelector('#logout').classList.add('hidden');

@@ -24,6 +24,7 @@ class PageSignIn extends HTMLElement {
         this.querySelector('#signin').addEventListener('click', ()=>{ this.login(); });
         this.querySelector('#username').focus();
         store.delete('user');
+        events.notify('signing-in')
     }
     login() {
         let credentials = {
