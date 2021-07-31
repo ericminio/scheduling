@@ -2,7 +2,7 @@ const errorMessageTemplate = document.createElement('template')
 errorMessageTemplate.innerHTML = `
 <style>
     #error-message {
-        position: absolute;
+        position: fixed;
         top: 0px;
         right: 0px;
         margin: 5px;

@@ -2,7 +2,7 @@ const successMessageTemplate = document.createElement('template')
 successMessageTemplate.innerHTML = `
 <style>
     #success-message {
-        position: absolute;
+        position: fixed;
         top: 0px;
         right: 0px;
         margin: 5px;
