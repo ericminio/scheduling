@@ -8,7 +8,6 @@ successMessageTemplate.innerHTML = `
         margin: 5px;
         padding: 10px;
         cursor: pointer;
-
         color: var(--color-success);
         background-color: var(--background-success);
     }
@@ -25,14 +24,28 @@ class SuccessMessage extends HTMLElement {
     connectedCallback() {
         this.appendChild(successMessageTemplate.content.cloneNode(true));
         this.querySelector('#success-message').addEventListener('click', ()=> { this.acknowledge(); } );
+        this.element = this.querySelector('#success-message');
         events.register(this, 'success');
     }
-    update(value) {
-        console.log('success', value);
-        this.querySelector('#success-message').classList.remove('hidden');
-        this.querySelector('#success-message').innerHTML = value.message;
+    update(value) {        
+        this.opacity = 1.0;
+        this.element.classList.remove('hidden');
+        this.element.innerHTML = value.message;
+        this.element.style.opacity = this.opacity;
+        setTimeout(()=> { this.fade(); }, 1500);
+    }
+    fade() {
+        this.opacity = 0.99 * this.opacity;
+        this.element.style.opacity = this.opacity;
+        if (this.opacity < 0.05) {
+            this.acknowledge();
+        }
+        else {
+            setTimeout(()=> { this.fade(); }, 7);
+        }
     }
     acknowledge() {
+        this.opacity = 0.01;
         this.querySelector('#success-message').classList.add('hidden');
     }
 };
