@@ -27,6 +27,7 @@ describe('Page Configuration', ()=>{
         `;
     let window;
     let document;
+    let wait = 30;
 
     beforeEach(()=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
@@ -41,14 +42,14 @@ describe('Page Configuration', ()=>{
         setTimeout(()=> {
             expect(document.querySelector('#configuration-title').value).to.equal('welcome');
             done();
-        }, 50);        
+        }, wait);        
     });
 
     it('displays current opening hours', (done)=>{
         setTimeout(()=> {
             expect(document.querySelector('#configuration-opening-hours').value).to.equal('11-22');
             done();
-        }, 50);        
+        }, wait);        
     });
 
     it('sends the expected save request', ()=>{
@@ -71,7 +72,7 @@ describe('Page Configuration', ()=>{
             expect(window.store.getObject('configuration')).to.deep.equal(
                 { title:'new-title' , 'opening-hours':'12-18' });
             done();
-        }, 50);
+        }, wait);
     });
     
     it('notifies on success', (done)=>{
@@ -80,13 +81,28 @@ describe('Page Configuration', ()=>{
             update: ()=> { wasCalled = true; }
         };
         window.events.register(spy, 'configuration updated');
-        window.api = { saveConfiguration:(configuration)=> { return new Promise((resolve)=> { resolve(); })} };
+        window.api = { saveConfiguration:()=> { return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#configuration-title').value = 'new-title';
         document.querySelector('#save-configuration').click();
         setTimeout(()=> {
             expect(wasCalled).to.equal(true);
             done();
-        }, 50);
+        }, wait);
+    });
+    
+    it('request success message display', (done)=>{
+        let wasCalled = false;
+        let spy = {
+            update: (value)=> { wasCalled = value; }
+        };
+        window.events.register(spy, 'success');
+        window.api = { saveConfiguration:()=> { return new Promise((resolve)=> { resolve(); })} };
+        document.querySelector('#configuration-title').value = 'new-title';
+        document.querySelector('#save-configuration').click();
+        setTimeout(()=> {
+            expect(wasCalled).to.deep.equal({ message:'Configuration saved' });
+            done();
+        }, wait);
     });
 
     describe('when configuration load fails', ()=>{
@@ -129,7 +145,7 @@ describe('Page Configuration', ()=>{
             setTimeout(()=>{
                 expect(wasCalled).to.equal(true);
                 done();
-            }, 150);
+            }, wait);
         })
     })
 })

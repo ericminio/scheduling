@@ -1,0 +1,56 @@
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { expect } = require('chai');
+const yop = require('../yop');
+const fs = require('fs');
+const path = require('path');
+const sut = ''
+    + fs.readFileSync(path.join(__dirname, 'success-message.js')).toString()
+    ;
+
+describe('Success message', ()=>{
+
+    let html = `
+        <!DOCTYPE html>
+        <html lang="en">
+            <body>
+                <yop-success-message></yop-success-message>
+                <script>
+                    ${yop}
+                    ${sut}
+                </script>
+            </body>
+        </html>
+        `;
+    let window;
+    let document;
+
+    beforeEach(()=>{
+        window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+        document = window.document;        
+    });
+
+    it('is available', ()=>{
+        expect(document.querySelector('yop-success-message')).not.to.equal(null);
+    });
+
+    it('starts hidden', ()=>{
+        expect(document.querySelector('#success-message').classList.toString()).to.equal('hidden');
+    });
+
+    it('becomes visible on success', ()=>{
+        window.events.notify('success', {})
+        expect(document.querySelector('#success-message').classList.toString()).to.equal('');
+    });
+
+    it('displays provided message', ()=>{
+        window.events.notify('success', { message: 'nice!' });
+        expect(document.querySelector('#success-message').innerHTML).to.equal('nice!');
+    });
+
+    it('will close on click', ()=>{
+        window.events.notify('success', { message: 'nice!' });
+        document.querySelector('#success-message').click();
+        expect(document.querySelector('#success-message').classList.toString()).to.equal('hidden');
+    });
+})

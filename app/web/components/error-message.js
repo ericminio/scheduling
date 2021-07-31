@@ -7,8 +7,8 @@ errorMessageTemplate.innerHTML = `
         right: 0px;
         margin: 5px;
         padding: 10px;
-        background-color: var(--color-red);
-        color: white;
+        background-color: var(--background-error);
+        color: var(--color-error);
         cursor: pointer;
     }
 </style>

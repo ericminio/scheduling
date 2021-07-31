@@ -58,6 +58,7 @@ class PageConfiguration extends HTMLElement {
         api.saveConfiguration(configuration)
             .then(()=> {
                 store.saveObject('configuration', configuration);
+                events.notify('success', { message:'Configuration saved' });
                 events.notify('configuration updated');
             });
     }
