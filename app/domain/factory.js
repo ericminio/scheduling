@@ -22,7 +22,7 @@ class Factory {
         for (let i=0; i<incoming.resources.length; i++) {
             let resource = incoming.resources[i];
             let id = resource.id;
-            if (! await resourcesRepository.exists(id)) {
+            if (! await resourcesRepository.get(id)) {
                 throw Error(`unknown resource with id "${id}"`);
             }
         }

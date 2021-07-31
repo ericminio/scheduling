@@ -4,12 +4,12 @@ const { Database, migrate,
         ConfigurationRepository } = require('./storage');
 let database = new Database();
 
-const UsersService = require('./node/services/users-service');
+const { UsersService, ResourcesService } = require('./node/services');
 
 const { Server } = require('./node/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
-server.services['resources'] = new ResourcesRepository(database);
+server.services['resources'] = new ResourcesService(new ResourcesRepository(database));
 server.services['events'] = new EventsRepository(database);
 server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
