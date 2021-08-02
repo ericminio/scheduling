@@ -5,6 +5,11 @@ const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
 const sut = ''
+    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'event-creation.js')).toString()
     ;
 
@@ -14,12 +19,29 @@ describe('Event creation', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
+                <yop-calendar></yop-calendar>
                 <event-creation></event-creation>
                 <script>
                     ${yop}
+                    today = ()=> { return new Date(2015, 6, 1); }
                     var api = {
+                        getResources: ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ resources:[
+                                    { id:'1', type:'plane', name:'GSDZ' }
+                                ]});
+                            });
+                        },
+                        getEvents: ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ events:[
+                                    { id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] }                                    
+                                ]});
+                            });
+                        },
                         createEvent: (payload)=> new Promise((resolve)=>{ resolve(); })  
                     };
+                    store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
                     ${sut}
                 </script>
             </body>
@@ -28,15 +50,49 @@ describe('Event creation', ()=>{
     let window;
     let document;
     let form;
+    let wait = 30;
 
-    beforeEach(()=>{
+    beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         form = document.querySelector('#event-creation-form');
+        setTimeout(done, wait);
     })
 
     it('is ready', ()=>{
         expect(form).not.to.equal(null);
+    });
+
+    it('is available via calendar click', (done)=> {
+        let spy;
+        window.events.register({ update:(value)=>{ spy=value; } }, 'event creation');
+        document.querySelector('events').click(); 
+        setTimeout(()=>{
+            expect(spy).to.equal('2015-07-01');
+            done();
+        }, wait);
+    });
+
+    it('prepopulates start', ()=> {
+        window.store.saveObject('resources', [
+            { id:'one', name:'one' },
+            { id:'two', name:'two' },
+            { id:'three', name:'three' }
+        ])
+        window.events.notify('event creation', '1980-05-25');
+
+        expect(form.querySelector('#new-event-start').value).to.equal('1980-05-25 18:00');
+    });
+
+    it('prepopulates end', ()=> {
+        window.store.saveObject('resources', [
+            { id:'one', name:'one' },
+            { id:'two', name:'two' },
+            { id:'three', name:'three' }
+        ])
+        window.events.notify('event creation', '1980-05-25');
+
+        expect(form.querySelector('#new-event-end').value).to.equal('1980-05-25 20:00');
     });
 
     it('sends expected payload', ()=> {

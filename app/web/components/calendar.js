@@ -53,7 +53,7 @@ class Calendar extends HTMLElement {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         await this.displayTimelineMarks();
         this.querySelector('events').addEventListener('click', (e)=>{
-            events.notify('event creation');
+            events.notify('event creation', this.querySelector("#calendar-date").value);
         });
         this.querySelector('#calendar-search').addEventListener('click', (e)=>{
             this.update();
@@ -63,7 +63,7 @@ class Calendar extends HTMLElement {
         events.register(this, 'event deleted');
         events.register(this, 'resource deleted');
         this.setDate(today());
-        this.update();        
+        this.update();   
     }
     setDate(date) {
         let month = 1+date.getMonth();

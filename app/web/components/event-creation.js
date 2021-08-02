@@ -36,7 +36,7 @@ class EventCreation extends HTMLElement {
         this.querySelector('#create-event').addEventListener('click', ()=> { this.createEvent(); });
         events.register(this, 'event creation');
     }
-    update() {
+    update(date) {
         let resources = store.getObject('resources');
         let html = '';
         for (let i=0 ; i<resources.length; i++) {
@@ -53,6 +53,11 @@ class EventCreation extends HTMLElement {
         }
         this.querySelector('#new-event-resources').innerHTML = html;        
         this.querySelector('#event-creation-form').classList.toggle('hidden');
+        if (this.querySelector('#event-creation-form').classList.toString().indexOf('hidden') == -1) {
+            this.querySelector('#new-event-label').focus();
+            this.querySelector('#new-event-start').value = `${date} 18:00`;
+            this.querySelector('#new-event-end').value = `${date} 20:00`;
+        }
     }
     createEvent() {
         api.createEvent(this.payload())
