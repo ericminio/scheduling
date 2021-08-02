@@ -2,11 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 class ScriptsRoute {
-
-    matches(request) {
-        return request.url == '/scheduling.js';
-    }
-    async go(request, response) {
+    constructor() {
         let files = [
             'system-status.js',
             'header.js',
@@ -27,13 +23,22 @@ class ScriptsRoute {
             'menu.js',
             'success-message.js'   
         ];
-        let body = fs.readFileSync(path.join(__dirname, '../../web/data', 'api-client.js')).toString();
+        this.body = this.read('../../web/data', 'api-client.js');
         files.forEach((file)=> {
-            body += fs.readFileSync(path.join(__dirname, '../../web/components', file)).toString();
-        })
+            this.body += this.read('../../web/components', file);
+        });
+    }
+    read(folder, filename) {
+        return fs.readFileSync(path.join(__dirname, folder, filename)).toString();
+    }
+
+    matches(request) {
+        return request.url == '/scheduling.js';
+    }
+    async go(request, response) { 
         response.statusCode = 200;
         response.setHeader('content-type', 'application/javascript');
-        response.write(body);
+        response.write(this.body);
         response.end();
     }
 }
