@@ -25,6 +25,9 @@ class RepositoryUsingMap {
     async getUserByKey(key) { 
         return this.store.find(instance => instance.key == key);
     }
+    async search(criteria) {
+        return this.store;
+    }
     
 };
 

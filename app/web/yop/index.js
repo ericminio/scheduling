@@ -9,6 +9,7 @@ let yop = [
     './2.events.js',
     './3.navigate.js',
     './4.route.js',
+    './5.today.js',
     './link.js'
 ].reduce((acc, current)=> acc + file(current), '');
 

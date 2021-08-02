@@ -22,9 +22,9 @@ Feature: Scheduling events
             | Joe   | 2015-10-01 15:00 | 2015-10-01 18:00 | GITN, Vasile                 |
             | Alex  | 2015-10-01 18:00 | 2015-10-01 20:00 | GNEA, Alain, Headset #1      |
 
-    Scenario: Inspect
+    Scenario: Inspect events
         When "I" signs in with password "secret"
-        When I look at the events
+        When I open the calendar on "2015-10-01"
         Then I see that "Alex" starts at "18:00"
         Then I see that "Alex" ends at "20:00"
         Then I see that "Alex" is scheduled with "GNEA"
@@ -37,3 +37,8 @@ Feature: Scheduling events
         
         When I inspect resource "GNEA"
         Then I see that this resource type is "plane"
+
+    Scenario: empty calendar
+        When "I" signs in with password "secret"
+        When I open the calendar on "2020-10-01"
+        Then I see that the calendar is empty

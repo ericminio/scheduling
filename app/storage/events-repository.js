@@ -38,6 +38,38 @@ class EventsRepository {
         event.setResources(await this.eventsResourcesRepository.getResourcesByEvent(id))
         return event;
     }
+    async search(date) {
+        let start = `${date} 00:00:00`;
+        let end = `${date} 23:59:59`;
+        let rows = await this.database.executeSync(`
+            select event_id, label, start_time, end_time, resource_id 
+            from events_resources, events
+            where events_resources.event_id = events.id 
+            and end_time >= '${start}'
+            and start_time <= '${end}'
+            order by event_id
+            `);
+
+        let collection = [];
+        let currentId = -1;
+        let currentEvent;
+        for (let i=0; i<rows.length; i++) {
+            let record = rows[i];
+            if (record.event_id != currentId) {
+                currentId = record.event_id;
+                currentEvent = new Event({
+                    id:record.event_id,
+                    label:record.label,
+                    start:record.start_time,
+                    end:record.end_time
+                });
+                currentEvent.resources = [];
+                collection.push(currentEvent);
+            }
+            currentEvent.resources.push({ id:record.resource_id });
+        }
+        return collection;
+    }
     async all() {
         let rows = await this.database.executeSync(`
             select event_id, label, start_time, end_time, resource_id 

@@ -86,11 +86,11 @@ describe('Api client', ()=>{
     })
 
     it('exposes events', (done)=> {
-        api.getEvents()
+        api.getEvents('2015-09-21')
             .then((data) => {
                 expect(data).to.deep.equal({                     
                     method: 'GET',
-                    url: '/data/events',
+                    url: '/data/events?date=2015-09-21',
                     payload: '',
                     headers: {
                         connection: 'close',

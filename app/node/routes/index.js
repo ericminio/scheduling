@@ -11,6 +11,7 @@ module.exports = {
 
     SignIn: require('./sign-in'),
 
+    SearchEvents: require('./events/search-events'),
     GetAllEvents: require('./events/get-all-events'),
     CreateOneEvent: require('./events/create-one-event'),
     GetOneEvent: require('./events/get-one-event'),
@@ -21,6 +22,7 @@ module.exports = {
     GetOneResource: require('./resources/get-one-resource'),
     DeleteOneResource: require('./resources/delete-one-resource'),
 
+    NotImplemented: require('./not-implemented'),
     DefaultRoute: require('./defaut-route'),
     ErrorRoute: require('./error-route')
 };

@@ -5,9 +5,9 @@ const { SecurityRoute,
         Yop, Scripts, Styles, 
         Ping, GetConfiguration, UpdateConfiguration,
         SignIn, 
-        GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
+        SearchEvents, GetAllEvents, CreateOneEvent, GetOneEvent, DeleteOneEvent,
         GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
-        DefaultRoute, ErrorRoute } = require('./routes');
+        NotImplemented, DefaultRoute, ErrorRoute } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -29,8 +29,9 @@ class Server {
             new Yop(), new Scripts(), new Styles(), 
             new Ping(), new GetConfiguration(), new UpdateConfiguration(),
             new SignIn(),
-            new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
+            new SearchEvents(), new GetAllEvents(), new CreateOneEvent(), new GetOneEvent(), new DeleteOneEvent(),
             new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource(),
+            new NotImplemented(),
             new DefaultRoute()
         ];
     }

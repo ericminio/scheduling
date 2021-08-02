@@ -36,10 +36,7 @@ Then('I see that {string} is scheduled with {string}', async (label, name)=> {
         throw Error('nope')
     }
 });
-Then('he sees that the calendar is empty', async ()=> {
-    let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
-    expect(candidatesEvents.length).to.equal(0);
-});
+
 Then('he sees that the resources are ordered as follows', async (expected)=> {
     let resources = await World.driver.findElements(By.css('yop-calendar-resource'));
     for (let i=0; i<resources.length; i++) {

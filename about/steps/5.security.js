@@ -22,7 +22,6 @@ When('{string} signs in with password {string}', async (username, password)=> {
 });
 
 When('he inspects event {string} scheduled with {string}', async (label, name)=> {
-    await openEvents();
     let resourceElement = await getResourceElement(name);
     let eventsWithLabel = await getEventElements(label);
     let event = await getEventScheduledWith(resourceElement, eventsWithLabel);

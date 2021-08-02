@@ -1,3 +1,4 @@
+
 Feature: Securing data
 
     Some can read, some can write
@@ -23,12 +24,14 @@ Feature: Securing data
 
     Scenario: delete forbidden
         When "Joe" signs in with password "secret"
+        When he opens the calendar on "2015-10-01"
         When he inspects event "Alex" scheduled with "blue bicycle"
         When he tries to delete this event
         Then he receives the error message "forbidden: insufficient privilege"
-        
+    
     Scenario: delete authorized
         When "Max" signs in with password "secret"
+        When he opens the calendar on "2015-10-01"
         When he inspects event "Alex" scheduled with "blue bicycle"
         When he tries to delete this event
         Then he sees that the calendar is empty

@@ -23,6 +23,10 @@ calendarTemplate.innerHTML = `
             <tr>
                 <td class="column-one"></td>
                 <td class="column-two">
+                    <div>
+                        <input id="calendar-date" />
+                        <button id="calendar-search">Show</button>
+                    </div>
                     <timeline></timeline>
                 </td>
             </tr>
@@ -51,13 +55,26 @@ class Calendar extends HTMLElement {
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation');
         });
+        this.querySelector('#calendar-search').addEventListener('click', (e)=>{
+            this.update();
+        });
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
-        events.register(this, 'resource deleted');   
+        events.register(this, 'resource deleted');
+        this.setDate(today());
         this.update();        
     }
+    setDate(date) {
+        let month = 1+date.getMonth();
+        if (month < 10) { month = '0'+month; }
+        let day = date.getDate();
+        if (day < 10) { day = '0'+day; }
+        let formatted = `${date.getFullYear()}-${month}-${day}`;
+        this.querySelector('#calendar-date').value = formatted;
+    }
     update() {
+        let date = this.querySelector("#calendar-date").value;
         let resourcesLoaded = api.getResources();
         resourcesLoaded
             .then(data => {
@@ -73,7 +90,7 @@ class Calendar extends HTMLElement {
                 store.delete('resources'); 
                 events.notify('maybe signed-out')
             });
-        let eventsLoaded = api.getEvents();
+        let eventsLoaded = api.getEvents(date);
         eventsLoaded.then(data => this.events = data.events);
 
         Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
