@@ -16,6 +16,7 @@ module.exports = {
     CreateOneEvent: require('./events/create-one-event'),
     GetOneEvent: require('./events/get-one-event'),
     DeleteOneEvent: require('./events/delete-one-event'),
+    DeleteAllEventsRoute: require('./events/delete-all-events'),
 
     GetAllResources: require('./resources/get-all-resources'),
     CreateOneResource: require('./resources/create-one-resource'),

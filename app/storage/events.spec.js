@@ -111,6 +111,27 @@ describe('Events storage', ()=> {
         expect(resources).to.deep.equal([]);
     });
 
+    it('can delete all', async ()=> {
+        await repository.save(new Event({ 
+            id:'1', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[{id:'r1-id'}, {id:'r2-id'}]
+        }));
+        await repository.save(new Event({ 
+            id:'2', 
+            label:'event-label', 
+            start:'2015-01-15 19:15:00', 
+            end:'2015-07-14T23:42:15',
+            resources:[{id:'r1-id'}, {id:'r2-id'}]
+        }));
+        await repository.truncate();
+        let collection = await repository.all();
+
+        expect(collection.length).to.equal(0);
+    });
+
     it('can search by date', async ()=> {
         await repository.save(new Event({ 
             id:'1', 

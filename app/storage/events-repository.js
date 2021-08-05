@@ -106,6 +106,9 @@ class EventsRepository {
         await this.eventsResourcesRepository.deleteByEvent(id);
         await this.database.executeSync('delete from events where id=$1', [id]);
     }
+    async truncate() {
+        await this.database.executeSync('truncate table events');
+    }
 }
 
 module.exports = EventsRepository;

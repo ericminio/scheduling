@@ -28,6 +28,9 @@ class RepositoryUsingMap {
     async search(criteria) {
         return this.store;
     }
+    async truncate() {
+        this.store = [];
+    }
     
 };
 
