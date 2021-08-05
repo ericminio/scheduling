@@ -55,7 +55,7 @@ class EventCreation extends HTMLElement {
         this.querySelector('#event-creation-form').classList.toggle('hidden');
         if (this.querySelector('#event-creation-form').classList.toString().indexOf('hidden') == -1) {
             this.querySelector('#new-event-label').focus();
-            this.querySelector('#new-event-start').value = `${date} 18:00`;
+            this.querySelector('#new-event-start').value = `${date} 08:00`;
             this.querySelector('#new-event-end').value = `${date} 20:00`;
         }
     }

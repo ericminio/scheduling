@@ -6,6 +6,7 @@ Feature: Scheduling events
         Given the following users and privileges
             | Username  | Password | Priviledges  |
             | I         | secret   | read, write  |
+        Given "I" signs in with password "secret"        
         Given I create the following resources
             | Type       | Name       |
             | plane      | GITN       |
@@ -16,6 +17,7 @@ Feature: Scheduling events
             | headset    | Headset #1 |
             | headset    | Headset #2 |
             | headset    | Headset #3 |
+        Given I open the calendar on "2015-10-01"
         Given I create the following events
             | Label | Start            | End              | Resources                    |
             | Bob   | 2015-10-01 11:30 | 2015-10-01 13:30 | GITN, Headset #1, Headset #2 |

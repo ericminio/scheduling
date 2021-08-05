@@ -81,7 +81,7 @@ describe('Event creation', ()=>{
         ])
         window.events.notify('event creation', '1980-05-25');
 
-        expect(form.querySelector('#new-event-start').value).to.equal('1980-05-25 18:00');
+        expect(form.querySelector('#new-event-start').value).to.equal('1980-05-25 08:00');
     });
 
     it('prepopulates end', ()=> {

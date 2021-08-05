@@ -4,14 +4,12 @@ const login = require('./login')
 const { expect } = require('../../app/node_modules/chai');
 
 Given('I create the following resources', async (resources)=> {
-    await login('I', 'secret');
     await createResources(resources);
 });
 Given('he creates the following resources', async (resources)=> {
     await createResources(resources);
 });
 Given('I create the following events', async (events)=> {
-    await login('I', 'secret');
     await createEvents(events);
 });
 Given('he creates the following events', async (events)=> {

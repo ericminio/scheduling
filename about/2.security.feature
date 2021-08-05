@@ -1,4 +1,3 @@
-
 Feature: Securing data
 
     Some can read, some can write
@@ -9,11 +8,13 @@ Feature: Securing data
             | I         | secret   | read, write  |
             | Joe       | secret   | read         |
             | Max       | secret   | read, write  |
+        Given "I" signs in with password "secret"        
         Given I create the following resources
             | Type         | Name           |
             | bicycle      | blue bicycle   |
             | bicycle      | white bicycle  |
             | helmet       | helmet #1      |
+        Given I open the calendar on "2015-10-01"
         Given I create the following events
             | Label | Start            | End              | Resources                |
             | Alex  | 2015-10-01 08:00 | 2015-10-01 20:00 | blue bicycle, helmet #1  |
