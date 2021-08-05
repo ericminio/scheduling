@@ -14,7 +14,7 @@ server.services['events'] = new EventsRepository(database);
 server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
 
-const User = require('./domain/user');
+const { User } = require('./domain');
 let ready = new Promise(async (resolve, reject)=> {
     try {
         await migrate(database);

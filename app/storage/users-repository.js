@@ -1,4 +1,4 @@
-const User = require('../domain/user');
+const { User } = require('../domain');
 const NextUuid = require('./next-uuid');
 const Hash = require('./hash');
 

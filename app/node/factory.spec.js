@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Factory } = require('.');
+const Factory = require('./factory');
 
 describe('Factory', ()=> {
 

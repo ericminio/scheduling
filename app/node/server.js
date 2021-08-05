@@ -1,5 +1,5 @@
 let http = require('http');
-const Factory = require('../domain/factory');
+const Factory = require('./factory');
 const NextUuid = require('../storage/next-uuid');
 const Guard = require('./guard');
 const { SecurityRoute,

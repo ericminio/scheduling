@@ -1,7 +1,6 @@
 const ResourcesRepository = require('./resources-repository');
 const EventsResourcesRepository = require('./events-resources-repository');
-const Event = require('../domain/event');
-const Resource = require('../domain/resource');
+const { Event } = require('../domain');
 
 class EventsRepository {
     constructor(database) {

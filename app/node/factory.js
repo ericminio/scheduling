@@ -1,8 +1,6 @@
-const Resource = require("./resource");
-const Event = require("./event");
+const { Resource, Event } = require('../domain');
 
 class Factory {
-
     async createResource(incoming) {
         if (incoming.id === undefined) {
             incoming.id = this.idGenerator.next();
