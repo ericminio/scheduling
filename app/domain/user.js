@@ -14,6 +14,4 @@ class User {
 
     setId(id) { this.id = id; }
     setKey(key) { this.key = key; }
-}
-
-module.exports = User;
+};

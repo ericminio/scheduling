@@ -11,5 +11,3 @@ class Resource {
     getName() { return this.name; }
     getLine() { return this.line; }
 };
-
-module.exports = Resource;

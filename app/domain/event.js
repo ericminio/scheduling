@@ -17,5 +17,3 @@ class Event {
         this.resources = resources;
     }
 };
-
-module.exports = Event;

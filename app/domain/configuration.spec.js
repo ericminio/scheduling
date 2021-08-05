@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 const { Configuration } = require('.');
 
-
 describe('Configuration', ()=>{
 
     it('provides defaut title', ()=>{
