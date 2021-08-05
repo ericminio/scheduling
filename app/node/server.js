@@ -1,5 +1,6 @@
 let http = require('http');
 const Factory = require('../domain/factory');
+const NextUuid = require('../storage/next-uuid');
 const Guard = require('./guard');
 const { SecurityRoute,
         Yop, Scripts, Styles, 
@@ -22,6 +23,7 @@ class Server {
             }
         });
         this.factory = new Factory();
+        this.factory.idGenerator = new NextUuid();
         this.services = {};
         this.guard = new Guard();
         this.routes = [ 

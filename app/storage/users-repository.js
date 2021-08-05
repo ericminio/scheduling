@@ -1,5 +1,5 @@
 const User = require('../domain/user');
-const NextUuid = require('../domain/next-uuid');
+const NextUuid = require('./next-uuid');
 const Hash = require('./hash');
 
 class UsersRepository {

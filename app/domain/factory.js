@@ -1,12 +1,7 @@
 const Resource = require("./resource");
 const Event = require("./event");
-const NextUuid = require('./next-uuid')
 
 class Factory {
-
-    constructor() {
-        this.idGenerator = new NextUuid();
-    }
 
     async createResource(incoming) {
         if (incoming.id === undefined) {
