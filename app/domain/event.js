@@ -16,4 +16,19 @@ class Event {
     setResources(resources) {
         this.resources = resources;
     }
+
+    getStartInstant() {
+        return this.getInstant(this.getStart());
+    }
+    getEndInstant() {
+        return this.getInstant(this.getEnd());
+    }
+    getInstant(datetime) {
+        let time = datetime.substring(datetime.indexOf(' ')).trim();
+        let parts = time.split(':');
+        return {
+            hours: parseInt(parts[0]),
+            minutes: parseInt(parts[1])
+        }
+    }
 };

@@ -16,24 +16,15 @@ class CalendarEvent extends HTMLElement {
         })
     }
     width(event) {
-        let start = this.parse(event.getStart());
-        let end = this.parse(event.getEnd());
+        let start = event.getStartInstant();
+        let end = event.getEndInstant();
         return layout.width(start, end);
     }
     left(event) {
-        let start = this.parse(event.getStart());
-        return layout.left(start);
+        return layout.left(event.getStartInstant());
     }
     top(resource) {
         return layout.top(resource.getLine());
-    }
-    parse(datetime) {
-        let time = datetime.substring(datetime.indexOf(' ')).trim();
-        let parts = time.split(':');
-        return {
-            hours: parseInt(parts[0]),
-            minutes: parseInt(parts[1])
-        }
     }
 };
 customElements.define('yop-calendar-event', CalendarEvent);
