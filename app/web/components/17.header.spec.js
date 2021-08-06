@@ -1,15 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const { Configuration } = require("../../domain");
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'header.js')).toString()
-    ;
 
 describe('Header', ()=>{
 
@@ -22,10 +14,11 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
+                        ${domain}
+                        ${data}
                         store.saveObject('configuration', 
                             { title:'Resto', 'opening-hours':'12-15' });
-                        var api = {};
-                        ${sut}
+                        ${components}
                     </script>
                 </body>
             </html>
@@ -63,12 +56,12 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
-                        var api = {                            
-                            configuration: ()=> new Promise((resolve)=>{ resolve({
-                                title: 'Agenda', 'opening-hours':'8-15'
-                            }); })  
-                        };
-                        ${sut}
+                        ${domain}
+                        ${data}
+                        api.configuration = ()=> new Promise((resolve)=>{ 
+                            resolve({ title: 'Agenda', 'opening-hours':'8-15' }); 
+                        });
+                        ${components}
                     </script>
                 </body>
             </html>
@@ -90,8 +83,8 @@ describe('Header', ()=>{
 
         it('stores it', (done)=>{
             setTimeout(()=> {
-                expect(window.store.getObject('configuration')).to.deep.equal(new Configuration(
-                    { title:'Agenda', 'opening-hours':'8-15' } ));
+                expect(window.store.getObject('configuration')).to.deep.equal(
+                    { title:'Agenda', 'opening-hours':'8-15' } );
                 done();
             }, wait);
         });
@@ -105,14 +98,13 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
-                        store.saveObject('configuration', 
-                            { title:'Resto' });
-                        var api = {                            
-                            configuration: ()=> new Promise((resolve)=>{ resolve({
-                                title: 'Agenda', 'opening-hours':'8-15'
-                            }); })  
-                        };
-                        ${sut}
+                        ${domain}
+                        ${data}
+                        store.saveObject('configuration', { title:'Resto' });                    
+                        api.configuration = ()=> new Promise((resolve)=>{ 
+                            resolve({ title: 'Agenda', 'opening-hours':'8-15' }); 
+                        });
+                        ${components}
                     </script>
                 </body>
             </html>
@@ -134,7 +126,7 @@ describe('Header', ()=>{
 
         it('stores it', (done)=>{
             setTimeout(()=> {
-                expect(window.store.getObject('configuration')).to.deep.equal(new Configuration({ title:'Agenda', 'opening-hours':'8-15' }));
+                expect(window.store.getObject('configuration')).to.deep.equal({ title:'Agenda', 'opening-hours':'8-15' });
                 done();
             }, wait);
         });
@@ -148,8 +140,9 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
-                        var api = {};
-                        ${sut}
+                        ${domain}
+                        ${data}
+                        ${components}
                     </script>
                 </body>
             </html>
@@ -182,9 +175,10 @@ describe('Header', ()=>{
                     <yop-header></yop-header>
                     <script>
                         ${yop}
+                        ${domain}
+                        ${data}
                         store.saveObject('configuration', { title:'Resto' });
-                        var api = {};
-                        ${sut}
+                        ${components}
                     </script>
                 </body>
             </html>

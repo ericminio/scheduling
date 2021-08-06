@@ -1,18 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
-    ;
 
 describe('Timeline', ()=>{
 
@@ -23,6 +12,8 @@ describe('Timeline', ()=>{
                 <yop-calendar></yop-calendar>
                 <script>
                     ${yop}
+                    ${domain}
+                    ${data}
                     var api = {
                         getResources: ()=> {
                             return new Promise((resolve, reject)=>{
@@ -36,7 +27,7 @@ describe('Timeline', ()=>{
                         }                        
                     };
                     store.saveObject('configuration', { title:'Resto', 'opening-hours':'12-15' });
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>
@@ -80,22 +71,22 @@ describe('Timeline', ()=>{
                     <yop-calendar></yop-calendar>
                     <script>
                         ${yop}
-                        var api = {
-                            getResources: ()=> {
-                                return new Promise((resolve, reject)=>{
-                                    resolve({ resources:[]});
-                                });
-                            },
-                            getEvents: ()=> {
-                                return new Promise((resolve, reject)=>{
-                                    resolve({ events:[]});
-                                });
-                            },
-                            configuration: ()=> new Promise((resolve)=>{ resolve({
-                                title: 'Agenda', 'opening-hours':'8-15'
-                            }); })  
+                        ${domain}
+                        ${data}
+                        api.getResources = ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ resources:[]});
+                            });
                         };
-                        ${sut}
+                        api.getEvents = ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ events:[]});
+                            });
+                        };
+                        api.configuration = ()=> new Promise((resolve)=>{ resolve({
+                            title: 'Agenda', 'opening-hours':'8-15'
+                        }); });
+                        ${components}
                     </script>
                 </body>
             </html>
@@ -125,23 +116,23 @@ describe('Timeline', ()=>{
                     <yop-calendar></yop-calendar>
                     <script>
                         ${yop}
-                        var api = {
-                            getResources: ()=> {
-                                return new Promise((resolve, reject)=>{
-                                    resolve({ resources:[]});
-                                });
-                            },
-                            getEvents: ()=> {
-                                return new Promise((resolve, reject)=>{
-                                    resolve({ events:[]});
-                                });
-                            },
-                            configuration: ()=> new Promise((resolve)=>{ resolve({
-                                title: 'Agenda', 'opening-hours':'8-15'
-                            }); })  
+                        ${domain}
+                        ${data}
+                        api.getResources = ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ resources:[]});
+                            });
                         };
+                        api.getEvents = ()=> {
+                            return new Promise((resolve, reject)=>{
+                                resolve({ events:[]});
+                            });
+                        };
+                        api.configuration = ()=> new Promise((resolve)=>{ resolve({
+                            title: 'Agenda', 'opening-hours':'8-15'
+                        }); });
                         store.saveObject('configuration', { title:'Resto' });
-                        ${sut}
+                        ${components}
                     </script>
                 </body>
             </html>

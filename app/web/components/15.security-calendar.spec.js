@@ -1,18 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
-    ;
 
 describe('When resource load fails', ()=>{
 
@@ -23,6 +12,8 @@ describe('When resource load fails', ()=>{
                 <yop-calendar></yop-calendar>
                 <script>
                     ${yop}
+                    ${domain}
+                    ${data}
                     var api = {
                         getResources: ()=> {
                             return new Promise((resolve, reject)=>{
@@ -43,7 +34,7 @@ describe('When resource load fails', ()=>{
                         }                        
                     };
                     store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>

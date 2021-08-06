@@ -1,19 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'calendar.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'event-creation.js')).toString()
-    ;
 
 describe('Event creation', ()=>{
 
@@ -25,6 +13,8 @@ describe('Event creation', ()=>{
                 <event-creation></event-creation>
                 <script>
                     ${yop}
+                    ${domain}
+                    ${data}                    
                     today = ()=> { return new Date(2015, 6, 1); }
                     var api = {
                         getResources: ()=> {
@@ -44,7 +34,7 @@ describe('Event creation', ()=>{
                         createEvent: (payload)=> new Promise((resolve)=>{ resolve(); })  
                     };
                     store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>

@@ -1,14 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'page-configuration.js')).toString()
-    ;
 
 describe('Page Configuration', ()=>{
 
@@ -19,10 +12,10 @@ describe('Page Configuration', ()=>{
                 <page-configuration></page-configuration>
                 <script>
                     ${yop}
-                    var api = {
-                        configuration: ()=> new Promise((resolve)=>{ resolve({ title:'welcome', 'opening-hours':'11-22' }); })  
-                    };
-                    ${sut}
+                    ${domain}
+                    ${data}
+                    api.configuration = ()=> new Promise((resolve)=>{ resolve({ title:'welcome', 'opening-hours':'11-22' }); })
+                    ${components}
                 </script>
             </body>
         </html>
@@ -116,11 +109,11 @@ describe('Page Configuration', ()=>{
                     <page-configuration></page-configuration>
                     <script>
                         ${yop}
-                        var api = {
-                            configuration: ()=> new Promise((resolve)=>{ resolve(); }),
-                            saveConfiguration: ()=> new Promise((resolve)=>{ resolve(); })                             
-                        };
-                        ${sut}
+                        ${domain}
+                        ${data}
+                        api.configuration = ()=> new Promise((resolve)=>{ resolve(); });
+                        api.saveConfiguration = ()=> new Promise((resolve)=>{ resolve(); });
+                        ${components}
                     </script>
                 </body>
             </html>
