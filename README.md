@@ -9,18 +9,13 @@ https://yop-scheduling.herokuapp.com
 
 [Vision](about/1.vision.feature)
 
-## run the tests
+# Run the tests
 
 Make sure `geckodriver` is in your PATH
 
 ```
+export DATABASE_URL=postgres://dev:dev@localhost:5432/scheduling
 cd app
 npm install
 npm test
-```
-
-# Local run
-
-```
-docker-compose up
 ```
