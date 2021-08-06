@@ -7,12 +7,14 @@ module.exports = {
     yop: require('./yop'),
     domain: concat([
         '../domain/configuration.js',
-        '../domain/resource.js'
+        '../domain/resource.js',
+        '../domain/event.js'
     ]),
     data: concat([
         './data/api-client.js',
         './data/configuration-reader.js',
         './data/resources-reader.js',
+        './data/events-reader.js',
         './data/facade.js'
     ]),
     components: concat([

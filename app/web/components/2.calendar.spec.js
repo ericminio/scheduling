@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
-const { Resource } = require('../../domain');
+const { Resource, Event } = require('../../domain');
 const { JSDOM } = jsdom;
 
 describe('Calendar', ()=>{
@@ -27,8 +27,8 @@ describe('Calendar', ()=>{
                     api.getEvents = ()=> {
                         return new Promise((resolve, reject)=>{
                             resolve({ events:[
-                                { id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] },
-                                { id:'15', start:'2015-09-21 19:30', end:'2015-09-21 23:30', resources:[{id:'2'}, {id:'3'}] }
+                                new Event({ id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] }),
+                                new Event({ id:'15', start:'2015-09-21 19:30', end:'2015-09-21 23:30', resources:[{id:'2'}, {id:'3'}] })
                             ]});
                         });
                     };
@@ -80,7 +80,7 @@ describe('Calendar', ()=>{
         window.api.getEvents = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
-                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                    new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
                 ]});
             });
         };
@@ -102,7 +102,7 @@ describe('Calendar', ()=>{
         window.api.getEvents = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
-                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                    new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
                 ]});
             });
         };
@@ -124,7 +124,7 @@ describe('Calendar', ()=>{
         window.api.getEvents = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
-                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                    new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
                 ]});
             });
         };
@@ -146,7 +146,7 @@ describe('Calendar', ()=>{
         window.api.getEvents = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
-                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                    new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
                 ]});
             });
         };

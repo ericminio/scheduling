@@ -90,7 +90,7 @@ class Calendar extends HTMLElement {
                 store.delete('resources'); 
                 events.notify('maybe signed-out')
             });
-        let eventsLoaded = api.getEvents(date);
+        let eventsLoaded = data.getEvents(date);
         eventsLoaded.then(data => this.events = data.events);
 
         Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
