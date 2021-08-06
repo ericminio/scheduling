@@ -7,6 +7,9 @@ const RepositoryUsingMap = require('../support/repository-using-map');
 const { post } = require('../support/request');
 const SignInRoute = require('./sign-in');
 
+const { JSDOM } = require("jsdom");
+let window = new JSDOM('<html></html>', { url:`http://localhost:${port}`, runScripts: "dangerously", resources: "usable"  }).window;
+
 describe('Sign-In route', ()=>{
     let signInRoute;
     let server;

@@ -1,4 +1,4 @@
-class DataReader {
+class ConfigurationReader {
     constructor(api, store) {
         this.store = store;
         this.api = api;
@@ -24,4 +24,3 @@ class DataReader {
         });
     }
 }
-var data = new DataReader(api, store);

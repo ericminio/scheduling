@@ -11,7 +11,8 @@ module.exports = {
     ]),
     data: concat([
         './data/api-client.js',
-        './data/data-reader.js'
+        './data/configuration-reader.js',
+        './data/facade.js'
     ]),
     components: concat([
         './components/system-status.js',

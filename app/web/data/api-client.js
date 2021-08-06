@@ -106,4 +106,4 @@ class ApiClient {
         return this.post('/data/configuration', payload)
     }
 }
-var api = new ApiClient(window);
+

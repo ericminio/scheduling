@@ -16,12 +16,10 @@ describe('Reader Configuration', ()=>{
                 </script>
             </body></html>`;
         let window;
-        let document;
         let wait = 10;
 
         beforeEach((done)=>{
             window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
-            document = window.document;
             setTimeout(done, wait);
         });
 
@@ -41,12 +39,10 @@ describe('Reader Configuration', ()=>{
                 </script>
             </body></html>`;
         let window;
-        let document;
         let wait = 10;
 
         beforeEach((done)=>{
             window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
-            document = window.document;
             setTimeout(done, wait);
         });
 

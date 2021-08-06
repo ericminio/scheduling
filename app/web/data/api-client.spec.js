@@ -1,99 +1,53 @@
+const { JSDOM } = require("jsdom");
 const { expect } = require('chai');
-const path = require('path');
-const fs = require('fs');
+const { yop, domain, data } = require('../assets');
 const { Server } = require('../../node/server');
 const port = 8006;
-
-const http = require('http');
 const payload = require('../../node/support/payload-raw')
-
-const jsdom = require("jsdom");
-const { Configuration } = require('../../domain');
-const { JSDOM } = jsdom;
-let window = new JSDOM(`<html></html>`, { url:`http://localhost:${port}` }).window;
-global.window = window;
-window.fetch = (uri, options)=> { 
-    return new Promise((resolve, reject)=> {
-        const please = {
-            hostname: 'localhost',
-            port: port,
-            path: uri,
-            method: options.method
-        };
-        let request = http.request(please, answer => {   
-            let payload = '';
-            answer.on('data', chunk => {
-                payload += chunk;
-            });
-            answer.on('end', ()=>{
-                let body = JSON.parse(payload);
-                let response = {
-                    status: answer.statusCode,
-                    json: ()=> {
-                        return new Promise((resolve, reject)=>{
-                            resolve(body);
-                        })
-                    }
-                }
-                resolve(response);
-            });
-            answer.on('error', error => {
-                reject(error);
-            })
-        })
-        request.on('error', error => {
-            reject(error);
-        })
-        if (options.headers !== undefined) {
-            request.setHeader('x-user-key', options.headers.get('x-user-key'));
-        }
-        if (options.body) { request.write(options.body); }
-        request.end();
-    });
-};
-
-let store = (new Function(fs.readFileSync(path.join(__dirname, '../yop/1.store.js')).toString() + ' return store;'))();
-window.store = store;
-let events = (new Function(fs.readFileSync(path.join(__dirname, '../yop/2.events.js')).toString() + ' return events;'))();
-window.events = events;
-
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, '../yop/1.store.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../yop/2.events.js')).toString()
-    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'api-client.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'data-reader.js')).toString()
-    ;
-let api = (new Function(`return (window)=> { ${sut} return api; };`))()(window);
+const fetch = require('./custom-fetch');
 
 describe('Api client', ()=>{
 
+    let html = `
+        <!DOCTYPE html><html lang="en"><body>
+            <script>
+                ${yop}
+                ${domain}
+                ${data}                
+            </script>
+        </body></html>`;
+    let window;
+    let wait = 10;
     let server;
-
+    
     beforeEach((done)=>{
-        server = new Server(port);
-        server.start(async () => {
-            done();
-        });
-        server.route = async (request, response)=> {
-            let body = await payload(request);
-            response.statusCode = 200;
-            response.write(JSON.stringify({ 
-                method: request.method,
-                url: request.url,
-                payload: body,
-                headers: request.headers
-            }));
-            response.end();
-        }
-        store.saveObject('user', { user:'username', key:'any-key' })        
+        window = new JSDOM(html, { url:`http://localhost:${port}`, runScripts: "dangerously", resources: "usable"  }).window;
+        setTimeout(()=>{
+            window.store.saveObject('user', { user:'username', key:'any-key' });
+            window.fetch = fetch(port);
+            server = new Server(port);
+            server.route = async (request, response)=> {
+                let body = await payload(request);
+                response.statusCode = 200;
+                response.write(JSON.stringify({ 
+                    method: request.method,
+                    url: request.url,
+                    payload: body,
+                    headers: request.headers
+                }));
+                response.end();
+            }
+            server.start(async () => {
+                done();
+            });
+        }, wait);
     });
     afterEach((done)=> {
         server.stop(done);
     })
 
     it('exposes events', (done)=> {
-        api.getEvents('2015-09-21')
+        window.api.getEvents('2015-09-21')
             .then((data) => {
                 expect(data).to.deep.equal({                     
                     method: 'GET',
@@ -111,7 +65,7 @@ describe('Api client', ()=>{
     });
 
     it('exposes resources', (done)=> {
-        api.getResources()
+        window.api.getResources()
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'GET',
@@ -129,8 +83,8 @@ describe('Api client', ()=>{
     });
 
     it('exposes ping even disconnected', (done)=> {
-        store.delete('user');
-        api.ping()
+        window.store.delete('user');
+        window.api.ping()
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'GET',
@@ -147,7 +101,7 @@ describe('Api client', ()=>{
     });
 
     it('exposes resource creation', (done)=> {
-        api.createResource({ type:'table', name:'window' })
+        window.api.createResource({ type:'table', name:'window' })
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'POST',
@@ -173,7 +127,7 @@ describe('Api client', ()=>{
             label: 'Bob',
             resources: [{id:'R1'}, {id:'R2'}]
         };
-        api.createEvent(event)
+        window.api.createEvent(event)
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'POST',
@@ -192,7 +146,7 @@ describe('Api client', ()=>{
     });
 
     it('exposes event deletion', (done)=> {
-        api.deleteEvent({ id:'42' })
+        window.api.deleteEvent({ id:'42' })
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'DELETE',
@@ -210,7 +164,7 @@ describe('Api client', ()=>{
     });
 
     it('exposes resource deletion', (done)=> {
-        api.deleteResource({ id:'15' })
+        window.api.deleteResource({ id:'15' })
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'DELETE',
@@ -233,7 +187,7 @@ describe('Api client', ()=>{
             password: 'this-password'
         };
         let encoded = window.btoa(JSON.stringify(credentials));
-        api.signIn(credentials)
+        window.api.signIn(credentials)
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'POST',
@@ -256,7 +210,7 @@ describe('Api client', ()=>{
         let spy = {
             update: (error)=> { value = error; }
         };
-        events.register(spy, 'error');
+        window.events.register(spy, 'error');
         server.route = async (request, response)=> {
             response.setHeader('content-type', 'application/json');
             response.statusCode = 403;
@@ -265,7 +219,7 @@ describe('Api client', ()=>{
             }));
             response.end();
         };
-        api.getEvents()
+        window.api.getEvents()
             .then(()=> done('should fail'))
             .catch((pointless)=> {
                 try {
@@ -280,8 +234,8 @@ describe('Api client', ()=>{
     });
 
     it('exposes configuration even disconnected', (done)=> {
-        store.delete('user');
-        api.configuration()
+        window.store.delete('user');
+        window.api.configuration()
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'GET',
@@ -298,7 +252,7 @@ describe('Api client', ()=>{
     });
 
     it('exposes save configuration', (done)=> {
-        api.saveConfiguration({ any:42 })
+        window.api.saveConfiguration({ any:42 })
             .then((data) => {
                 expect(data).to.deep.equal({ 
                     method: 'POST',

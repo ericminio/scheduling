@@ -6,6 +6,9 @@ const RepositoryUsingMap = require('./support/repository-using-map');
 const { Resource, Event, User, Configuration } = require('../domain');
 const AlwaysSameId = require('./support/always-same-id');
 
+const { JSDOM } = require("jsdom");
+let window = new JSDOM('<html></html>', { url:`http://localhost:${port}`, runScripts: "dangerously", resources: "usable"  }).window;
+
 describe('Server', ()=>{
 
     let server;
