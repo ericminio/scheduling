@@ -65,7 +65,6 @@ const sut = ''
     + fs.readFileSync(path.join(__dirname, 'data-reader.js')).toString()
     ;
 let api = (new Function(`return (window)=> { ${sut} return api; };`))()(window);
-let data = (new Function(`return (window)=> { ${sut} return data; };`))()(window);
 
 describe('Api client', ()=>{
 
@@ -316,22 +315,4 @@ describe('Api client', ()=>{
             })
             .catch(error => done(error));
     });
-
-    it('returns expected configuration', (done)=> {
-        server.route = async (request, response)=> {
-            response.statusCode = 200;
-            response.write(JSON.stringify(new Configuration({ 
-                title: 'yop',
-                'opening-hours': '15-21'
-            })));
-            response.end();
-        };
-        data.configuration()
-            .then((configuration)=> {
-                expect(configuration.getTitle()).to.equal('yop');
-                expect(configuration.getOpeningHours()).to.equal('15-21');
-                done();
-            })
-            .catch(error => done(error));
-    })
 })
