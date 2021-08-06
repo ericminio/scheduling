@@ -1,13 +1,7 @@
+const { expect } = require('chai');
+const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
-    ;
 
 describe('Resource click', ()=>{
 
@@ -18,7 +12,7 @@ describe('Resource click', ()=>{
                 <yop-calendar-resource></yop-calendar-resource>
                 <script>
                     ${yop}
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>

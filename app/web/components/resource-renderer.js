@@ -1,4 +1,4 @@
-class Resource extends HTMLElement {
+class ResourceRenderer extends HTMLElement {
     constructor() {
         super()
     }
@@ -17,4 +17,4 @@ class Resource extends HTMLElement {
         return layout.top(index);
     }
 };
-customElements.define('yop-calendar-resource', Resource);
+customElements.define('yop-calendar-resource', ResourceRenderer);

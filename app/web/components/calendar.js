@@ -121,7 +121,7 @@ class Calendar extends HTMLElement {
     displayResources() {
         let view = this.querySelector('resources');
         this.resources.forEach((resource, index) => {
-            let instance = new Resource();
+            let instance = new ResourceRenderer();
             instance.digest(resource, index);
             view.appendChild(instance);
         });

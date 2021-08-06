@@ -16,7 +16,7 @@ module.exports = {
         './components/system-status.js',
         './components/header.js',
         './components/layout.js',
-        './components/resource.js',
+        './components/resource-renderer.js',
         './components/timeline-marker.js',
         './components/calendar-event.js',
         './components/calendar.js',
