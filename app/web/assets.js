@@ -6,7 +6,8 @@ const concat = (files)=> files.reduce((acc, filename)=> acc += code(filename), '
 module.exports = {
     yop: require('./yop'),
     domain: concat([
-        '../domain/configuration.js'
+        '../domain/configuration.js',
+        '../domain/resource.js'
     ]),
     data: concat([
         './data/api-client.js',

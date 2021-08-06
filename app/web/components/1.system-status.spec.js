@@ -12,6 +12,7 @@ describe('System status', ()=>{
     let window;
     let document;
     let status;
+    let wait = 10;
 
     describe('when all is good', ()=>{
         
@@ -37,7 +38,7 @@ describe('System status', ()=>{
             window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
             document = window.document;
             status = document.querySelector('system-status');
-            setTimeout(done, 150);
+            setTimeout(done, wait);
         });
     
         it('is green', ()=>{
@@ -68,7 +69,7 @@ describe('System status', ()=>{
             window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
             document = window.document;
             status = document.querySelector('system-status');
-            setTimeout(done, 150);
+            setTimeout(done, wait);
         });
     
         it('is is red', ()=>{
@@ -83,7 +84,7 @@ describe('System status', ()=>{
             <!DOCTYPE html>
             <html lang="en">
                 <body>
-                    <system-status refresh="50"></system-status>
+                    <system-status refresh="30"></system-status>
                     <script>
                         var api = {
                             ping: ()=> {
@@ -100,7 +101,7 @@ describe('System status', ()=>{
             window = (new JSDOM(html, { runScripts: "dangerously", resources: "usable" })).window;
             document = window.document;
             status = document.querySelector('system-status');
-            setTimeout(done, 150);
+            setTimeout(done, wait);
         });
     
         it('can be configured', (done)=>{
@@ -112,10 +113,10 @@ describe('System status', ()=>{
                 });
             };
             setTimeout(()=>{
-                expect(count).to.equal(3);
+                expect(count).to.equal(2);
                 expect(status.querySelector(".status-green")).not.to.equal(null);
                 done();
-            }, 150);
+            }, 2*30 + 10);
         });
     });
 });
