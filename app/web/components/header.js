@@ -46,16 +46,10 @@ class Header extends HTMLElement {
     }
 
     async update() {
-        let configuration = store.getObject('configuration');
-        if (configuration === null || 
-            configuration.title === undefined ||
-            configuration['opening-hours'] === undefined) {
-            configuration = await api.configuration();
-            store.saveObject('configuration', configuration);            
-        }
-        this.querySelector('#title').innerHTML = configuration.title;
+        let configuration = await data.configuration();
+        this.querySelector('#title').innerHTML = configuration.getTitle();
         
-        let parts = configuration['opening-hours'].split('-');
+        let parts = configuration.getOpeningHours().split('-');
         let end = parseInt(parts[1])
         let start = parseInt(parts[0])
         let root = document.documentElement;

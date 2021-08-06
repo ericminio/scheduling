@@ -5,6 +5,8 @@ const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
 const sut = ''
+    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
+    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()
@@ -70,7 +72,7 @@ describe('Timeline', ()=>{
         expect(markers[markers.length-1].innerHTML).to.equal('14');
     })
 
-    describe('when configuration is not already availble', ()=> {
+    describe('when configuration is not already available', ()=> {
         let html = `
             <!DOCTYPE html>
             <html lang="en">
@@ -111,11 +113,11 @@ describe('Timeline', ()=>{
                 expect(window.store.getObject('configuration')).to.deep.equal(
                     { title:'Agenda', 'opening-hours':'8-15'});
                 done();
-            }, 50);
+            }, wait);
         });
     })
 
-    describe('when configuration is not completely availble', ()=> {
+    describe('when configuration is not completely available', ()=> {
         let html = `
             <!DOCTYPE html>
             <html lang="en">
@@ -157,7 +159,7 @@ describe('Timeline', ()=>{
                 expect(window.store.getObject('configuration')).to.deep.equal(
                     { title:'Agenda', 'opening-hours':'8-15'});
                 done();
-            }, 50);
+            }, wait);
         });
     })
 })

@@ -99,14 +99,8 @@ class Calendar extends HTMLElement {
         })
     }
     async displayTimelineMarks() {
-        let configuration = store.getObject('configuration');
-        if (configuration === null || 
-            configuration.title === undefined ||
-            configuration['opening-hours'] === undefined) {
-            configuration = await api.configuration();
-            store.saveObject('configuration', configuration);            
-        }
-        let openingHours = configuration['opening-hours'];
+        let configuration = await data.configuration();
+        let openingHours = configuration.getOpeningHours();
         let parts = openingHours.split('-');
         let end = parseInt(parts[1])
         let current = parseInt(parts[0])

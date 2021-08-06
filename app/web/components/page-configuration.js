@@ -40,21 +40,21 @@ class PageConfiguration extends HTMLElement {
         this.update();
     }
     update() {
-        api.configuration()
+        data.configuration()
             .then((configuration)=>{
-                this.querySelector('#configuration-title').value = configuration.title;
+                this.querySelector('#configuration-title').value = configuration.getTitle();
                 this.querySelector('#configuration-title').focus();
-                this.querySelector('#configuration-opening-hours').value = configuration['opening-hours'];
+                this.querySelector('#configuration-opening-hours').value = configuration.getOpeningHours();
             })
             .catch(()=> {
                 events.notify('maybe signed-out');
             });        
     }
     save() {
-        let configuration = {
+        let configuration = new Configuration({
             title: this.querySelector('#configuration-title').value,
             'opening-hours': this.querySelector('#configuration-opening-hours').value
-        };
+        });
         api.saveConfiguration(configuration)
             .then(()=> {
                 store.saveObject('configuration', configuration);

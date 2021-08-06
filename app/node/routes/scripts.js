@@ -23,7 +23,11 @@ class ScriptsRoute {
             'menu.js',
             'success-message.js'   
         ];
-        this.body = this.read('../../web/data', 'api-client.js');
+        this.body = ''
+            + this.read('../../domain', 'configuration.js')
+            + this.read('../../web/data', 'api-client.js')
+            + this.read('../../web/data', 'data-reader.js')
+            ;
         files.forEach((file)=> {
             this.body += this.read('../../web/components', file);
         });

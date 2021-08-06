@@ -8,10 +8,10 @@ const http = require('http');
 const payload = require('../../node/support/payload-raw')
 
 const jsdom = require("jsdom");
+const { Configuration } = require('../../domain');
 const { JSDOM } = jsdom;
 let window = new JSDOM(`<html></html>`, { url:`http://localhost:${port}` }).window;
 global.window = window;
-window.toto = 'toto';
 window.fetch = (uri, options)=> { 
     return new Promise((resolve, reject)=> {
         const please = {
@@ -51,13 +51,21 @@ window.fetch = (uri, options)=> {
         request.end();
     });
 };
+
 let store = (new Function(fs.readFileSync(path.join(__dirname, '../yop/1.store.js')).toString() + ' return store;'))();
 window.store = store;
 let events = (new Function(fs.readFileSync(path.join(__dirname, '../yop/2.events.js')).toString() + ' return events;'))();
 window.events = events;
 
-const sut = fs.readFileSync(path.join(__dirname, 'api-client.js')).toString();
+const sut = ''
+    + fs.readFileSync(path.join(__dirname, '../yop/1.store.js')).toString()
+    + fs.readFileSync(path.join(__dirname, '../yop/2.events.js')).toString()
+    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'api-client.js')).toString()
+    + fs.readFileSync(path.join(__dirname, 'data-reader.js')).toString()
+    ;
 let api = (new Function(`return (window)=> { ${sut} return api; };`))()(window);
+let data = (new Function(`return (window)=> { ${sut} return data; };`))()(window);
 
 describe('Api client', ()=>{
 
@@ -308,4 +316,22 @@ describe('Api client', ()=>{
             })
             .catch(error => done(error));
     });
+
+    it('returns expected configuration', (done)=> {
+        server.route = async (request, response)=> {
+            response.statusCode = 200;
+            response.write(JSON.stringify(new Configuration({ 
+                title: 'yop',
+                'opening-hours': '15-21'
+            })));
+            response.end();
+        };
+        data.configuration()
+            .then((configuration)=> {
+                expect(configuration.getTitle()).to.equal('yop');
+                expect(configuration.getOpeningHours()).to.equal('15-21');
+                done();
+            })
+            .catch(error => done(error));
+    })
 })

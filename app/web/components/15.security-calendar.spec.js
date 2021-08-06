@@ -5,6 +5,8 @@ const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
 const sut = ''
+    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
+    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'resource.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'timeline-marker.js')).toString()

@@ -5,6 +5,8 @@ const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
 const sut = ''
+    + fs.readFileSync(path.join(__dirname, '../../domain/configuration.js')).toString()
+    + fs.readFileSync(path.join(__dirname, '../data/data-reader.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'page-configuration.js')).toString()
     ;
 
@@ -69,8 +71,9 @@ describe('Page Configuration', ()=>{
         document.querySelector('#configuration-opening-hours').value = '12-18';
         document.querySelector('#save-configuration').click();
         setTimeout(()=> {
-            expect(window.store.getObject('configuration')).to.deep.equal(
-                { title:'new-title' , 'opening-hours':'12-18' });
+            let stored = window.store.getObject('configuration');
+            expect(stored.title).to.equal('new-title');
+            expect(stored['opening-hours']).to.equal('12-18');
             done();
         }, wait);
     });

@@ -6,4 +6,4 @@ class Configuration {
 
     getTitle() { return this.title; }
     getOpeningHours() { return this['opening-hours']; }
-}
+};
