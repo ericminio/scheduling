@@ -1,4 +1,5 @@
-const { expect } = require('chai')
+const { expect } = require('chai');
+const { Event, Resource } = require('../../domain')
 const fs = require('fs');
 const path = require('path');
 const sut = ''
@@ -23,35 +24,35 @@ describe('Calendar Event', ()=>{
         })
 
         it('works with hours only', ()=>{
-            let width = event.width({ start:"2015-09-21 12:00", end:"2015-09-21 15:00" })
+            let width = event.width(new Event({ start:"2015-09-21 12:00", end:"2015-09-21 15:00" }))
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 0 + 0) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted start', ()=>{
-            let width = event.width({ start:"12:30", end:"15:00" })
+            let width = event.width(new Event({ start:"12:30", end:"15:00" }))
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 30 + 0) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted end', ()=>{
-            let width = event.width({ start:"12:00", end:"15:30" })
+            let width = event.width(new Event({ start:"12:00", end:"15:30" }))
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 0 + 30) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted start and end', ()=>{
-            let width = event.width({ start:"12:30", end:"15:30" })
+            let width = event.width(new Event({ start:"12:30", end:"15:30" }))
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 30 + 30) / var(--minimalWidthInMinutes))')
         })
 
         it('works with values outside of minimals', ()=>{
-            let width = event.width({ start:"12:17", end:"15:42" })
+            let width = event.width(new Event({ start:"12:17", end:"15:42" }))
             
             expect(width).to.equal(
                 'calc(var(--minimalWidth) * (3 * 60 - 17 + 42) / var(--minimalWidthInMinutes))')
@@ -65,21 +66,21 @@ describe('Calendar Event', ()=>{
         })
 
         it('works with hours only', ()=>{
-            let left = event.left({ start:"12:00", end:"15:00" })
+            let left = event.left(new Event({ start:"12:00", end:"15:00" }))
             
             expect(left).to.equal(
                 'calc(var(--padding) + var(--minimalWidth) * ((12 - var(--opening-hours-start)) * 60 + 0) / var(--minimalWidthInMinutes))')
         })
 
         it('works with shifted start', ()=>{
-            let left = event.left({ start:"12:30", end:"15:00" })
+            let left = event.left(new Event({ start:"12:30", end:"15:00" }))
             
             expect(left).to.equal(
                 'calc(var(--padding) + var(--minimalWidth) * ((12 - var(--opening-hours-start)) * 60 + 30) / var(--minimalWidthInMinutes))')
         })
 
         it('works with value outside of minimals', ()=>{
-            let left = event.left({ start:"12:15", end:"15:00" })
+            let left = event.left(new Event({ start:"12:15", end:"15:00" }))
             
             expect(left).to.equal(
                 'calc(var(--padding) + var(--minimalWidth) * ((12 - var(--opening-hours-start)) * 60 + 15) / var(--minimalWidthInMinutes))')
@@ -93,7 +94,7 @@ describe('Calendar Event', ()=>{
         })
 
         it('is based on given index', ()=>{
-            let top = event.top({ line:15 })
+            let top = event.top(new Resource({ line:15 }))
             
             expect(top).to.equal('calc(15 * var(--height) + var(--padding))')
         })

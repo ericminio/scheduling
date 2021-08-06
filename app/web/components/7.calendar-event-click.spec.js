@@ -4,6 +4,7 @@ const { expect } = require('chai');
 const yop = require('../yop');
 const fs = require('fs');
 const path = require('path');
+const { Resource, Event } = require("../../domain");
 const sut = ''
     + fs.readFileSync(path.join(__dirname, 'layout.js')).toString()
     + fs.readFileSync(path.join(__dirname, 'calendar-event.js')).toString()
@@ -44,13 +45,13 @@ describe('Calendar Event click', ()=>{
         };
         window.events.register(spy, 'show event');
         calendarEvent.digest(
-            { id:'event-id', label:'event-label', start:'18:00', end:'20:30' }, 
-            { id:'resource-id' }
+            new Event({ id:'event-id', label:'event-label', start:'18:00', end:'20:30', resources:[{ id:'resource-id' }] }), 
+            new Resource({ id:'resource-id' })
         );
         calendarEvent.click();
         
         setTimeout(()=>{
-            expect(actual).to.deep.equal({ id:'event-id', label:'event-label', start:'18:00', end:'20:30' });
+            expect(actual).to.deep.equal({ id:'event-id', label:'event-label', start:'18:00', end:'20:30', resources:[{ id:'resource-id' }] });
             done();
         }, 50);
     });

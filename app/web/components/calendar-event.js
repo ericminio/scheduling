@@ -3,7 +3,7 @@ class CalendarEvent extends HTMLElement {
         super()
     }
     digest(event, resource) {
-        this.id = `event-${event.id}-resource-${resource.id}`;
+        this.id = `event-${event.getId()}-resource-${resource.getId()}`;
         this.innerHTML = event.label;
         this.style = `
             top:${this.top(resource)}; 
@@ -16,16 +16,16 @@ class CalendarEvent extends HTMLElement {
         })
     }
     width(event) {
-        let start = this.parse(event.start);
-        let end = this.parse(event.end);
+        let start = this.parse(event.getStart());
+        let end = this.parse(event.getEnd());
         return layout.width(start, end);
     }
     left(event) {
-        let start = this.parse(event.start);
+        let start = this.parse(event.getStart());
         return layout.left(start);
     }
     top(resource) {
-        return layout.top(resource.line);
+        return layout.top(resource.getLine());
     }
     parse(datetime) {
         let time = datetime.substring(datetime.indexOf(' ')).trim();
