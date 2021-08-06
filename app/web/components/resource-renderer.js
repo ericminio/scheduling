@@ -3,8 +3,8 @@ class ResourceRenderer extends HTMLElement {
         super()
     }
     digest(resource, index) {
-        this.id = `resource-${resource.id}`;
-        this.innerHTML = resource.name;
+        this.id = `resource-${resource.getId()}`;
+        this.innerHTML = resource.getName();
         this.style = `
             top:${this.top(index)}; 
         `;

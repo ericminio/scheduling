@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
+const { Resource } = require('../../domain');
 const { JSDOM } = jsdom;
 
 describe('Resource click', ()=>{
@@ -37,11 +38,11 @@ describe('Resource click', ()=>{
             update: (value)=> { actual = value; }
         };
         window.events.register(spy, 'show resource');
-        calendarResource.digest({ id:'this-id', name:'this-name' }, 0);
+        calendarResource.digest(new Resource({ id:'this-id', name:'this-name', type:'this-type', line:42 }), 0);
         calendarResource.click();
         
         setTimeout(()=>{
-            expect(actual).to.deep.equal({ id:'this-id', name:'this-name' });
+            expect(actual).to.deep.equal({ id:'this-id', name:'this-name', type:'this-type', line:42 });
             done();
         }, 50);
     });

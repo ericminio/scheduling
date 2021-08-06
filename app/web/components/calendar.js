@@ -75,13 +75,13 @@ class Calendar extends HTMLElement {
     }
     update() {
         let date = this.querySelector("#calendar-date").value;
-        let resourcesLoaded = api.getResources();
+        let resourcesLoaded = data.getResources();
         resourcesLoaded
             .then(data => {
                 this.resources = data.resources;
                 this.resourceMap = {};
-                this.resources.forEach((resource, index) => {
-                    this.resourceMap[resource.id] = resource; 
+                this.resources.forEach((resource) => {
+                    this.resourceMap[resource.getId()] = resource; 
                 });
                 store.saveObject('resources', data.resources);
                 this.clear(this.resources.length);

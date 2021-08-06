@@ -16,23 +16,21 @@ describe('Event creation', ()=>{
                     ${domain}
                     ${data}                    
                     today = ()=> { return new Date(2015, 6, 1); }
-                    var api = {
-                        getResources: ()=> {
-                            return new Promise((resolve, reject)=>{
-                                resolve({ resources:[
-                                    { id:'1', type:'plane', name:'GSDZ' }
-                                ]});
-                            });
-                        },
-                        getEvents: ()=> {
-                            return new Promise((resolve, reject)=>{
-                                resolve({ events:[
-                                    { id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] }                                    
-                                ]});
-                            });
-                        },
-                        createEvent: (payload)=> new Promise((resolve)=>{ resolve(); })  
+                    window.api.getResources = ()=> {
+                        return new Promise((resolve, reject)=>{
+                            resolve({ resources:[
+                                new Resource({ id:'1', type:'plane', name:'GSDZ' })
+                            ]});
+                        });
                     };
+                    window.api.getEvents = ()=> {
+                        return new Promise((resolve, reject)=>{
+                            resolve({ events:[
+                                { id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] }                                    
+                            ]});
+                        });
+                    };
+                    window.api.createEvent = (payload)=> new Promise((resolve)=>{ resolve(); })
                     store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });
                     ${components}
                 </script>
@@ -42,7 +40,7 @@ describe('Event creation', ()=>{
     let window;
     let document;
     let form;
-    let wait = 30;
+    let wait = 10;
 
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;

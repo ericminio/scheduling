@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { yop, domain, data, components } = require('../assets');
 const jsdom = require("jsdom");
+const { Resource } = require('../../domain');
 const { JSDOM } = jsdom;
 
 describe('Calendar', ()=>{
@@ -17,10 +18,10 @@ describe('Calendar', ()=>{
                     api.getResources = ()=> {
                         return new Promise((resolve, reject)=>{
                             resolve({ resources:[
-                                { id:'1', type:'plane', name:'GSDZ' },
-                                { id:'2', type:'plane', name:'GKMY' },
-                                { id:'3', type:'instructor', name:'Vasile' }
-                            ]});
+                                new Resource({ id:'1', type:'plane', name:'GSDZ' }),
+                                new Resource({ id:'2', type:'plane', name:'GKMY' }),
+                                new Resource({ id:'3', type:'instructor', name:'Vasile' })
+                            ] });
                         });
                     };
                     api.getEvents = ()=> {
@@ -69,21 +70,19 @@ describe('Calendar', ()=>{
         }, wait);
     })
     it('listens to resource created event and refreshes', (done)=>{
-        window.api = {
-            getResources: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ resources:[
-                        { id:'11', type:'plane', name:'GSDZ' }
-                    ]});
-                });
-            },
-            getEvents: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ events:[
-                        { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
-                    ]});
-                });
-            }                        
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ resources:[
+                    new Resource({ id:'11', type:'plane', name:'GSDZ' })
+                ]});
+            });
+        };
+        window.api.getEvents = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ events:[
+                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                ]});
+            });
         };
         window.events.notify('resource created');
         setTimeout(()=>{
@@ -93,21 +92,19 @@ describe('Calendar', ()=>{
         }, wait);
     });
     it('listens to event created event and refreshes', (done)=>{
-        window.api = {
-            getResources: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ resources:[
-                        { id:'11', type:'plane', name:'GSDZ' }
-                    ]});
-                });
-            },
-            getEvents: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ events:[
-                        { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
-                    ]});
-                });
-            }                        
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ resources:[
+                    new Resource({ id:'11', type:'plane', name:'GSDZ' })
+                ]});
+            });
+        };
+        window.api.getEvents = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ events:[
+                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                ]});
+            });
         };
         window.events.notify('event created');
         setTimeout(()=>{
@@ -117,21 +114,19 @@ describe('Calendar', ()=>{
         }, wait);
     });
     it('listens to event deleted event and refreshes', (done)=>{
-        window.api = {
-            getResources: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ resources:[
-                        { id:'11', type:'plane', name:'GSDZ' }
-                    ]});
-                });
-            },
-            getEvents: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ events:[
-                        { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
-                    ]});
-                });
-            }                        
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ resources:[
+                    new Resource({ id:'11', type:'plane', name:'GSDZ' })
+                ]});
+            });
+        };
+        window.api.getEvents = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ events:[
+                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                ]});
+            });
         };
         window.events.notify('event deleted');
         setTimeout(()=>{
@@ -141,21 +136,19 @@ describe('Calendar', ()=>{
         }, wait);
     });
     it('listens to resource deleted event and refreshes', (done)=>{
-        window.api = {
-            getResources: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ resources:[
-                        { id:'11', type:'plane', name:'GSDZ' }
-                    ]});
-                });
-            },
-            getEvents: ()=> {
-                return new Promise((resolve, reject)=>{
-                    resolve({ events:[
-                        { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
-                    ]});
-                });
-            }                        
+        window.api.getResources = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ resources:[
+                    { id:'11', type:'plane', name:'GSDZ' }
+                ]});
+            });
+        };
+        window.api.getEvents = ()=> {
+            return new Promise((resolve, reject)=>{
+                resolve({ events:[
+                    { id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] }
+                ]});
+            });
         };
         window.events.notify('resource deleted');
         setTimeout(()=>{
