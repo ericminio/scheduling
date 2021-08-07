@@ -8,7 +8,8 @@ module.exports = {
     domain: concat([
         '../domain/configuration.js',
         '../domain/resource.js',
-        '../domain/event.js'
+        '../domain/event.js',
+        '../domain/today.js'
     ]),
     data: concat([
         './data/api-client.js',
