@@ -10,6 +10,7 @@ successMessageTemplate.innerHTML = `
         cursor: pointer;
         color: var(--color-success);
         background-color: var(--background-success);
+        z-index: 42;
     }
 </style>
 <div id="success-message" class="hidden">

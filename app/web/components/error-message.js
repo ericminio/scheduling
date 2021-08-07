@@ -10,6 +10,7 @@ errorMessageTemplate.innerHTML = `
         background-color: var(--background-error);
         color: var(--color-error);
         cursor: pointer;
+        z-index: 42;
     }
 </style>
 <div id="error-message" class="hidden">
