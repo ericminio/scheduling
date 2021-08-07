@@ -4,7 +4,7 @@ Feature: Securing data
 
     Background:
         Given the following users and privileges
-            | Username  | Password | Priviledges  |
+            | Username  | Password | Privileges   |
             | I         | secret   | read, write  |
             | Joe       | secret   | read         |
             | Max       | secret   | read, write  |

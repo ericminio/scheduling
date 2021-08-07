@@ -37,3 +37,6 @@ Then('he receives the error message {string}', async (message)=> {
     let actual = await World.robot.text("#error-message");
     expect(actual).to.equal(message);
 });
+Given('he acknowledges the error message', async ()=> {
+    await World.robot.click("#error-message");
+});

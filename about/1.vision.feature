@@ -4,7 +4,7 @@ Feature: Scheduling events
 
     Background: brand new system
         Given the following users and privileges
-            | Username  | Password | Priviledges  |
+            | Username  | Password | Privileges   |
             | I         | secret   | read, write  |
         Given "I" signs in with password "secret"        
         Given I create the following resources

@@ -16,6 +16,15 @@ Then('I see that {string} starts at {string}', async (label, time)=> {
     
     expect(elementPosition).to.equal(position)
 });
+Then('he sees that {string} starts at {string}', async (label, time)=> {
+    let position = await markerPosition(time);
+
+    let candidates = await getEventElements(label);
+    let found = candidates[0];
+    let elementPosition = await found.getCssValue('left')
+    
+    expect(elementPosition).to.equal(position)
+});
 Then('I see that {string} ends at {string}', async (label, time)=> {
     let position = await markerPosition(time);
 

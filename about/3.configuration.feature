@@ -4,7 +4,7 @@ Feature: Configuration
 
     Background:
         Given the following users and privileges
-            | Username  | Password | Priviledges             |
+            | Username  | Password | Privileges              |
             | Joe       | secret   | read, write             |
             | Max       | secret   | read, write, configure  |
     
