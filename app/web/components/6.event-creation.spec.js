@@ -95,16 +95,16 @@ describe('Event creation', ()=>{
         ])
         window.events.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
-        form.querySelector('#new-event-start').value = 'this start';
-        form.querySelector('#new-event-end').value = 'this end';
+        form.querySelector('#new-event-start').value = '1980-05-25 08:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 10:00';
         form.querySelector('#new-event-resource-two').checked = true;
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
         expect(spy).to.deep.equal({
             label: 'this label',
-            start: 'this start',
-            end: 'this end',
+            start: '1980-05-25 08:00',
+            end: '1980-05-25 10:00',
             resources: [ { id:'two' }, { id:'three' } ]
         });
     });
@@ -118,6 +118,8 @@ describe('Event creation', ()=>{
         
         window.store.saveObject('resources', [{ id:'one', name:'one' }])
         window.events.notify('event creation');
+        form.querySelector('#new-event-start').value = '1980-05-25 08:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 10:00';
         form.querySelector('#create-event').click();
         
         setTimeout(()=>{
@@ -137,13 +139,51 @@ describe('Event creation', ()=>{
         window.events.notify('event creation');
         window.events.notify('event creation');
         window.events.notify('event creation');
-        form.querySelector('#new-event-label').value = 'that label';
-        form.querySelector('#new-event-start').value = 'that start';
-        form.querySelector('#new-event-end').value = 'that end';
+        form.querySelector('#new-event-label').value = 'this label';
+        form.querySelector('#new-event-start').value = '1980-05-25 08:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 10:00';
         form.querySelector('#new-event-resource-two').checked = true;
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
         expect(spy).to.equal(1);
-    })
+    });
+
+    it('alerts on invalid start datetime', ()=> {
+        let spy;
+        window.events.register({ update:(value)=> { spy = value; } }, 'error');
+        window.store.saveObject('resources', [
+            { id:'one', name:'one' },
+            { id:'two', name:'two' },
+            { id:'three', name:'three' }
+        ])
+        window.events.notify('event creation');
+        form.querySelector('#new-event-label').value = 'this-label';
+        form.querySelector('#new-event-start').value = '1980-05-25 8:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 10:00';
+        form.querySelector('#new-event-resource-two').checked = true;
+        form.querySelector('#new-event-resource-three').checked = true;
+        form.querySelector('#create-event').click();
+
+        expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+    });
+
+    it('alerts on invalid end datetime', ()=> {
+        let spy;
+        window.events.register({ update:(value)=> { spy = value; } }, 'error');
+        window.store.saveObject('resources', [
+            { id:'one', name:'one' },
+            { id:'two', name:'two' },
+            { id:'three', name:'three' }
+        ])
+        window.events.notify('event creation');
+        form.querySelector('#new-event-label').value = 'this-label';
+        form.querySelector('#new-event-start').value = '1980-05-25 08:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 1:00';
+        form.querySelector('#new-event-resource-two').checked = true;
+        form.querySelector('#new-event-resource-three').checked = true;
+        form.querySelector('#create-event').click();
+
+        expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+    });
 })

@@ -10,5 +10,6 @@ module.exports = {
     Event: ccode('event.js', 'Event'),
     User: ccode('user.js', 'User'),
     Configuration: ccode('configuration.js', 'Configuration'),
-    isValidDate: fcode('is-valid-date.js', 'isValidDate')
+    isValidDate: fcode('is-valid-date.js', 'isValidDate'),
+    isValidDatetime: fcode('is-valid-datetime.js', 'isValidDatetime')
 }

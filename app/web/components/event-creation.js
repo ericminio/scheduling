@@ -60,8 +60,14 @@ class EventCreation extends HTMLElement {
         }
     }
     createEvent() {
-        api.createEvent(this.payload())
-                .then(()=> { events.notify('event created'); } );;
+        if (isValidDatetime(this.querySelector('#new-event-start').value) &&
+            isValidDatetime(this.querySelector('#new-event-end').value)) {
+            api.createEvent(this.payload())
+                    .then(()=> { events.notify('event created'); } );;
+        }
+        else {
+            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
+        }
     }
     payload() {
         let candidates = this.querySelectorAll('#new-event-resources input');
