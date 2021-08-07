@@ -56,7 +56,13 @@ class Calendar extends HTMLElement {
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
         this.querySelector('#calendar-search').addEventListener('click', (e)=>{
-            this.update();
+            let date = this.querySelector("#calendar-date").value;
+            if (isValidDate(date)) {
+                this.update();
+            }
+            else {
+                events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
+            }
         });
         events.register(this, 'resource created');
         events.register(this, 'event created');

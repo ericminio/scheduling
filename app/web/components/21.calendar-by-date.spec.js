@@ -54,7 +54,7 @@ describe('Calendar by day', ()=>{
     it('is available', ()=>{
         expect(calendar).not.to.equal(null);
     });
-    it('is initializes calendar date field with today', ()=>{
+    it('initializes calendar date field with today', ()=>{
         let field = document.querySelector('#calendar-date');
         expect(field.value).to.equal('2015-07-01');
     });
@@ -73,5 +73,14 @@ describe('Calendar by day', ()=>{
         document.querySelector('#calendar-search').click();
 
         expect(spy).to.equal('2015-09-21');
+    });
+    it('alerts on invalid date', ()=>{
+        let field = document.querySelector('#calendar-date');
+        field.value = '2015-9-21';
+        let spy;
+        window.events.register({ update:(value)=> { spy = value; } }, 'error');
+        document.querySelector('#calendar-search').click();
+
+        expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
     });
 })

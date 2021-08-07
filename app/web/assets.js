@@ -9,7 +9,8 @@ module.exports = {
         '../domain/configuration.js',
         '../domain/resource.js',
         '../domain/event.js',
-        '../domain/today.js'
+        '../domain/today.js',
+        '../domain/is-valid-date.js'
     ]),
     data: concat([
         './data/api-client.js',
