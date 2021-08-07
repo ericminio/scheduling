@@ -5,7 +5,7 @@ eventCreationTemplate.innerHTML = `
     #event-creation-form {
         position: absolute;
         left: calc(var(--body-margin) + var(--resourceAreaWidth));
-        width: calc( 2 * var(--resourceAreaWidth));
+        width: calc(var(--agendaAreaWidth) / 2 - 2 * var(--padding) - 2 * var(--body-margin));
     }
     #new-event-resources input, #new-event-resources label {
         display: unset;
