@@ -24,6 +24,8 @@ calendarTemplate.innerHTML = `
                 <td class="column-one"></td>
                 <td class="column-two">
                     <div>
+                    <button id="calendar-previous-day"><</button>
+                        <button id="calendar-next-day">></button>
                         <input id="calendar-date" />
                         <button id="calendar-search">Show</button>
                     </div>
@@ -56,14 +58,13 @@ class Calendar extends HTMLElement {
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
         this.querySelector('#calendar-search').addEventListener('click', (e)=>{
-            let date = this.querySelector("#calendar-date").value;
-            if (isValidDate(date)) {
-                this.update();
-            }
-            else {
-                events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
-            }
+            this.safeUpdate();
         });
+        this.querySelector('#calendar-next-day').addEventListener('click', ()=> {
+            let current = this.querySelector("#calendar-date").value;
+            this.setDate(nextDay(current));
+            this.safeUpdate();
+        })
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
@@ -78,6 +79,15 @@ class Calendar extends HTMLElement {
         if (day < 10) { day = '0'+day; }
         let formatted = `${date.getFullYear()}-${month}-${day}`;
         this.querySelector('#calendar-date').value = formatted;
+    }
+    safeUpdate() {
+        let date = this.querySelector("#calendar-date").value;
+        if (isValidDate(date)) {
+            this.update();
+        }
+        else {
+            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
+        }
     }
     update() {
         let date = this.querySelector("#calendar-date").value;

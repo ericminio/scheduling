@@ -9,7 +9,7 @@ module.exports = {
         '../domain/configuration.js',
         '../domain/resource.js',
         '../domain/event.js',
-        '../domain/today.js',
+        '../domain/time.js',
         '../domain/is-valid-date.js',
         '../domain/is-valid-datetime.js'
     ]),

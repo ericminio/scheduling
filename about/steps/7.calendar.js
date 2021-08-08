@@ -23,3 +23,6 @@ Then('I see that the calendar is empty', async ()=> {
     let candidatesEvents = await World.driver.findElements(By.css('yop-calendar-event'));
     expect(candidatesEvents.length).to.equal(0);
 });
+When('he navigates to the next day', async ()=> {
+    await World.robot.click('#calendar-next-day');
+});
