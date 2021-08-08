@@ -12,5 +12,6 @@ module.exports = {
     Configuration: ccode('configuration.js', 'Configuration'),
     isValidDate: fcode('is-valid-date.js', 'isValidDate'),
     isValidDatetime: fcode('is-valid-datetime.js', 'isValidDatetime'),
-    nextDay: fcode('time.js', 'nextDay')
+    nextDay: fcode('time.js', 'nextDay'),
+    previousDay: fcode('time.js', 'previousDay')
 }

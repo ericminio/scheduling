@@ -26,3 +26,6 @@ Then('I see that the calendar is empty', async ()=> {
 When('he navigates to the next day', async ()=> {
     await World.robot.click('#calendar-next-day');
 });
+When('he navigates to the previous day', async ()=> {
+    await World.robot.click('#calendar-previous-day');
+});

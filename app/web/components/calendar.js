@@ -64,7 +64,12 @@ class Calendar extends HTMLElement {
             let current = this.querySelector("#calendar-date").value;
             this.setDate(nextDay(current));
             this.safeUpdate();
-        })
+        });
+        this.querySelector('#calendar-previous-day').addEventListener('click', ()=> {
+            let current = this.querySelector("#calendar-date").value;
+            this.setDate(previousDay(current));
+            this.safeUpdate();
+        });
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
