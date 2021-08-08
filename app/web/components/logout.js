@@ -2,7 +2,12 @@ const logoutTemplate = document.createElement('template')
 logoutTemplate.innerHTML = `
 <style>
     .logout {
-        font-size: 0.75em;
+        font-size: 0.8em;
+    }
+    @media screen and (max-width: 992px) {
+        .logout {
+            font-size: 0.6em;
+        }
     }
     .logout-greetings {
         display: inline-block;

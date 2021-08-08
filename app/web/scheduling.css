@@ -1,4 +1,6 @@
 :root {
+    font-family: Arial, sans-serif;
+    
     --body-margin: 5px;
     --vertical-margin: 15px;
     --padding: 5px;
@@ -10,9 +12,9 @@
     --agendaAreaWidth: calc(100% - var(--resourceAreaWidth));
     --minimalWidthInMinutes: 30;
     --minimalWidth: calc(var(--minimalWidthInMinutes) * (100% - 2 * var(--padding)) / (var(--opening-hours-end) - var(--opening-hours-start)) / 60);
-    --height: 25px;        
     --radius: 3px;
-    --timelineHeigth: 25px;
+    --height: 20px;        
+    --timelineHeigth: 20px;
 
     --background-body: #e3e5e8;
     --background-header: #0058a3;
@@ -42,7 +44,8 @@
 body {
     margin: var(--body-margin);
     background-color: var(--background-body);
-    font-family: Arial, sans-serif;
+}
+body, input, button {
     font-size: 16px;
 }
 
@@ -110,18 +113,15 @@ yop-calendar-resource, yop-calendar-event {
     :root {
         --vertical-margin: 25px;
         --border-size: 1px;
-        --height: 30px;        
+        --height: 40px;        
         --timelineHeigth: 40px;
-        }
-    body, input, button {
-        font-size: 25px;
     }
     .login-form {
         width: 75%;
         margin-left: 12.5%;
-    }    
-    resources, timeline, events {
-        font-size: 25px;
+    }
+    body, input, button {
+        font-size: 35px;
     }
 }
 
