@@ -6,8 +6,6 @@ Feature: Bookings
         Given the following users and privileges
             | Username    | Password | Privileges              |
             | Max         | secret   | read, write, configure  |
-                    
-    Scenario: Taking reservation
         Given "Max" signs in with password "secret"
         Given he navigates to configuration
         Given he modifies the title to "Bo Resto"
@@ -22,6 +20,8 @@ Feature: Bookings
             | table      | table #5  |
             | table      | table #6  |
             | table      | table #7  |
+                    
+    Scenario: Taking reservation
         Given he opens the calendar on "2015-09-21"
         Given he creates the following events
             | Label      | Start               | End                | Resources           |
@@ -38,3 +38,13 @@ Feature: Bookings
         
         When he navigates to the previous day
         Then he sees that "Birthday" starts at "13:00"
+    
+    Scenario: Overbooking
+        Given he opens the calendar on "2015-09-21"
+        Given he creates the following events
+            | Label      | Start                | End                | Resources           |
+            | Birthday   | 2015-09-21 13:00     | 2015-09-21 21:00   | table #1, table #2  |
+            | Conflict   | 2015-09-21 20:00     | 2015-09-21 22:00   | table #2            |
+        Then he receives the error message "Overbooking forbidden"
+        
+        
