@@ -16,7 +16,7 @@
     "tests:users": "mocha './frontend/users/**/*.spec.js' --exit --timeout 0",
     "test": "npm run tests:internal && npm run tests:external",
     "start": "node start.js",
-    "ping:database": "mocha ./storage/ready.spec.js --exit"
+    "ping:database": "mocha ./backend/storage/ready.spec.js --exit"
   },
   "repository": {
     "type": "git",
