@@ -1,13 +1,6 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'page-sign-in.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'error-message.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Page Sign in', ()=>{
 
@@ -23,7 +16,7 @@ describe('Page Sign in', ()=>{
                     var api = {
                         signIn: (credentials)=> new Promise((resolve)=>{ resolve(); })  
                     };
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>

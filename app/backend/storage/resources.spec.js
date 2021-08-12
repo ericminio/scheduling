@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { Database, ResourcesRepository, drop, migrate, EventsRepository } = require('.');
-const { Resource, Event } = require('../domain');
+const { Resource, Event } = require('../../domain');
 
 describe('Resources storage', ()=> {
     

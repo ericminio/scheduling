@@ -1,5 +1,5 @@
 const payload = require('../support/payload');
-const NextUuid = require('../../storage/next-uuid')
+const NextUuid = require('../storage/next-uuid')
 
 class SignInRoute {
     constructor() {

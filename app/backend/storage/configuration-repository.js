@@ -1,4 +1,4 @@
-const { Configuration } = require('../domain');
+const { Configuration } = require('../../domain');
 
 class ConfigurationRepository {
     constructor(database) {

@@ -9,7 +9,7 @@ class DefaultRoute {
     async go(request, response) {
         response.statusCode = 200;
         response.setHeader('content-type', 'text/html');
-        let body = fs.readFileSync(path.join(__dirname, '../../web', 'index.html')).toString();
+        let body = fs.readFileSync(path.join(__dirname, '../../frontend', 'index.html')).toString();
         response.write(body);
         response.end();
     }

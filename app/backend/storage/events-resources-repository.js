@@ -1,4 +1,4 @@
-const { Resource } = require('../domain');
+const { Resource } = require('../../domain');
 
 class EventsResourcesRepository {
     constructor(database) {

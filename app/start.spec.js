@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { User } = require('./domain');
-const { Database, drop, migrate, UsersRepository } = require('./storage');
-const Hash = require('./storage/hash');
+const { Database, drop, migrate, UsersRepository } = require('./backend/storage');
+const Hash = require('./backend/storage/hash');
 
 describe('start', ()=> {
 

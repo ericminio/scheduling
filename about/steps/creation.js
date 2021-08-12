@@ -1,5 +1,5 @@
 const { Given, World } = require('../../app/node_modules/@cucumber/cucumber');
-const { request } = require('../../app/node/support/request');
+const { request } = require('../../app/backend/support/request');
 const login = require('./login')
 const { expect } = require('../../app/node_modules/chai');
 

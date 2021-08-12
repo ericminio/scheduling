@@ -1,6 +1,6 @@
 const { BeforeAll, Before, World } = require('../../app/node_modules/@cucumber/cucumber/lib');
 const { Builder, By } = require('../../app/node_modules/selenium-webdriver');
-const clear = require('../../app/storage/migrations/clear');
+const clear = require('../../app/backend/storage/migrations/clear');
 const { Configuration } = require('../../app/domain');
 const code = require('fs').readFileSync(require('path').join(__dirname, 'robot.js')).toString();
 const Robot = (new Function(`${code}; return Robot`))();

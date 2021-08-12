@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
     database:
-        build: app/storage
+        build: app/backend/storage
         image: scheduling:postgresql
         container_name: scheduling-postgresql
         ports:

@@ -1,12 +1,12 @@
 const { Database, migrate,
         ResourcesRepository, EventsRepository, 
         UsersRepository, 
-        ConfigurationRepository } = require('./storage');
+        ConfigurationRepository } = require('./backend/storage');
 let database = new Database();
 
-const { UsersService, ResourcesService } = require('./node/services');
+const { UsersService, ResourcesService } = require('./backend/services');
 
-const { Server } = require('./node/server');
+const { Server } = require('./backend/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
 server.services['resources'] = new ResourcesService(new ResourcesRepository(database));

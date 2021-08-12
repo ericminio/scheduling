@@ -1,9 +1,9 @@
 const { JSDOM } = require("jsdom");
 const { expect } = require('chai');
 const { yop, domain, data } = require('../assets');
-const { Server } = require('../../node/server');
+const { Server } = require('../../backend/server');
 const port = 8006;
-const payload = require('../../node/support/payload-raw')
+const payload = require('../../backend/support/payload-raw')
 const fetch = require('./custom-fetch');
 
 describe('Api client', ()=>{

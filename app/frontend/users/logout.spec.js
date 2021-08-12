@@ -1,12 +1,6 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'logout.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Logout', ()=>{
 
@@ -17,7 +11,7 @@ describe('Logout', ()=>{
                 <yop-logout></yop-logout>
                 <script>
                     ${yop}
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>

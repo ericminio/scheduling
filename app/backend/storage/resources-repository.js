@@ -1,4 +1,4 @@
-const { Resource } = require('../domain');
+const { Resource } = require('../../domain');
 const EventsResourcesRepository = require('./events-resources-repository');
 
 class ResourcesRepository {

@@ -1,4 +1,4 @@
-const { domain, data, components } = require('../../web/assets');
+const { domain, data, components } = require('../../frontend/assets');
 
 class ScriptsRoute {
     constructor() {
