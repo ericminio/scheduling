@@ -21,3 +21,13 @@ var previousDay = (input)=> {
     let next = new Date(incoming.getTime() - 1000*60*60*24 * 1);
     return next;
 };
+
+var formatDate = (date)=> {
+    let month = zeroLeft(1+date.getMonth());
+    let day = zeroLeft(date.getDate());
+    let formatted = `${date.getFullYear()}-${month}-${day}`;
+    return formatted;
+};
+var zeroLeft = (number)=> {
+    return number < 10 ? '0'+number : ''+number;
+};

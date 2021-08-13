@@ -1,3 +1,5 @@
+const { nextDay, formatDate } = require('../../../domain');
+
 class SearchEventsRoute {
     constructor() {
         this.prefix = '/data/events?date=';
@@ -10,9 +12,10 @@ class SearchEventsRoute {
         return date;
     }
     async go(request, response, server) {
-        let date = this.parse(request);
+        let start = this.parse(request);
+        let end = formatDate(nextDay(start));
         let events = server.services['events'];
-        let all = await events.search(date);
+        let all = await events.search(start, end);
         
         response.statusCode = 200;
         response.setHeader('content-type', 'application/json');

@@ -8,6 +8,7 @@
     "tests:external-with-only": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about --tags '@only'",
     "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js' --exit --timeout 0",
     "tests:backend": "mocha './backend/**/*.spec.js' --exit --timeout 0",
+    "tests:storage": "mocha './backend/storage/**/*.spec.js' --exit --timeout 0",
     "tests:domain": "mocha './domain/**/*.spec.js' --exit --timeout 0",
     "tests:common": "mocha './frontend/common/**/*.spec.js' --exit --timeout 0",
     "tests:data": "mocha './frontend/data/**/*.spec.js' --exit --timeout 0",

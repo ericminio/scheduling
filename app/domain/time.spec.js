@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { nextDay, previousDay } = require('.');
+const { nextDay, previousDay, formatDate } = require('.');
 
 describe('The next day', ()=> {
 
@@ -24,3 +24,11 @@ describe('The previous day', ()=> {
             new Date(2015, 11, 31).getTime());
     });
 });
+
+describe('date formater', ()=> {
+
+    it('uses yyyy-mm-dd', ()=> {
+        let date = new Date(2015, 8, 21);
+        expect(formatDate(date)).to.equal('2015-09-21');
+    })
+})

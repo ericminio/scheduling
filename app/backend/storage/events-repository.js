@@ -37,37 +37,19 @@ class EventsRepository {
         event.setResources(await this.eventsResourcesRepository.getResourcesByEvent(id))
         return event;
     }
-    async search(date) {
-        let start = `${date} 00:00:00`;
-        let end = `${date} 23:59:59`;
+    async search(start, end) {
+        let start_datetime = `${start} 00:00:00`;
+        let end_datetime = `${end} 00:00:00`;
         let rows = await this.database.executeSync(`
             select event_id, label, start_time, end_time, resource_id 
             from events_resources, events
             where events_resources.event_id = events.id 
-            and end_time >= '${start}'
-            and start_time <= '${end}'
+            and end_time >= '${start_datetime}'
+            and start_time < '${end_datetime}'
             order by event_id
             `);
 
-        let collection = [];
-        let currentId = -1;
-        let currentEvent;
-        for (let i=0; i<rows.length; i++) {
-            let record = rows[i];
-            if (record.event_id != currentId) {
-                currentId = record.event_id;
-                currentEvent = new Event({
-                    id:record.event_id,
-                    label:record.label,
-                    start:record.start_time,
-                    end:record.end_time
-                });
-                currentEvent.resources = [];
-                collection.push(currentEvent);
-            }
-            currentEvent.resources.push({ id:record.resource_id });
-        }
-        return collection;
+        return this.collectionFrom(rows);
     }
     async all() {
         let rows = await this.database.executeSync(`
@@ -76,7 +58,21 @@ class EventsRepository {
             where events_resources.event_id = events.id 
             order by event_id
             `);
-
+        return this.collectionFrom(rows);
+    }
+    async delete(id) {
+        await this.eventsResourcesRepository.deleteByEvent(id);
+        await this.database.executeSync('delete from events where id=$1', [id]);
+    }
+    async truncate() {
+        await this.database.executeSync('truncate table events');
+    }
+    
+    async exists(id) {
+        let rows = await this.database.executeSync('select id from events where id=$1', [id]);
+        return rows.length > 0;
+    }
+    collectionFrom(rows) {
         let collection = [];
         let currentId = -1;
         let currentEvent;
@@ -96,17 +92,6 @@ class EventsRepository {
             currentEvent.resources.push({ id:record.resource_id });
         }
         return collection;
-    }
-    async exists(id) {
-        let rows = await this.database.executeSync('select id from events where id=$1', [id]);
-        return rows.length > 0;
-    }
-    async delete(id) {
-        await this.eventsResourcesRepository.deleteByEvent(id);
-        await this.database.executeSync('delete from events where id=$1', [id]);
-    }
-    async truncate() {
-        await this.database.executeSync('truncate table events');
     }
 }
 

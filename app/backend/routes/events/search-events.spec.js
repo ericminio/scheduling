@@ -8,8 +8,8 @@ describe('SearchEventsRoute', ()=> {
         let server = {
             services: {
                 'events': {
-                    search: async(date)=> {
-                        spy = date;
+                    search: async(start, end)=> {
+                        spy = { start:start, end:end };
                     }
                 }
             }
@@ -23,6 +23,9 @@ describe('SearchEventsRoute', ()=> {
             end: ()=> {}
         };
         await new SearchEventsRoute().go(request, response, server);
-        expect(spy).to.equal('2015-09-21');
+        expect(spy).to.deep.equal({ 
+            start:'2015-09-21', 
+            end:'2015-09-22' 
+        });
     })
 })

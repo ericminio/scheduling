@@ -14,5 +14,6 @@ module.exports = {
     isValidDatetime: fcode('is-valid-datetime.js', 'isValidDatetime'),
     nextDay: fcode('time.js', 'nextDay'),
     previousDay: fcode('time.js', 'previousDay'),
-    isAnOverbooking: fcode('overbooking.js', 'isAnOverbooking')
+    isAnOverbooking: fcode('overbooking.js', 'isAnOverbooking'),
+    formatDate: fcode('time.js', 'formatDate')
 }

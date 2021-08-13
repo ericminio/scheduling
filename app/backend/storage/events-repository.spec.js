@@ -131,7 +131,7 @@ describe('Events storage', ()=> {
         expect(collection.length).to.equal(0);
     });
 
-    it('can search by date', async ()=> {
+    it('can search by range', async ()=> {
         await repository.save(new Event({ 
             id:'1', 
             label:'event-label', 
@@ -147,8 +147,27 @@ describe('Events storage', ()=> {
             resources:[{id:'r1-id'}]
         }));
         
-        let found = await repository.search('2015-01-02');
+        let found = await repository.search('2015-01-02', '2015-01-03');
         expect(found.length).to.equal(1);
         expect(found[0].id).to.equal('2');
+    });
+    it('uses range criteria like [start, end[', async ()=> {
+        await repository.save(new Event({ 
+            id:'1', 
+            label:'event-label', 
+            start:'2015-01-01 19:00:00', 
+            end:'2015-01-01 23:00:00',
+            resources:[{id:'r1-id'}]
+        }));
+        await repository.save(new Event({ 
+            id:'2', 
+            label:'event-label', 
+            start:'2015-01-03 00:00:00', 
+            end:'2015-01-03 15:00:00',
+            resources:[{id:'r1-id'}]
+        }));
+        
+        let found = await repository.search('2015-01-02', '2015-01-03');
+        expect(found.length).to.equal(0);
     });
 })
