@@ -77,11 +77,7 @@ class Calendar extends HTMLElement {
         this.update();   
     }
     setDate(date) {
-        let month = 1+date.getMonth();
-        if (month < 10) { month = '0'+month; }
-        let day = date.getDate();
-        if (day < 10) { day = '0'+day; }
-        let formatted = `${date.getFullYear()}-${month}-${day}`;
+        let formatted = formatDate(date);
         this.querySelector('#calendar-date').value = formatted;
     }
     safeUpdate() {
