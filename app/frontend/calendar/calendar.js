@@ -23,12 +23,7 @@ calendarTemplate.innerHTML = `
             <tr>
                 <td class="column-one"></td>
                 <td class="column-two">
-                    <div>
-                    <button id="calendar-previous-day"><</button>
-                        <button id="calendar-next-day">></button>
-                        <input id="calendar-date" />
-                        <button id="calendar-search">Show</button>
-                    </div>
+                    <yop-day-selection></yop-day-selection>
                     <yop-timeline></yop-timeline>
                 </td>
             </tr>
@@ -56,28 +51,12 @@ class Calendar extends HTMLElement {
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
-        this.querySelector('#calendar-search').addEventListener('click', (e)=>{
-            events.notify('calendar update');
-        });
-        this.querySelector('#calendar-next-day').addEventListener('click', ()=> {
-            let current = this.querySelector("#calendar-date").value;
-            let next = formatDate(nextDay(current));
-            this.querySelector("#calendar-date").value = next;
-            events.notify('calendar update');
-        });
-        this.querySelector('#calendar-previous-day').addEventListener('click', ()=> {
-            let current = this.querySelector("#calendar-date").value;
-            let previous = formatDate(previousDay(current));
-            this.querySelector("#calendar-date").value = previous;
-            events.notify('calendar update');
-        });
         events.register(this, 'calendar update');
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
         events.register(this, 'resource deleted');
-        this.querySelector("#calendar-date").value = formatDate(today());
-        this.update(); 
+        this.update();
     }
     update() {
         let date = this.querySelector("#calendar-date").value;

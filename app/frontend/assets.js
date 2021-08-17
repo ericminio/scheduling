@@ -23,6 +23,7 @@ module.exports = {
     components: concat([
         './calendar/timeline/timeline-marker.js',
         './calendar/timeline/timeline.js',
+        './calendar/search/day-selection.js',
         './calendar/layout.js',
         './calendar/resource-renderer.js',
         './calendar/calendar-event.js',
