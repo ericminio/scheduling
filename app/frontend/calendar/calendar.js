@@ -57,40 +57,38 @@ class Calendar extends HTMLElement {
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
         this.querySelector('#calendar-search').addEventListener('click', (e)=>{
-            this.safeUpdate();
+            events.notify('calendar update');
         });
         this.querySelector('#calendar-next-day').addEventListener('click', ()=> {
             let current = this.querySelector("#calendar-date").value;
-            this.setDate(nextDay(current));
-            this.safeUpdate();
+            let next = formatDate(nextDay(current));
+            this.querySelector("#calendar-date").value = next;
+            events.notify('calendar update');
         });
         this.querySelector('#calendar-previous-day').addEventListener('click', ()=> {
             let current = this.querySelector("#calendar-date").value;
-            this.setDate(previousDay(current));
-            this.safeUpdate();
+            let previous = formatDate(previousDay(current));
+            this.querySelector("#calendar-date").value = previous;
+            events.notify('calendar update');
         });
+        events.register(this, 'calendar update');
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
         events.register(this, 'resource deleted');
-        this.setDate(today());
-        this.update();   
+        this.querySelector("#calendar-date").value = formatDate(today());
+        this.update(); 
     }
-    setDate(date) {
-        let formatted = formatDate(date);
-        this.querySelector('#calendar-date').value = formatted;
-    }
-    safeUpdate() {
+    update() {
         let date = this.querySelector("#calendar-date").value;
         if (isValidDate(date)) {
-            this.update();
+            this.updateResourcesAndEvents(date);
         }
         else {
             events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
         }
     }
-    update() {
-        let date = this.querySelector("#calendar-date").value;
+    updateResourcesAndEvents(date) {
         let resourcesLoaded = data.getResources();
         resourcesLoaded
             .then(data => {
@@ -109,10 +107,19 @@ class Calendar extends HTMLElement {
         eventsLoaded.then(data => this.events = data.events);
 
         Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
-            this.clear(this.resources.length);
+            this.clear();
             this.displayResources();
             this.displayEvents(); 
         })
+    }
+    clear() {
+        let size = this.resources.length;
+        let events = this.querySelector('events');
+        events.innerHTML = '';
+        events.style.height = layout.totalHeight(size);
+        let resources = this.querySelector('resources');
+        resources.innerHTML = '';
+        resources.style.height = layout.totalHeight(size);
     }
     displayResources() {
         let view = this.querySelector('resources');
@@ -132,14 +139,6 @@ class Calendar extends HTMLElement {
                 view.appendChild(instance);
             });
         });
-    }
-    clear(size) {
-        let events = this.querySelector('events');
-        events.innerHTML = '';
-        events.style.height = layout.totalHeight(size);
-        let resources = this.querySelector('resources');
-        resources.innerHTML = '';
-        resources.style.height = layout.totalHeight(size);
     }
 };
 customElements.define('yop-calendar', Calendar);
