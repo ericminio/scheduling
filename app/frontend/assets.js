@@ -21,6 +21,8 @@ module.exports = {
         './data/facade.js'
     ]),
     components: concat([
+        './calendar/timeline/timeline-marker.js',
+        './calendar/timeline/timeline.js',
         './calendar/layout.js',
         './calendar/resource-renderer.js',
         './calendar/calendar-event.js',
@@ -30,7 +32,6 @@ module.exports = {
         './calendar/resource-creation.js',
         './calendar/show-event.js',
         './calendar/show-resource.js',
-        './calendar/timeline-marker.js',
         './common/error-message.js',
         './common/header.js',
         './common/menu.js',

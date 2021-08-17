@@ -29,7 +29,7 @@ calendarTemplate.innerHTML = `
                         <input id="calendar-date" />
                         <button id="calendar-search">Show</button>
                     </div>
-                    <timeline></timeline>
+                    <yop-timeline></yop-timeline>
                 </td>
             </tr>
             <tr>
@@ -53,7 +53,6 @@ class Calendar extends HTMLElement {
     }
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
-        await this.displayTimelineMarks();
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
@@ -105,7 +104,6 @@ class Calendar extends HTMLElement {
                     this.resourceMap[resource.getId()] = resource; 
                 });
                 store.saveObject('resources', data.resources);
-                this.clear(this.resources.length);
             })
             .catch(()=> { 
                 store.delete('resources'); 
@@ -115,28 +113,9 @@ class Calendar extends HTMLElement {
         eventsLoaded.then(data => this.events = data.events);
 
         Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
+            this.clear(this.resources.length);
             this.displayResources();
             this.displayEvents(); 
-        })
-    }
-    async displayTimelineMarks() {
-        let configuration = await data.configuration();
-        let openingHours = configuration.getOpeningHours();
-        let parts = openingHours.split('-');
-        let end = parseInt(parts[1])
-        let current = parseInt(parts[0])
-        let starts = [];
-        while (current < end) {
-            starts = starts.concat(current);
-            current ++;
-        }
-
-        let view = this.querySelector('timeline');
-        view.innerHTML = '';
-        starts.forEach((start)=>{
-            let marker = new TimelineMarker();
-            marker.digest({ hours:start, minutes:0 });
-            view.appendChild(marker);
         })
     }
     displayResources() {

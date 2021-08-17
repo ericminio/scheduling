@@ -71,11 +71,11 @@ body, input, button {
     margin-left: 25%;
 }
 
-timeline, resources, events {
+yop-timeline, resources, events {
     display: block;
     position: relative;
 }
-timeline {
+yop-timeline {
     background-color: var(--background-timeline);
     height: var(--timelineHeigth);
 }

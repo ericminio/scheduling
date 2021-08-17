@@ -1,7 +1,6 @@
 const { expect } = require('chai');
-const { yop, domain, data, components } = require('../assets');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { yop, domain, data, components } = require('../../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Timeline', ()=>{
 
