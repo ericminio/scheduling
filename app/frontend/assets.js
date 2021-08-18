@@ -29,7 +29,7 @@ module.exports = {
         './calendar/calendar-event.js',
         './calendar/calendar.js',
         './calendar/event-creation.js',
-        './calendar/page-events.js',
+        './calendar/page-calendar-day.js',
         './calendar/resource-creation.js',
         './calendar/show-event.js',
         './calendar/show-resource.js',
