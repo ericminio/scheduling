@@ -1,16 +1,16 @@
 const { When, Then, World } = require('../../app/node_modules/@cucumber/cucumber/lib');
 const { By } = require('../../app/node_modules/selenium-webdriver');
 const { expect } = require('../../app/node_modules/chai');
-const { openEvents } = require('./navigation');
+const { openCalendarDay } = require('./navigation');
 
 When('I open the calendar on {string}', async (date)=> {
-    await openEvents();
+    await openCalendarDay();
     await World.robot.input('#calendar-date', date);
     await World.robot.click('#calendar-search');
     await World.robot.wait(300);
 });
 When('he opens the calendar on {string}', async (date)=> {
-    await openEvents();
+    await openCalendarDay();
     await World.robot.input('#calendar-date', date);
     await World.robot.click('#calendar-search');
     await World.robot.wait(300);

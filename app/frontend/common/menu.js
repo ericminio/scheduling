@@ -31,7 +31,7 @@ menuTemplate.innerHTML = `
     </style>
     <div class="ribbon">
         <ul>
-            <yop-link to="/calendar">
+            <yop-link to="/calendar-day">
                 <li class="menu" id="menu-calendar">CALENDAR</li>
             </yop-link>
             <yop-link to="/configuration">

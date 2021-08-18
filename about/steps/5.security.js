@@ -2,7 +2,6 @@ const { Given, When, Then, World } = require('../../app/node_modules/@cucumber/c
 const { getEventElements, getResourceElement, getEventScheduledWith } = require('./support');
 const { expect } = require('../../app/node_modules/chai');
 const login = require('./login')
-const { openEvents } = require('./navigation')
 const { User } = require('../../app/domain')
 
 Given('the following users and privileges', async (table)=> {

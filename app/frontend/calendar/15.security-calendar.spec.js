@@ -45,7 +45,7 @@ describe('When resource load fails', ()=>{
     let wait = 10;
 
     beforeEach((done)=>{
-        window = (new JSDOM(html, { url:'http://localhost/calendar', runScripts: "dangerously", resources: "usable" })).window;
+        window = (new JSDOM(html, { url:'http://localhost/calendar-day', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
         calendar = document.querySelector('yop-calendar-day');
         setTimeout(done, wait);

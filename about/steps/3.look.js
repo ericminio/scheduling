@@ -3,10 +3,6 @@ const { By } = require('../../app/node_modules/selenium-webdriver');
 const { markerPosition, getEventElements, getResourceElement, getEventScheduledWith } = require('./support');
 const { expect } = require('../../app/node_modules/chai');
 
-When('I look at the events', async ()=> {
-    await World.driver.get('http://localhost:'+World.server.port+'/calendar');
-    await World.driver.sleep(300);
-});
 Then('I see that {string} starts at {string}', async (label, time)=> {
     let position = await markerPosition(time);
 
