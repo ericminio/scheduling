@@ -8,7 +8,7 @@ describe('Move to previous day', ()=>{
 
     let html = `
         <!DOCTYPE html><html lang="en"><body>
-            <yop-calendar></yop-calendar>
+            <yop-calendar-day></yop-calendar-day>
             <script>
                 ${yop}
                 store.saveObject('configuration', { title:'Resto', 'opening-hours':'0-24' });

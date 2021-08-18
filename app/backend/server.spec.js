@@ -43,7 +43,7 @@ describe('Server', ()=>{
         
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('application/javascript');
-        expect(response.body).to.contain('class Calendar extends HTMLElement');
+        expect(response.body).to.contain('class CalendarDay extends HTMLElement');
     })
     it('can serve css', async ()=> {
         const file = {

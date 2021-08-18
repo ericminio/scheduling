@@ -8,7 +8,7 @@ describe('Timeline', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar></yop-calendar>
+                <yop-calendar-day></yop-calendar-day>
                 <script>
                     ${yop}
                     ${domain}
@@ -39,7 +39,7 @@ describe('Timeline', ()=>{
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
-        calendar = document.querySelector('yop-calendar');
+        calendar = document.querySelector('yop-calendar-day');
         setTimeout(done, wait);
     })
 
@@ -67,7 +67,7 @@ describe('Timeline', ()=>{
             <!DOCTYPE html>
             <html lang="en">
                 <body>
-                    <yop-calendar></yop-calendar>
+                    <yop-calendar-day></yop-calendar-day>
                     <script>
                         ${yop}
                         ${domain}
@@ -94,7 +94,7 @@ describe('Timeline', ()=>{
         beforeEach((done)=>{
             window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
             document = window.document;
-            calendar = document.querySelector('yop-calendar');
+            calendar = document.querySelector('yop-calendar-day');
             setTimeout(done, wait);
         })
 
@@ -112,7 +112,7 @@ describe('Timeline', ()=>{
             <!DOCTYPE html>
             <html lang="en">
                 <body>
-                    <yop-calendar></yop-calendar>
+                    <yop-calendar-day></yop-calendar-day>
                     <script>
                         ${yop}
                         ${domain}
@@ -140,7 +140,7 @@ describe('Timeline', ()=>{
         beforeEach((done)=>{
             window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
             document = window.document;
-            calendar = document.querySelector('yop-calendar');
+            calendar = document.querySelector('yop-calendar-day');
             setTimeout(done, wait);
         })
 

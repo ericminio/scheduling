@@ -2,7 +2,7 @@ const pageEventsTemplate = document.createElement('template')
 pageEventsTemplate.innerHTML = `
 <yop-menu></yop-menu>
 
-<yop-calendar></yop-calendar>
+<yop-calendar-day></yop-calendar-day>
 <resource-creation></resource-creation>
 <event-creation></event-creation>
 <show-event></show-event>

@@ -10,7 +10,7 @@ describe('Calendar', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar></yop-calendar>
+                <yop-calendar-day></yop-calendar-day>
                 <script>
                     ${yop}
                     ${domain}
@@ -46,7 +46,7 @@ describe('Calendar', ()=>{
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;
-        calendar = document.querySelector('yop-calendar');
+        calendar = document.querySelector('yop-calendar-day');
         setTimeout(done, wait);
     })
 
@@ -55,17 +55,17 @@ describe('Calendar', ()=>{
     })
     it('displays expected resources', (done)=>{
         setTimeout(()=> {
-            expect(document.querySelector('yop-calendar resources #resource-1')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar resources #resource-2')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar resources #resource-3')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-1')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-2')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-3')).not.to.equal(null);
             done();
         }, wait);
     })
     it('displays expected events', (done)=>{
         setTimeout(()=> {
-            expect(document.querySelector('yop-calendar events #event-42-resource-1')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-15-resource-2')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-15-resource-3')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-42-resource-1')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-15-resource-2')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-15-resource-3')).not.to.equal(null);
             done();
         }, wait);
     })
@@ -86,8 +86,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('resource created');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
             done();
         }, wait);
     });
@@ -108,8 +108,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('event created');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
             done();
         }, wait);
     });
@@ -130,8 +130,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('event deleted');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
             done();
         }, wait);
     });
@@ -152,8 +152,8 @@ describe('Calendar', ()=>{
         };
         window.events.notify('resource deleted');
         setTimeout(()=>{
-            expect(document.querySelector('yop-calendar resources #resource-11')).not.to.equal(null);
-            expect(document.querySelector('yop-calendar events #event-422-resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
+            expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
             done();
         }, wait);
     });

@@ -41,7 +41,7 @@ calendarTemplate.innerHTML = `
 </div>
 `;
 
-class Calendar extends HTMLElement {
+class CalendarDay extends HTMLElement {
 
     constructor() {
         super()
@@ -120,5 +120,5 @@ class Calendar extends HTMLElement {
         });
     }
 };
-customElements.define('yop-calendar', Calendar);
+customElements.define('yop-calendar-day', CalendarDay);
 

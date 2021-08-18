@@ -9,7 +9,7 @@ describe('Event creation', ()=>{
         <!DOCTYPE html>
         <html lang="en">
             <body>
-                <yop-calendar></yop-calendar>
+                <yop-calendar-day></yop-calendar-day>
                 <event-creation></event-creation>
                 <script>
                     ${yop}
