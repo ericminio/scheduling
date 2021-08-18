@@ -6,21 +6,16 @@ class Timeline extends HTMLElement {
         await this.displayTimelineMarks();
     }
     async displayTimelineMarks() {
+        this.innerHTML = '';
         let configuration = await data.configuration();
-        let end = configuration.getOpeningHoursEnd();
         let current = configuration.getOpeningHoursStart();
-        let starts = [];
-        while (current < end) {
-            starts = starts.concat(current);
+        let end = configuration.getOpeningHoursEnd();
+        while (current < end) { 
+            let marker = new TimelineMarker();
+            marker.digest({ hours:current, minutes:0 });
+            this.appendChild(marker);
             current ++;
         }
-
-        this.innerHTML = '';
-        starts.forEach((start)=>{
-            let marker = new TimelineMarker();
-            marker.digest({ hours:start, minutes:0 });
-            this.appendChild(marker);
-        })
     }
 }
 customElements.define('yop-timeline', Timeline);
