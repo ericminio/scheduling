@@ -84,7 +84,7 @@ describe('Header', ()=>{
         it('stores it', (done)=>{
             setTimeout(()=> {
                 expect(window.store.getObject('configuration')).to.deep.equal(
-                    { title:'Agenda', 'opening-hours':'8-15' } );
+                    { title:'Agenda', 'opening-hours':'8-15', openingHoursStart:8, openingHoursEnd:15 } );
                 done();
             }, wait);
         });
@@ -126,7 +126,8 @@ describe('Header', ()=>{
 
         it('stores it', (done)=>{
             setTimeout(()=> {
-                expect(window.store.getObject('configuration')).to.deep.equal({ title:'Agenda', 'opening-hours':'8-15' });
+                expect(window.store.getObject('configuration')).to.deep.equal(
+                    { title:'Agenda', 'opening-hours':'8-15', openingHoursStart:8, openingHoursEnd:15 });
                 done();
             }, wait);
         });

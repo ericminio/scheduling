@@ -520,7 +520,8 @@ describe('Server', ()=>{
         });
         expect(getResponse.statusCode).to.equal(200);
         expect(getResponse.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(getResponse.body)).to.deep.equal({ title:'Yop', 'opening-hours':'0-24' });
+        expect(JSON.parse(getResponse.body)).to.deep.equal(
+            { title:'Yop', 'opening-hours':'0-24', openingHoursStart:0, openingHoursEnd:24 });
     });
     it('is open to event search by date', async ()=>{
         let resources = new RepositoryUsingMap();

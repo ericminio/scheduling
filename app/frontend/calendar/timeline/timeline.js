@@ -7,10 +7,8 @@ class Timeline extends HTMLElement {
     }
     async displayTimelineMarks() {
         let configuration = await data.configuration();
-        let openingHours = configuration.getOpeningHours();
-        let parts = openingHours.split('-');
-        let end = parseInt(parts[1])
-        let current = parseInt(parts[0])
+        let end = configuration.getOpeningHoursEnd();
+        let current = configuration.getOpeningHoursStart();
         let starts = [];
         while (current < end) {
             starts = starts.concat(current);

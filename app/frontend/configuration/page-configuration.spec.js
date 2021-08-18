@@ -55,7 +55,7 @@ describe('Page Configuration', ()=>{
         document.querySelector('#save-configuration').click();
 
         expect(spy).to.deep.equal(
-            { title:'new-title', 'opening-hours':'12-18' });
+            { title:'new-title', 'opening-hours':'12-18', openingHoursStart:12, openingHoursEnd:18 });
     });
 
     it('stores the configuration on success', (done)=>{

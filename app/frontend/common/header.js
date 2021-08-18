@@ -49,9 +49,8 @@ class Header extends HTMLElement {
         let configuration = await data.configuration();
         this.querySelector('#title').innerHTML = configuration.getTitle();
         
-        let parts = configuration.getOpeningHours().split('-');
-        let end = parseInt(parts[1])
-        let start = parseInt(parts[0])
+        let end = configuration.getOpeningHoursEnd();
+        let start = configuration.getOpeningHoursStart();
         let root = document.documentElement;
         root.style.setProperty('--opening-hours-start', start);
         root.style.setProperty('--opening-hours-end', end);
