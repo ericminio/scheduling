@@ -10,5 +10,17 @@ let layout = {
     },
     totalHeight: (resourceCount)=> {
         return `calc(${resourceCount} * var(--height) + 2 * var(--padding))`;
+    },
+    weekdayLeft: (index)=> {
+        return `calc(var(--weekdayWidth) * ${index})`;
+    },
+    weekdayWidth: ()=> {
+        return `var(--weekdayWidth)`;
+    },
+    leftInWeek: (instant)=> {
+        return `calc(var(--weekdayWidth) * 1)`;
+    },
+    widthInWeek: (start, end)=> {
+        return `var(--weekdayWidth)`;
     }
 };

@@ -32,7 +32,10 @@ menuTemplate.innerHTML = `
     <div class="ribbon">
         <ul>
             <yop-link to="/calendar-day">
-                <li class="menu" id="menu-calendar">CALENDAR</li>
+                <li class="menu" id="menu-calendar">DAY</li>
+            </yop-link>
+            <yop-link to="/calendar-week">
+                <li class="menu with-separator" id="menu-calendar-week">WEEK</li>
             </yop-link>
             <yop-link to="/configuration">
                 <li class="menu with-separator" id="menu-configuration">CONFIGURATION</li>

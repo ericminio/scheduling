@@ -41,6 +41,14 @@ Then('I see that {string} is scheduled with {string}', async (label, name)=> {
         throw Error('nope')
     }
 });
+Then('he sees that {string} is scheduled with {string}', async (label, name)=> {
+    let resourceElement = await getResourceElement(name);
+    let eventsWithLabel = await getEventElements(label);
+    let event = await getEventScheduledWith(resourceElement, eventsWithLabel);
+    if (!event) {
+        throw Error('nope')
+    }
+});
 
 Then('he sees that the resources are ordered as follows', async (expected)=> {
     let resources = await World.driver.findElements(By.css('yop-calendar-resource'));

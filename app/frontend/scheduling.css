@@ -12,6 +12,7 @@
     --agendaAreaWidth: calc(100% - var(--resourceAreaWidth));
     --minimalWidthInMinutes: 30;
     --minimalWidth: calc(var(--minimalWidthInMinutes) * (100% - 2 * var(--padding)) / (var(--opening-hours-end) - var(--opening-hours-start)) / 60);
+    --weekdayWidth: calc((100% - 2 * var(--padding)) / 7);
     --radius: 3px;
     --height: 20px;        
     --timelineHeigth: 20px;
@@ -71,11 +72,11 @@ body, input, button {
     margin-left: 25%;
 }
 
-yop-timeline, resources, events {
+yop-timeline, yop-timeline-week, resources, events {
     display: block;
     position: relative;
 }
-yop-timeline {
+yop-timeline, yop-timeline-week {
     background-color: var(--background-timeline);
     height: var(--timelineHeigth);
 }
@@ -86,7 +87,7 @@ resources {
 events {
     background-color: var(--background-events);  
 }
-yop-timeline-marker, yop-calendar-resource, yop-calendar-event {
+yop-timeline-marker, yop-timeline-week-marker, yop-calendar-resource, yop-calendar-event, yop-calendar-event-week {
     display: inline;
     position: absolute;
 }
@@ -96,14 +97,14 @@ yop-calendar-resource {
     width: 100%;
     cursor: pointer;
 }
-yop-calendar-event {
+yop-calendar-event, yop-calendar-event-week {
     background-color: var(--background-event);
     color: var(--color-event);
     height: var(--height);  
     border-radius: var(--radius);
     cursor: pointer;
 }
-yop-calendar-resource, yop-calendar-event {
+yop-calendar-resource, yop-calendar-event, yop-calendar-event-week {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;

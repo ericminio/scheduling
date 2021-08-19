@@ -19,7 +19,14 @@ let openConfiguration = async ()=> {
     await World.driver.sleep(300);
 };
 
+let openCalendarWeek = async ()=> {
+    let menu = await World.robot.findElement('#menu-calendar-week');
+    await menu.click();
+    await World.driver.sleep(300);
+};
+
 module.exports = {
     openCalendarDay: openCalendarDay,
-    openConfiguration: openConfiguration
+    openConfiguration: openConfiguration,
+    openCalendarWeek: openCalendarWeek
 };
