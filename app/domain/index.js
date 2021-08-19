@@ -15,5 +15,6 @@ module.exports = {
     nextDay: fcode('time.js', 'nextDay'),
     previousDay: fcode('time.js', 'previousDay'),
     isAnOverbooking: fcode('overbooking.js', 'isAnOverbooking'),
-    formatDate: fcode('time.js', 'formatDate')
+    formatDate: fcode('time.js', 'formatDate'),
+    dateFrom: fcode('time.js', 'dateFrom')
 }

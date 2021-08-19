@@ -24,11 +24,30 @@ class Event {
         return this.getInstant(this.getEnd());
     }
     getInstant(datetime) {
-        let time = datetime.substring(datetime.indexOf(' ')).trim();
+        let time = this.getTimePart(datetime);
         let parts = time.split(':');
         return {
             hours: parseInt(parts[0]),
             minutes: parseInt(parts[1])
         }
+    }
+    getDatePart(datetime) {
+        return datetime.substring(0, datetime.indexOf(' ')).trim();
+    }
+    getTimePart(datetime) {
+        return datetime.substring(datetime.indexOf(' ')).trim();
+    }
+
+    getStartWeekdayIndex() {
+        return this.getWeekdayIndex(this.getStart());
+    }
+    getEndWeekdayIndex() {
+        return this.getWeekdayIndex(this.getEnd());
+    }
+    getWeekdayIndex(datetime) {
+        let date = dateFrom(this.getDatePart(datetime))
+        let day = date.getDay();
+
+        return (day + 6) % 7;
     }
 };
