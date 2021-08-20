@@ -24,6 +24,7 @@ describe('Events storage', ()=> {
         event = new Event({ 
             id:'event-id', 
             label:'event-label', 
+            notes:'event-notes',
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
             resources:[{id:'r1-id'}, {id:'r2-id'}]
@@ -52,7 +53,8 @@ describe('Events storage', ()=> {
         expect(instance instanceof Event).to.equal(true);
         expect(instance).to.deep.equal(new Event({ 
             id:'event-id', 
-            label:'event-label', 
+            label:'event-label',  
+            notes:'event-notes',
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
             resources:[r1, r2]
@@ -67,7 +69,8 @@ describe('Events storage', ()=> {
         expect(collection[0] instanceof Event).to.equal(true);
         expect(collection[0]).to.deep.equal({ 
             id:'event-id', 
-            label:'event-label', 
+            label:'event-label',  
+            notes:'event-notes',
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
             resources:[{id:'r1-id'}, {id:'r2-id'}]
@@ -78,11 +81,13 @@ describe('Events storage', ()=> {
         event.label = 'label #1';
         await repository.save(event);
         event.label = 'label #2';
+        event.notes = 'notes #2';
         await repository.save(event);
         
-        let events = await database.executeSync('select label from events')
+        let events = await database.executeSync('select label, notes from events')
         expect(events.length).to.equal(1);
         expect(events[0].label).to.equal('label #2');
+        expect(events[0].notes).to.equal('notes #2');
         let resources = await database.executeSync('select * from resources')
         expect(resources.length).to.equal(2);
         let association = await database.executeSync('select * from events_resources')
@@ -92,6 +97,7 @@ describe('Events storage', ()=> {
         expect(fetched).to.deep.equal(new Event({ 
             id:'event-id', 
             label:'label #2', 
+            notes: 'notes #2',
             start:'2015-01-15 19:15:00', 
             end:'2015-07-14T23:42:15',
             resources:[r1, r2]

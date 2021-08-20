@@ -76,5 +76,8 @@ let createEvent = async (data)=> {
             }
         }
     }
+    if (data[4]) {
+        await World.robot.input('#new-event-notes', data[4]);
+    }
     await World.robot.click('#create-event');
 }

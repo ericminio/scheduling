@@ -16,6 +16,8 @@ showEventTemplate.innerHTML = `
 <div class="vertical-form hidden" id="show-event-form">
     <label>Label</label>
     <input id="event-info-label" />
+    <label>Notes</label>
+    <textarea id="event-info-notes"></textarea>
     <label>Start</label>
     <input id="event-info-start" />
     <label>End</label>
@@ -38,9 +40,10 @@ class ShowEvent extends HTMLElement {
     update(event) {
         this.event = event;
         this.querySelector('#show-event-form').classList.toggle('hidden');
-        this.querySelector('#event-info-label').value = event.label;
-        this.querySelector('#event-info-start').value = event.start;
-        this.querySelector('#event-info-end').value = event.end;
+        this.querySelector('#event-info-label').value = event.getLabel();
+        this.querySelector('#event-info-notes').value = event.getNotes();
+        this.querySelector('#event-info-start').value = event.getStart();
+        this.querySelector('#event-info-end').value = event.getEnd();
     }
     deleteEvent() {
         api.deleteEvent(this.event).then(()=> { 

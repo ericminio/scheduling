@@ -47,4 +47,11 @@ Feature: Bookings
             | Conflict   | 2015-09-21 20:00     | 2015-09-21 22:00   | table #2            |
         Then he receives the error message "Overbooking forbidden"
         
+    Scenario: notes
+        Given he opens the calendar on "2015-09-21"
+        Given he creates the following events
+            | Label      | Start                | End                | Resources | Notes                     |
+            | Birthday   | 2015-09-21 13:00     | 2015-09-21 21:00   | table #1  | allergies: tuna, pinapple |
+        When he inspects event "Birthday" scheduled with "table #1"
+        Then he sees the notes for this event are "allergies: tuna, pinapple"
         

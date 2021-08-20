@@ -27,3 +27,8 @@ Then('I see that this resource type is {string}', async (type)=> {
     let actual = await element.getAttribute('value');
     expect(actual).to.equal(type);
 });
+Then('he sees the notes for this event are {string}', async (notes)=> {
+    let element = await World.robot.findElement('#event-info-notes');
+    let actual = await element.getAttribute('value');
+    expect(actual).to.equal(notes);
+});

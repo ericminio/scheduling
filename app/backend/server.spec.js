@@ -142,6 +142,7 @@ describe('Server', ()=>{
             start: '08:30',
             end: '12:00',
             label: 'Bob',
+            notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
@@ -543,6 +544,7 @@ describe('Server', ()=>{
             start: '2015-10-01 08:30',
             end: '2015-10-01 12:00',
             label: 'Bob',
+            notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);

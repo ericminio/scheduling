@@ -16,6 +16,8 @@ eventCreationTemplate.innerHTML = `
 <div class="vertical-form hidden" id="event-creation-form">
     <label>Label</label>
     <input id="new-event-label" />
+    <label>Notes</label>
+    <textarea id="new-event-notes"></textarea>
     <label>Start</label>
     <input id="new-event-start" />
     <label>End</label>
@@ -60,14 +62,24 @@ class EventCreation extends HTMLElement {
         }
     }
     createEvent() {
-        if (isValidDatetime(this.querySelector('#new-event-start').value) &&
-            isValidDatetime(this.querySelector('#new-event-end').value)) {
-            api.createEvent(this.payload())
-                    .then(()=> { events.notify('event created'); } );;
-        }
-        else {
+        if (! isValidDatetime(this.querySelector('#new-event-start').value)) {
             events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
         }
+        else if (! isValidDatetime(this.querySelector('#new-event-end').value)) {
+            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
+        }
+        else if (! this.isValidLabel()) {
+            events.notify('error', { message:'Label can not be empty' });
+        }
+        else {
+            api.createEvent(this.payload())
+                .then(()=> { events.notify('event created'); } );;
+        }
+    }
+    isValidLabel() {
+        let actual = this.querySelector('#new-event-label').value;
+        
+        return (actual.trim().length > 0);
     }
     payload() {
         let candidates = this.querySelectorAll('#new-event-resources input');
@@ -80,6 +92,7 @@ class EventCreation extends HTMLElement {
         }
         return {
             label: this.querySelector('#new-event-label').value,
+            notes: this.querySelector('#new-event-notes').value,
             start: this.querySelector('#new-event-start').value,
             end: this.querySelector('#new-event-end').value,
             resources: selected

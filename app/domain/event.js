@@ -1,7 +1,8 @@
 class Event {
     constructor(options) {
         this.id = options.id;
-        this.label = options.label;
+        this.label = options.label || '';
+        this.notes = options.notes || '';
         this.start = options.start;
         this.end = options.end;
         this.resources = options.resources;
@@ -9,6 +10,7 @@ class Event {
 
     getId() { return this.id; }
     getLabel() { return this.label; }
+    getNotes() { return this.notes; }
     getStart() { return this.start; }
     getEnd() { return this.end; }
     getResources() { return this.resources; }

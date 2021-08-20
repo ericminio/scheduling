@@ -51,7 +51,7 @@ describe('Calendar Event click', ()=>{
         calendarEvent.click();
         
         setTimeout(()=>{
-            expect(actual).to.deep.equal({ id:'event-id', label:'event-label', start:'18:00', end:'20:30', resources:[{ id:'resource-id' }] });
+            expect(actual.getId()).to.equal('event-id');
             done();
         }, 50);
     });

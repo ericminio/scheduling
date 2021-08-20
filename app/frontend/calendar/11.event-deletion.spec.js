@@ -1,12 +1,7 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'show-event.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../assets');
+const { JSDOM } = require("jsdom");
+const { Event } = require('../../domain');
 
 describe('Event deletion', ()=>{
 
@@ -20,7 +15,7 @@ describe('Event deletion', ()=>{
                     var api = {
                         deleteEvent: (event)=> new Promise((resolve)=>{ resolve(); })  
                     };
-                    ${sut}
+                    ${components}
                 </script>
             </body>
         </html>
@@ -34,18 +29,18 @@ describe('Event deletion', ()=>{
     })
 
     it('is available from event info box', ()=>{
-        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', new Event({id:'42'}));
 
         expect(document.querySelector('#delete-event')).not.to.equal(null);
     });
 
     it('sends the expected request', ()=>{
         let spy;
-        window.api = { deleteEvent:(event)=> { spy = event; return new Promise((resolve)=> { resolve(); })} }
-        window.events.notify('show event', {id:'42'});
+        window.api = { deleteEvent:(event)=> { spy = event.id; return new Promise((resolve)=> { resolve(); })} }
+        window.events.notify('show event', new Event({id:42}));
         document.querySelector('#delete-event').click();
 
-        expect(spy).to.deep.equal({ id:'42' });
+        expect(spy).to.equal(42);
     });
 
     it('notifies on event deleted', (done)=>{
@@ -54,7 +49,7 @@ describe('Event deletion', ()=>{
             update: ()=> { wasCalled = true; }
         };
         window.events.register(spy, 'event deleted');
-        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
         
         setTimeout(()=>{
@@ -64,7 +59,7 @@ describe('Event deletion', ()=>{
     });
 
     it('closes event info box', (done)=>{
-        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
 
         setTimeout(()=>{
@@ -77,9 +72,9 @@ describe('Event deletion', ()=>{
     it('does not send extra deletion', ()=>{
         let spy = 0;
         window.api = { deleteEvent:(event)=> { spy ++ ; return new Promise((resolve)=> { resolve(); })} }
-        window.events.notify('show event', {id:'42'});
-        window.events.notify('show event', {id:'42'});
-        window.events.notify('show event', {id:'42'});
+        window.events.notify('show event', new Event({id:'42'}));
+        window.events.notify('show event', new Event({id:'42'}));
+        window.events.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
 
         expect(spy).to.equal(1);
