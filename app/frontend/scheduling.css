@@ -1,6 +1,4 @@
 :root {
-    font-family: Arial, sans-serif;
-    
     --body-margin: 5px;
     --vertical-margin: 15px;
     --padding: 5px;
@@ -45,8 +43,13 @@ body {
     margin: var(--body-margin);
     background-color: var(--background-body);
 }
-body, input, button {
+body, input, textarea, button {
+    font-family: Arial, sans-serif;    
     font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
 }
 
 .vertical-form {
@@ -57,12 +60,12 @@ body, input, button {
     border: var(--border-size) solid var(--color-border);
 }
 
-.vertical-form label, .vertical-form input, .vertical-form button {
+.vertical-form label, .vertical-form input, .vertical-form textarea, .vertical-form button {
     display: block;
     padding: 0px;
     width: calc(100% - 2 * var(--padding));
 }
-.vertical-form label, .vertical-form input {
+.vertical-form label, .vertical-form input, .vertical-form textarea {
     margin-bottom: var(--vertical-margin);
 }
 
@@ -120,7 +123,7 @@ yop-calendar-resource, yop-calendar-event {
         width: 75%;
         margin-left: 12.5%;
     }
-    body, input, button {
+    body, input, textarea, button {
         font-size: 35px;
     }
 }
