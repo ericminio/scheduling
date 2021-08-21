@@ -8,6 +8,7 @@ const fcode = (filename, functionname)=> (new Function(`${code(filename)}; retur
 module.exports = {
     Resource: ccode('calendar/resource.js', 'Resource'),
     Event: ccode('calendar/event.js', 'Event'),
+    EventFactory: ccode('calendar/event-factory.js', 'EventFactory'),
     User: ccode('user/user.js', 'User'),
     Configuration: ccode('configuration/configuration.js', 'Configuration'),
     isValidDate: fcode('calendar/is-valid-date.js', 'isValidDate'),

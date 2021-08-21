@@ -84,7 +84,7 @@ describe('Event creation', ()=>{
         expect(form.querySelector('#new-event-end').value).to.equal('1980-05-25 20:00');
     });
 
-    it('sends expected payload', ()=> {
+    it('sends expected payload', (done)=> {
         let spy = {};
         window.api = { createEvent:(payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })} }
         window.store.saveObject('resources', [
@@ -101,13 +101,17 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
-        expect(spy).to.deep.equal({
-            label: 'this label',
-            notes: 'these-notes',
-            start: '1980-05-25 08:00',
-            end: '1980-05-25 10:00',
-            resources: [ { id:'two' }, { id:'three' } ]
-        });
+        setTimeout(()=>{
+            expect(spy).to.deep.equal({
+                id: undefined,
+                label: 'this label',
+                notes: 'these-notes',
+                start: '1980-05-25 08:00',
+                end: '1980-05-25 10:00',
+                resources: [ { id:'two' }, { id:'three' } ]
+            });
+            done();
+        }, wait);
     });
 
     it('notifies on event created', (done)=>{
@@ -130,7 +134,7 @@ describe('Event creation', ()=>{
         }, 50);
     });
 
-    it('does not send extra creation', ()=> {
+    it('does not send extra creation', (done)=> {
         let spy = 0;
         window.api = { createEvent:()=> { spy ++; return new Promise((resolve)=> { resolve(); })} }
         window.store.saveObject('resources', [
@@ -148,10 +152,13 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
-        expect(spy).to.equal(1);
+        setTimeout(()=> {
+            expect(spy).to.equal(1);
+            done();
+        }, wait)
     });
 
-    it('alerts on invalid start datetime', ()=> {
+    it('alerts on invalid start datetime', (done)=> {
         let spy;
         window.events.register({ update:(value)=> { spy = value; } }, 'error');
         window.store.saveObject('resources', [
@@ -167,10 +174,13 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
-        expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+        setTimeout(()=>{
+            expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+            done();
+        }, wait);
     });
 
-    it('alerts on invalid end datetime', ()=> {
+    it('alerts on invalid end datetime', (done)=> {
         let spy;
         window.events.register({ update:(value)=> { spy = value; } }, 'error');
         window.store.saveObject('resources', [
@@ -186,10 +196,13 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
-        expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+        setTimeout(()=>{
+            expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+            done();
+        }, wait);
     });
 
-    it('alerts on empty label', ()=> {
+    it('alerts on empty label', (done)=> {
         let spy;
         window.events.register({ update:(value)=> { spy = value; } }, 'error');
         window.store.saveObject('resources', [
@@ -205,6 +218,9 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-resource-three').checked = true;
         form.querySelector('#create-event').click();
 
-        expect(spy).to.deep.equal({ message:'Label can not be empty' });
+        setTimeout(()=>{
+            expect(spy).to.deep.equal({ message:'Label can not be empty' });
+            done();
+        }, wait);
     });
 })

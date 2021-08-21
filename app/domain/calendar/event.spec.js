@@ -23,9 +23,6 @@ describe('Event', ()=>{
         expect(new Event({ end:'2015-01-15 9:09' }).getEndInstant()).to.deep.equal({ hours:9, minutes:9 });
     });
 
-    it('resists empty label', ()=>{
-        expect(new Event({ notes:'without label' }).getLabel()).to.equal('');
-    });
     it('resists empty notes', ()=>{
         expect(new Event({ label:'without notes' }).getNotes()).to.equal('');
     });

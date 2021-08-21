@@ -11,7 +11,9 @@ module.exports = {
         '../domain/calendar/event.js',
         '../domain/calendar/time.js',
         '../domain/calendar/is-valid-date.js',
-        '../domain/calendar/is-valid-datetime.js'
+        '../domain/calendar/is-valid-datetime.js',
+        '../domain/calendar/is-valid-label.js',
+        '../domain/calendar/event-factory.js'
     ]),
     data: concat([
         './data/api-client.js',

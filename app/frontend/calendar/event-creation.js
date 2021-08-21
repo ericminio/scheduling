@@ -32,6 +32,7 @@ class EventCreation extends HTMLElement {
 
     constructor() {
         super()
+        this.eventFactory = new EventFactory();
     }
     connectedCallback() {
         this.appendChild(eventCreationTemplate.content.cloneNode(true));
@@ -62,24 +63,16 @@ class EventCreation extends HTMLElement {
         }
     }
     createEvent() {
-        if (! isValidDatetime(this.querySelector('#new-event-start').value)) {
-            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
-        }
-        else if (! isValidDatetime(this.querySelector('#new-event-end').value)) {
-            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
-        }
-        else if (! this.isValidLabel()) {
-            events.notify('error', { message:'Label can not be empty' });
-        }
-        else {
-            api.createEvent(this.payload())
-                .then(()=> { events.notify('event created'); } );;
-        }
-    }
-    isValidLabel() {
-        let actual = this.querySelector('#new-event-label').value;
-        
-        return (actual.trim().length > 0);
+        this.eventFactory.createEvent(this.payload())
+            .then(event => {
+                api.createEvent(event)
+                    .then(()=> { events.notify('event created'); } );;
+                
+            })
+            .catch(message => {
+                events.notify('error', { message:message });
+            })
+            
     }
     payload() {
         let candidates = this.querySelectorAll('#new-event-resources input');
