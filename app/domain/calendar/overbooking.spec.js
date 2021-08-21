@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { isAnOverbooking, Event } = require('.');
+const { isAnOverbooking, Event } = require('..');
 
 describe('Overbooking', ()=> {
 

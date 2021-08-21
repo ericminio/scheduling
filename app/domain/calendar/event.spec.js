@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Event } = require('.');
+const { Event } = require('..');
 
 describe('Event', ()=>{
 

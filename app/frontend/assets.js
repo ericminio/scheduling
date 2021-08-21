@@ -6,12 +6,12 @@ const concat = (files)=> files.reduce((acc, filename)=> acc += code(filename), '
 module.exports = {
     yop: require('./yop'),
     domain: concat([
-        '../domain/configuration.js',
-        '../domain/resource.js',
-        '../domain/event.js',
-        '../domain/time.js',
-        '../domain/is-valid-date.js',
-        '../domain/is-valid-datetime.js'
+        '../domain/configuration/configuration.js',
+        '../domain/calendar/resource.js',
+        '../domain/calendar/event.js',
+        '../domain/calendar/time.js',
+        '../domain/calendar/is-valid-date.js',
+        '../domain/calendar/is-valid-datetime.js'
     ]),
     data: concat([
         './data/api-client.js',

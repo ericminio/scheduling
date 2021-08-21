@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { nextDay, previousDay, formatDate } = require('.');
+const { nextDay, previousDay, formatDate } = require('..');
 
 describe('The next day', ()=> {
 

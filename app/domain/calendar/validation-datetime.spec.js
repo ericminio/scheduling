@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { isValidDatetime } = require('.');
+const { isValidDatetime } = require('..');
 
 describe('Basic Datetime validation', ()=> {
 

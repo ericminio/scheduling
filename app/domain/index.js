@@ -6,14 +6,14 @@ const ccode = (filename, classname)=> (new Function(`${code(filename)}; return $
 const fcode = (filename, functionname)=> (new Function(`${code(filename)}; return ${functionname};`))()
 
 module.exports = {
-    Resource: ccode('resource.js', 'Resource'),
-    Event: ccode('event.js', 'Event'),
-    User: ccode('user.js', 'User'),
-    Configuration: ccode('configuration.js', 'Configuration'),
-    isValidDate: fcode('is-valid-date.js', 'isValidDate'),
-    isValidDatetime: fcode('is-valid-datetime.js', 'isValidDatetime'),
-    nextDay: fcode('time.js', 'nextDay'),
-    previousDay: fcode('time.js', 'previousDay'),
-    isAnOverbooking: fcode('overbooking.js', 'isAnOverbooking'),
-    formatDate: fcode('time.js', 'formatDate')
+    Resource: ccode('calendar/resource.js', 'Resource'),
+    Event: ccode('calendar/event.js', 'Event'),
+    User: ccode('user/user.js', 'User'),
+    Configuration: ccode('configuration/configuration.js', 'Configuration'),
+    isValidDate: fcode('calendar/is-valid-date.js', 'isValidDate'),
+    isValidDatetime: fcode('calendar/is-valid-datetime.js', 'isValidDatetime'),
+    nextDay: fcode('calendar/time.js', 'nextDay'),
+    previousDay: fcode('calendar/time.js', 'previousDay'),
+    isAnOverbooking: fcode('calendar/overbooking.js', 'isAnOverbooking'),
+    formatDate: fcode('calendar/time.js', 'formatDate')
 }

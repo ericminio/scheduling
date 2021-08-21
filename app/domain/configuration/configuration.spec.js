@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Configuration } = require('.');
+const { Configuration } = require('..');
 
 describe('Configuration', ()=>{
 
