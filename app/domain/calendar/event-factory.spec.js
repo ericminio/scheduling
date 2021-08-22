@@ -11,8 +11,8 @@ describe('Event Factory', ()=>{
 
     it('rejects empty label', async ()=>{
         try { await factory.createEvent({ notes:'without label' }); }
-        catch (message) {
-            expect(message).to.equal('Label can not be empty');
+        catch (error) {
+            expect(error.message).to.equal('Label can not be empty');
         }
     });
     it('rejects invalid start time', async ()=>{
@@ -23,8 +23,8 @@ describe('Event Factory', ()=>{
             });
             throw 'should fail';
         }
-        catch (message) {
-            expect(message).to.equal('Invalid date. Expected format is yyyy-mm-dd');
+        catch (error) {
+            expect(error.message).to.equal('Invalid date. Expected format is yyyy-mm-dd');
         }
     });
     it('rejects invalid end time', async ()=>{
@@ -36,8 +36,8 @@ describe('Event Factory', ()=>{
             });
             throw 'should fail';
         }
-        catch (message) {
-            expect(message).to.equal('Invalid date. Expected format is yyyy-mm-dd');
+        catch (error) {
+            expect(error.message).to.equal('Invalid date. Expected format is yyyy-mm-dd');
         }
     });
 

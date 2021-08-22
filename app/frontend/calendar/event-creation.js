@@ -64,13 +64,11 @@ class EventCreation extends HTMLElement {
     }
     createEvent() {
         this.eventFactory.createEvent(this.payload())
-            .then(event => {
-                api.createEvent(event)
-                    .then(()=> { events.notify('event created'); } );;
-                
-            })
-            .catch(message => {
-                events.notify('error', { message:message });
+            .then(event => api.createEvent(event))
+            .then(()=> { events.notify('event created'); } )
+            .catch(error => {
+                console.log(error)
+                events.notify('error', { message:error.message });
             })
             
     }
