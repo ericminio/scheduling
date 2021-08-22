@@ -33,6 +33,7 @@ class EventCreation extends HTMLElement {
     constructor() {
         super()
         this.eventFactory = new EventFactory();
+        this.eventsRepository = new EventsRepositoryUsingHttp(api);
     }
     connectedCallback() {
         this.appendChild(eventCreationTemplate.content.cloneNode(true));
@@ -64,12 +65,9 @@ class EventCreation extends HTMLElement {
     }
     createEvent() {
         this.eventFactory.createEvent(this.payload())
-            .then(event => api.createEvent(event))
+            .then(event => this.eventsRepository.storeEvent(event))
             .then(()=> { events.notify('event created'); } )
-            .catch(error => {
-                console.log(error)
-                events.notify('error', { message:error.message });
-            })
+            .catch(error => { events.notify('error', { message:error.message }); })
             
     }
     payload() {

@@ -19,6 +19,7 @@ describe('Api client', ()=>{
     let window;
     let wait = 10;
     let server;
+    let http;
     
     beforeEach((done)=>{
         window = new JSDOM(html, { url:`http://localhost:${port}`, runScripts: "dangerously", resources: "usable"  }).window;
@@ -45,6 +46,25 @@ describe('Api client', ()=>{
     afterEach((done)=> {
         server.stop(done);
     })
+
+    it('exposes post service', (done)=> {
+        window.api.post('/any', { any:42 })
+            .then((data) => {
+                expect(data).to.deep.equal({                     
+                    method: 'POST',
+                    url: '/any',
+                    payload: JSON.stringify({ any:42 }),
+                    headers: {
+                        connection: 'close',
+                        host: 'localhost:8006',
+                        'transfer-encoding': 'chunked',
+                        'x-user-key': 'any-key'
+                    }
+                });            
+                done();
+            })
+            .catch(error => done(error));
+    });
 
     it('exposes events', (done)=> {
         window.api.getEvents('2015-09-21')
@@ -113,32 +133,6 @@ describe('Api client', ()=>{
                         "transfer-encoding": "chunked",
                         'x-user-key': 'any-key'
                     },
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
-    it('exposes event creation', (done)=> {
-        let event = { 
-            id: 'this-event',
-            start: '08:30',
-            end: '12:00',
-            label: 'Bob',
-            resources: [{id:'R1'}, {id:'R2'}]
-        };
-        window.api.createEvent(event)
-            .then((data) => {
-                expect(data).to.deep.equal({ 
-                    method: 'POST',
-                    url: '/data/events/create',
-                    payload: JSON.stringify(event),
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        "transfer-encoding": "chunked",
-                        'x-user-key': 'any-key'
-                    }
                 });            
                 done();
             })

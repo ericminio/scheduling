@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { yop, domain, data, components } = require('../assets');
+const { yop, domain, data, components } = require('../../assets');
 const { JSDOM } = require("jsdom");
 
 describe('Event creation', ()=>{
@@ -32,10 +32,10 @@ describe('Event creation', ()=>{
             { id:'two', name:'two' },
             { id:'three', name:'three' }
         ]);
-        window.api.createEvent = ()=> new Promise((resolve)=>{ resolve(); })
         sut = document.querySelector('event-creation');
         form = document.querySelector('#event-creation-form');
-    })
+        sut.eventsRepository.storeEvent = ()=> new Promise((resolve)=>{ resolve(); })
+    });
 
     it('is ready', ()=>{
         expect(form).not.to.equal(null);
@@ -70,7 +70,7 @@ describe('Event creation', ()=>{
 
     it('sends expected payload', (done)=> {
         let spy = {};
-        window.api.createEvent = (payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })};
+        sut.eventsRepository.storeEvent = (payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })};
         window.events.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-notes').value = 'these-notes';
@@ -114,7 +114,7 @@ describe('Event creation', ()=>{
 
     it('does not send extra creation', (done)=> {
         let spy = 0;
-        window.api.createEvent = ()=> { spy ++; return new Promise((resolve)=> { resolve(); })};
+        sut.eventsRepository.storeEvent = ()=> { spy ++; return new Promise((resolve)=> { resolve(); })};
         window.events.notify('event creation');
         window.events.notify('event creation');
         window.events.notify('event creation');
@@ -147,7 +147,7 @@ describe('Event creation', ()=>{
     });
 
     it('alerts on event save failure', (done)=> {
-        window.api.createEvent = ()=> new Promise((resolve, reject)=>{ reject({ message:'save failed' }); })
+        sut.eventsRepository.storeEvent = ()=> new Promise((resolve, reject)=>{ reject({ message:'save failed' }); })
         window.events.register({ update:(value)=> { spy = value; } }, 'error');
         window.events.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
