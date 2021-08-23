@@ -196,7 +196,7 @@ describe('Server', ()=>{
         };
         let response = await post(creation, payload);
         
-        expect(response.statusCode).to.equal(406);
+        expect(response.statusCode).to.equal(400);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).message).to.equal('unknown resource with id "unknown"');
     });

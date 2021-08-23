@@ -8,27 +8,25 @@ class CreateEventRoute {
     }
     async go(request, response, server) {
         let incoming = await payload(request);
-        try {
-            let event = await server.factory.buildEvent(incoming, server.services['resources']);
-            let events = await server.services['events'].all();
-            if (isAnOverbooking(event, events)) {
-                response.statusCode = 403;
+        server.factory.buildEvent(incoming, server.services['resources'])
+            .then(async (event)=>{
+                let events = await server.services['events'].all();
+                if (isAnOverbooking(event, events)) {
+                    throw { message:'Overbooking forbidden' };
+                }
+                else {
+                    await server.services['events'].save(event);
+                    response.statusCode = 201;
+                    response.setHeader('content-type', 'application/json');
+                    response.write(JSON.stringify({ location:'/data/events/' + event.id }));    
+                }
+            })
+            .catch((error)=> {
+                response.statusCode = 400;
                 response.setHeader('content-type', 'application/json');
-                response.write(JSON.stringify({ message:'Overbooking forbidden' }));
-            }
-            else {
-                await server.services['events'].save(event);
-                response.statusCode = 201;
-                response.setHeader('content-type', 'application/json');
-                response.write(JSON.stringify({ location:'/data/events/' + event.id }));    
-            }
-        }
-        catch (error) {
-            response.statusCode = 406;
-            response.setHeader('content-type', 'application/json');
-            response.write(JSON.stringify({ message:error.message }));
-        }
-        response.end();
+                response.write(JSON.stringify({ message:error.message }));
+            })
+            .finally(()=>{ response.end(); });
     }
 }
 

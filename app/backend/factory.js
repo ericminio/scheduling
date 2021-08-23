@@ -9,6 +9,7 @@ class Factory {
     }
 
     async buildEvent(incoming, resourcesRepository) {
+        let validation = { failed:false };
         if (incoming.id === undefined) {
             incoming.id = this.idGenerator.next();
         }
@@ -16,10 +17,14 @@ class Factory {
             let resource = incoming.resources[i];
             let id = resource.id;
             if (! await resourcesRepository.get(id)) {
-                throw Error(`unknown resource with id "${id}"`);
+                validation = { failed: true, message:`unknown resource with id "${id}"` };
+                break;
             }
         }
-        return new Event(incoming);
+        return new Promise((resolve, reject)=>{
+            if (validation.failed) reject({ message:validation.message })
+            else resolve(new Event(incoming));
+        });
     }
 };
 

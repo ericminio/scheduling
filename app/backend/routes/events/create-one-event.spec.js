@@ -76,7 +76,7 @@ describe('CreateEventRoute', ()=> {
         
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ message:'Overbooking forbidden' });
-        expect(response.statusCode).to.equal(403);
+        expect(response.statusCode).to.equal(400);
     });
     
     it('rejects event referencing unknown resource', async ()=>{
@@ -85,7 +85,7 @@ describe('CreateEventRoute', ()=> {
         
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ message:'unknown resource with id \"R1\"' });
-        expect(response.statusCode).to.equal(406);
+        expect(response.statusCode).to.equal(400);
     });
 
 });
