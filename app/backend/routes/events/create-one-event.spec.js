@@ -15,12 +15,14 @@ const creation = {
 describe('CreateEventRoute', ()=> {
 
     let server;
-    let resourcesRepository = { get: async(id)=> true } ;
-    let eventsRepository = { save: async(event)=>{}, all: async()=> [] };
+    let resourcesRepository;
+    let eventsRepository;
     let payload;
     beforeEach((done)=>{
         server = new Server(port);
         server.start(done);
+        resourcesRepository = { get: async(id)=> true } ;
+        eventsRepository = { save: async(event)=>{}, all: async()=> [] };
         server.services= { 'resources': resourcesRepository, 'events': eventsRepository };
         server.factory = new Factory();
         server.routes = [new CreateEventRoute()];        

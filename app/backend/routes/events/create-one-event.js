@@ -1,5 +1,4 @@
 const payload = require('../../support/payload');
-const { isAnOverbooking } = require('../../../domain');
 
 class CreateEventRoute {
     
@@ -8,18 +7,18 @@ class CreateEventRoute {
     }
     async go(request, response, server) {
         let incoming = await payload(request);
-        server.factory.buildEvent(incoming, server.services['resources'])
+        let eventFactory = server.factory;
+        eventFactory.resourcesRepository = server.services['resources'];
+        eventFactory.eventsRepository = server.services['events'];
+        eventFactory.buildEvent(incoming)
             .then(async (event)=>{
-                let events = await server.services['events'].all();
-                if (isAnOverbooking(event, events)) {
-                    throw { message:'Overbooking forbidden' };
-                }
-                else {
-                    await server.services['events'].save(event);
-                    response.statusCode = 201;
-                    response.setHeader('content-type', 'application/json');
-                    response.write(JSON.stringify({ location:'/data/events/' + event.id }));    
-                }
+                await server.services['events'].save(event);
+                return event;
+            })
+            .then(async (event)=>{
+                response.statusCode = 201;
+                response.setHeader('content-type', 'application/json');
+                response.write(JSON.stringify({ location:'/data/events/' + event.id }));                
             })
             .catch((error)=> {
                 response.statusCode = 400;

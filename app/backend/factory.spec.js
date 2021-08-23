@@ -6,6 +6,7 @@ describe('Factory', ()=> {
     let factory;
     beforeEach(()=> {
         factory = new Factory();
+        factory.eventsRepository = { all: async()=> [] }
     })
     describe('Event creation', ()=> {
 
