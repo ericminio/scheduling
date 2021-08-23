@@ -1,8 +1,7 @@
 const { expect } = require('chai');
 const { Server } = require('../../yop/server');
-const { request, post } = require('../../support/request');
-const RepositoryUsingMap = require('../../support/repository-using-map');
-const { Resource, Event } = require('../../../domain');
+const { post } = require('../../support/request');
+const { Event } = require('../../../domain');
 const Factory = require('../../factory');
 const CreateEventRoute = require('./create-one-event');
 const port = 8007;
@@ -16,48 +15,40 @@ const creation = {
 describe('CreateEventRoute', ()=> {
 
     let server;
-    let resourcesRepository;
-    let eventsRepository;
+    let resourcesRepository = { get: async(id)=> true } ;
+    let eventsRepository = { save: async(event)=>{}, all: async()=> [] };
+    let payload;
     beforeEach((done)=>{
         server = new Server(port);
         server.start(done);
-        eventsRepository = new RepositoryUsingMap();
-        resourcesRepository = new RepositoryUsingMap();
-        resourcesRepository.save(new Resource({ id:'R1', type:'type-1', name:'name-1' }));
-        resourcesRepository.save(new Resource({ id:'R2', type:'type-2', name:'name-2' }));
         server.services= { 'resources': resourcesRepository, 'events': eventsRepository };
         server.factory = new Factory();
         server.routes = [new CreateEventRoute()];        
+        payload = new Event({
+            id: 'this-id',
+            start: '2015-09-21 08:30',
+            end: '2015-09-21 12:00',
+            label: 'Bob',
+            notes: 'birthday',
+            resources: [{id:'R1'}, {id:'R2'}]
+        });
     });
     afterEach((done)=> {
         server.stop(done);
-    });
-    const payload = new Event({
-        id: 'this-event',
-        start: '2015-09-21 08:30',
-        end: '2015-09-21 12:00',
-        label: 'Bob',
-        notes: 'birthday',
-        resources: [{id:'R1'}, {id:'R2'}]
     });
     
     it('provides event creation', async ()=>{
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-event' });
+        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-id' });
         expect(response.statusCode).to.equal(201);
     });
     
     it('populates missing id', async ()=>{
+        delete payload.id;
         server.factory.idGenerator = { next: ()=> 42 };
-        let response = await post(creation, new Event({
-            start: '2015-09-21 08:30',
-            end: '2015-09-21 12:00',
-            label: 'Bob',
-            notes: 'birthday',
-            resources: [{id:'R1'}, {id:'R2'}]
-        }));
+        let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/42' });
@@ -73,14 +64,14 @@ describe('CreateEventRoute', ()=> {
     });
     
     it('rejects overbooking', async ()=>{
-        eventsRepository.save(new Event({
+        eventsRepository.all = async () => [new Event({
             id: 'this-event',
             start: '2015-09-21 11:00',
             end: '2015-09-21 15:00',
             label: 'Bob',
             notes: 'birthday',
             resources: [{id:'R2'}]
-        }))
+        })]
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
@@ -89,17 +80,11 @@ describe('CreateEventRoute', ()=> {
     });
     
     it('rejects event referencing unknown resource', async ()=>{
-        let response = await post(creation, new Event({
-            id: 'this-event',
-            start: '2015-09-21 08:30',
-            end: '2015-09-21 12:00',
-            label: 'Bob',
-            notes: 'birthday',
-            resources: [{id:'unknown'}]
-        }));
+        resourcesRepository.get = async ()=> undefined
+        let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'unknown resource with id \"unknown\"' });
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'unknown resource with id \"R1\"' });
         expect(response.statusCode).to.equal(406);
     });
 
