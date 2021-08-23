@@ -64,7 +64,7 @@ class EventCreation extends HTMLElement {
         }
     }
     createEvent() {
-        this.eventFactory.createEvent(this.payload())
+        this.eventFactory.buildEvent(this.payload())
             .then(event => this.eventsRepository.storeEvent(event))
             .then(()=> { events.notify('event created'); } )
             .catch(error => { events.notify('error', { message:error.message }); })

@@ -9,14 +9,14 @@ describe('Event Factory', ()=>{
     })
 
     it('rejects empty label', async ()=>{
-        try { await factory.createEvent({ notes:'without label' }); }
+        try { await factory.buildEvent({ notes:'without label' }); }
         catch (error) {
             expect(error.message).to.equal('Label can not be empty');
         }
     });
     it('rejects invalid start time', async ()=>{
         try { 
-            await factory.createEvent({ 
+            await factory.buildEvent({ 
                 label:'not empty',
                 start:'1980-05-25 8:00' 
             });
@@ -28,7 +28,7 @@ describe('Event Factory', ()=>{
     });
     it('rejects invalid end time', async ()=>{
         try { 
-            await factory.createEvent({ 
+            await factory.buildEvent({ 
                 label:'not empty',
                 start:'1980-05-25 07:00',
                 end:'1980-05-25 8:00'
@@ -41,7 +41,7 @@ describe('Event Factory', ()=>{
     });
 
     it('creates event otherwise', async ()=>{
-        let event = await factory.createEvent({ 
+        let event = await factory.buildEvent({ 
             label:'not empty',
             start:'1980-05-25 08:00',
             end:'1980-05-25 18:00'

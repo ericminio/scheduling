@@ -8,7 +8,7 @@ class Factory {
         return new Resource(incoming);
     }
 
-    async createEvent(incoming, resourcesRepository) {
+    async buildEvent(incoming, resourcesRepository) {
         if (incoming.id === undefined) {
             incoming.id = this.idGenerator.next();
         }

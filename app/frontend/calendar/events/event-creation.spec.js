@@ -132,7 +132,7 @@ describe('Event creation', ()=>{
     });
 
     it('alerts on event creation failure', (done)=> {
-        sut.eventFactory.createEvent = (paylaod)=> new Promise((resolve, reject)=>{
+        sut.eventFactory.buildEvent = (paylaod)=> new Promise((resolve, reject)=>{
             reject({ message:'creation failed' });
         });
         let spy;

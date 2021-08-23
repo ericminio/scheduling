@@ -9,7 +9,7 @@ class CreateEventRoute {
     async go(request, response, server) {
         let incoming = await payload(request);
         try {
-            let event = await server.factory.createEvent(incoming, server.services['resources']);
+            let event = await server.factory.buildEvent(incoming, server.services['resources']);
             let events = await server.services['events'].all();
             if (isAnOverbooking(event, events)) {
                 response.statusCode = 403;

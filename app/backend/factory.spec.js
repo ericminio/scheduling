@@ -11,7 +11,7 @@ describe('Factory', ()=> {
 
         it('generates missing id', async ()=> {
             factory.idGenerator = { next: ()=> 42 };
-            let event = await factory.createEvent({ label:'any', resources:[] });
+            let event = await factory.buildEvent({ label:'any', resources:[] });
 
             expect(event.getId()).to.equal(42);
         })
