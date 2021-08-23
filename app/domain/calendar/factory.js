@@ -1,11 +1,5 @@
 class Factory {
-    async createResource(options) {
-        if (options.id === undefined) {
-            options.id = this.idGenerator.next();
-        }
-        return new Resource(options);
-    }
-
+    
     async buildEvent(options) {
         if (options.id === undefined) {
             options.id = this.idGenerator.next();

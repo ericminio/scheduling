@@ -7,7 +7,7 @@ class CreateOneResourceRoute {
     }
     async go(request, response, server) {
         let incoming = await payload(request);
-        let resource = await server.factory.createResource(incoming);
+        let resource = await server.resourceFactory.buildResource(incoming);
         await server.services['resources'].save(resource);
         response.statusCode = 201;
         response.setHeader('content-type', 'application/json');

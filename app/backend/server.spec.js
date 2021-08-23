@@ -198,7 +198,7 @@ describe('Server', ()=>{
         expect(JSON.parse(response.body).message).to.equal('unknown resource with id "unknown"');
     });
     it('resists missing id for resource creation', async ()=>{
-        server.factory.idGenerator = new AlwaysSameId('42');
+        server.resourceFactory.idGenerator = new AlwaysSameId('42');
         let repository = new RepositoryUsingMap();
         server.services['resources'] = repository;
         const creation = {

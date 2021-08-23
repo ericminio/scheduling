@@ -2,6 +2,7 @@ const { code, codes, contents } = require('../utils/files');
 
 module.exports = {
     Resource: code('/domain/calendar/resource.js', 'Resource'),
+    ResourceFactory: code('/domain/calendar/resource-factory.js', 'ResourceFactory'),
     Event: code('/domain/calendar/event.js', 'Event'),
     EventFactoryValidatingFields: code('/domain/calendar/event-factory-validating-fields.js', 'EventFactoryValidatingFields'),
     Factory: code('/domain/calendar/factory.js', 'Factory'),
@@ -26,6 +27,10 @@ module.exports = {
         '/domain/calendar/resource.js',
         '/domain/calendar/factory.js',
     ], 'Factory'),
+    ResourceFactoryWithDependencies: codes([
+        '/domain/calendar/resource.js',
+        '/domain/calendar/resource-factory.js'
+    ], 'ResourceFactory'),
 
     domain: contents([
         '/domain/configuration/configuration.js',
