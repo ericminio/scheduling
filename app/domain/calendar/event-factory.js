@@ -8,4 +8,4 @@ class EventFactory {
             else resolve(new Event(options));
         })
     }
-}
+};

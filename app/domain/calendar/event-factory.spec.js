@@ -1,12 +1,11 @@
 const { expect } = require('chai');
-const { domain } = require('../../frontend/assets');
-const Sut = (new Function(`${domain} return EventFactory;`))();
+const { EventFactoryWithDependencies } = require('..');
 
 describe('Event Factory', ()=>{
 
     let factory;
     beforeEach(()=>{
-        factory = new Sut();
+        factory = new EventFactoryWithDependencies();
     })
 
     it('rejects empty label', async ()=>{

@@ -1,48 +1,45 @@
-const fs = require('fs');
-const path = require('path');
-const code = (filename)=> fs.readFileSync(path.join(__dirname, filename)).toString()
-const concat = (files)=> files.reduce((acc, filename)=> acc += code(filename), '');
+const { contents } = require('../utils/files');
 
 module.exports = {
     yop: require('./yop'),
-    domain: concat([
-        '../domain/configuration/configuration.js',
-        '../domain/calendar/resource.js',
-        '../domain/calendar/event.js',
-        '../domain/calendar/time.js',
-        '../domain/calendar/is-valid-date.js',
-        '../domain/calendar/is-valid-datetime.js',
-        '../domain/calendar/is-valid-label.js',
-        '../domain/calendar/event-factory.js'
+    domain: contents([
+        '/domain/configuration/configuration.js',
+        '/domain/calendar/resource.js',
+        '/domain/calendar/event.js',
+        '/domain/calendar/time.js',
+        '/domain/calendar/is-valid-date.js',
+        '/domain/calendar/is-valid-datetime.js',
+        '/domain/calendar/is-valid-label.js',
+        '/domain/calendar/event-factory.js'
     ]),
-    data: concat([
-        './data/api-client.js',
-        './data/configuration-reader.js',
-        './data/resources-reader.js',
-        './data/events-reader.js',
-        './data/facade.js'
+    data: contents([
+        '/frontend/data/api-client.js',
+        '/frontend/data/configuration-reader.js',
+        '/frontend/data/resources-reader.js',
+        '/frontend/data/events-reader.js',
+        '/frontend/data/facade.js'
     ]),
-    components: concat([
-        './calendar/timeline/timeline-marker.js',
-        './calendar/timeline/timeline.js',
-        './calendar/search/day-selection.js',
-        './calendar/layout.js',
-        './calendar/resource-renderer.js',
-        './calendar/calendar-event.js',
-        './calendar/calendar.js',
-        './calendar/events/events-repository-using-http.js',
-        './calendar/events/event-creation.js',
-        './calendar/page-calendar-day.js',
-        './calendar/resource-creation.js',
-        './calendar/show-event.js',
-        './calendar/show-resource.js',
-        './common/error-message.js',
-        './common/header.js',
-        './common/menu.js',
-        './common/success-message.js',
-        './common/system-status.js',
-        './configuration/page-configuration.js',
-        './users/logout.js',
-        './users/page-sign-in.js'
+    components: contents([
+        '/frontend/calendar/timeline/timeline-marker.js',
+        '/frontend/calendar/timeline/timeline.js',
+        '/frontend/calendar/search/day-selection.js',
+        '/frontend/calendar/layout.js',
+        '/frontend/calendar/resource-renderer.js',
+        '/frontend/calendar/calendar-event.js',
+        '/frontend/calendar/calendar.js',
+        '/frontend/calendar/events/events-repository-using-http.js',
+        '/frontend/calendar/events/event-creation.js',
+        '/frontend/calendar/page-calendar-day.js',
+        '/frontend/calendar/resource-creation.js',
+        '/frontend/calendar/show-event.js',
+        '/frontend/calendar/show-resource.js',
+        '/frontend/common/error-message.js',
+        '/frontend/common/header.js',
+        '/frontend/common/menu.js',
+        '/frontend/common/success-message.js',
+        '/frontend/common/system-status.js',
+        '/frontend/configuration/page-configuration.js',
+        '/frontend/users/logout.js',
+        '/frontend/users/page-sign-in.js'
     ])
 }
