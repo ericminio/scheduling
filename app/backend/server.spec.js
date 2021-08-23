@@ -215,34 +215,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/resources/42');
-    })
-    it('resists missing id for event creation', async ()=>{
-        server.factory.idGenerator = new AlwaysSameId('15');
-        let resources = new RepositoryUsingMap();
-        let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
-        let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
-        resources.save(r1);
-        resources.save(r2);
-        server.services['resources'] = resources;
-        let repository = new RepositoryUsingMap();
-        server.services['events'] = repository;
-        const creation = {
-            hostname: 'localhost',
-            port: port,
-            path: '/data/events/create',
-            method: 'POST'
-        };
-        let payload = {
-            start: '08:30',
-            end: '12:00',
-            label: 'Bob',
-            resources: [{id:'R1'}, {id:'R2'}]
-        };
-        let response = await post(creation, payload);
-        
-        expect(response.statusCode).to.equal(201);
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/15');
     });
     it('is open to event deletion', async ()=>{
         let resources = new RepositoryUsingMap();

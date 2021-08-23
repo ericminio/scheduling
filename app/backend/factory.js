@@ -9,10 +9,10 @@ class Factory {
     }
 
     async buildEvent(options) {
-        let validation = { failed:false };
         if (options.id === undefined) {
             options.id = this.idGenerator.next();
         }
+        let validation = { failed:false };
         for (let i=0; i<options.resources.length; i++) {
             let resource = options.resources[i];
             let id = resource.id;
