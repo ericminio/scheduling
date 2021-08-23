@@ -98,7 +98,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/resources/this-id');
-        expect((await repository.get('this-id')) instanceof Resource).to.equal(true);
 
         const created = {
             hostname: 'localhost',
@@ -139,19 +138,17 @@ describe('Server', ()=>{
         };
         let payload = {
             id: 'this-event',
-            start: '08:30',
-            end: '12:00',
+            start: '2015-09-21 08:30',
+            end: '2015-09-21 12:00',
             label: 'Bob',
             notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
         
-        expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
+        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-event' });
+        expect(response.statusCode).to.equal(201);
 
         const created = {
             hostname: 'localhost',
@@ -189,8 +186,8 @@ describe('Server', ()=>{
         };
         let payload = {
             id: 'this-event',
-            start: '08:30',
-            end: '12:00',
+            start: '2015-09-21 08:30',
+            end: '2015-09-21 12:00',
             label: 'Bob',
             resources: [{ id:'unknown' }]
         };
@@ -243,8 +240,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
 
         const deletion = {
             hostname: 'localhost',
@@ -303,8 +298,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
 
         const deletion = {
             hostname: 'localhost',
@@ -363,8 +356,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
 
         const deletion = {
             hostname: 'localhost',
@@ -524,8 +515,6 @@ describe('Server', ()=>{
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-        let stored = await repository.get('this-event');
-        expect(stored instanceof Event).to.equal(true);
 
         const search = {
             hostname: 'localhost',

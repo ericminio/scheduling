@@ -1,17 +1,9 @@
 const { contents } = require('../utils/files');
+const { domain } = require('../domain')
 
 module.exports = {
     yop: require('./yop'),
-    domain: contents([
-        '/domain/configuration/configuration.js',
-        '/domain/calendar/resource.js',
-        '/domain/calendar/event.js',
-        '/domain/calendar/time.js',
-        '/domain/calendar/is-valid-date.js',
-        '/domain/calendar/is-valid-datetime.js',
-        '/domain/calendar/is-valid-label.js',
-        '/domain/calendar/event-factory.js'
-    ]),
+    domain: domain,
     data: contents([
         '/frontend/data/api-client.js',
         '/frontend/data/configuration-reader.js',

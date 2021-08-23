@@ -1,5 +1,3 @@
-const { Resource, Event, isAnOverbooking } = require('../domain');
-
 class Factory {
     async createResource(options) {
         if (options.id === undefined) {
@@ -32,5 +30,3 @@ class Factory {
         });
     }
 };
-
-module.exports = Factory;
