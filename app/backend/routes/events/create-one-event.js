@@ -1,11 +1,9 @@
 const payload = require('../../support/payload');
 const { FactoryWithDependencies } = require('../../../domain');
-const NextUuid = require('../../storage/next-uuid');
 
 class CreateEventRoute {
     constructor() {
         this.eventFactory = new FactoryWithDependencies();
-        this.eventFactory.idGenerator = new NextUuid();
     }
     
     matches(request) {
