@@ -26,7 +26,6 @@ describe('CreateEventRoute', ()=> {
         server.services= { 'resources': resourcesRepository, 'events': eventsRepository };
         server.routes = [route];        
         payload = new Event({
-            id: 'this-id',
             start: '2015-09-21 08:30',
             end: '2015-09-21 12:00',
             label: 'Bob',
@@ -39,15 +38,6 @@ describe('CreateEventRoute', ()=> {
     });
     
     it('provides event creation', async ()=>{
-        let response = await post(creation, payload);
-        
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-id' });
-        expect(response.statusCode).to.equal(201);
-    });
-    
-    it('populates missing id', async ()=>{
-        delete payload.id;
         eventsRepository.save = async (event)=> { event.id = 42; }
         let response = await post(creation, payload);
         
@@ -64,28 +54,21 @@ describe('CreateEventRoute', ()=> {
         expect(spy.getLabel()).to.equal('Bob');
     });
     
-    it('rejects overbooking', async ()=>{
-        eventsRepository.all = async () => [new Event({
-            id: 'this-event',
-            start: '2015-09-21 11:00',
-            end: '2015-09-21 15:00',
-            label: 'Bob',
-            notes: 'birthday',
-            resources: [{id:'R2'}]
-        })]
+    it('propagates factory errors', async ()=>{
+        route.eventFactory.buildEvent = async (options)=> new Promise((resolve, reject)=> { reject({ message:'build failed' }) })
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'Overbooking forbidden' });
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'build failed' });
         expect(response.statusCode).to.equal(400);
     });
     
-    it('rejects event referencing unknown resource', async ()=>{
-        resourcesRepository.get = async ()=> undefined
+    it('propagates save errors', async ()=>{
+        eventsRepository.save = async (event)=> { throw { message:'save failed' }; }
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'unknown resource with id \"R1\"' });
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'save failed' });
         expect(response.statusCode).to.equal(400);
     });
 
