@@ -32,7 +32,7 @@ class EventCreation extends HTMLElement {
 
     constructor() {
         super()
-        this.eventFactory = new EventFactory();
+        this.eventFactory = new EventFactoryValidatingFields();
         this.eventsRepository = new EventsRepositoryUsingHttp(api);
     }
     connectedCallback() {

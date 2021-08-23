@@ -1,11 +1,11 @@
 const { expect } = require('chai');
-const { EventFactoryWithDependencies } = require('..');
+const { EventFactoryValidatingFieldsWithDependencies } = require('..');
 
 describe('Event Factory', ()=>{
 
     let factory;
     beforeEach(()=>{
-        factory = new EventFactoryWithDependencies();
+        factory = new EventFactoryValidatingFieldsWithDependencies();
     })
 
     it('rejects empty label', async ()=>{

@@ -1,4 +1,4 @@
-class EventFactory {
+class EventFactoryValidatingFields {
 
     createEvent(options) {
         return new Promise((resolve, reject)=> {
