@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { EventFactoryValidatingFieldsWithDependencies } = require('..');
 
-describe('Event Factory', ()=>{
+describe('EventFactoryValidatingFields', ()=>{
 
     let factory;
     beforeEach(()=>{

@@ -1,12 +1,17 @@
 const { Resource } = require('../../domain');
 const EventsResourcesRepository = require('./events-resources-repository');
+const NextUuid = require('./next-uuid');
 
 class ResourcesRepository {
     constructor(database) {
         this.database = database;
         this.eventsResourcesRepository = new EventsResourcesRepository(database);
+        this.idGenerator = new NextUuid();
     }
     async save(resource) {
+        if (resource.id === undefined) {
+            resource.id = this.idGenerator.next();
+        }
         if (! await this.exists(resource.getId())) {
             await this.database.executeSync('insert into resources(id, type, name) values($1, $2, $3)', [
                 resource.getId(), resource.getType(), resource.getName()]);

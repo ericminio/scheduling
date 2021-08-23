@@ -1,14 +1,20 @@
 const ResourcesRepository = require('./resources-repository');
 const EventsResourcesRepository = require('./events-resources-repository');
 const { Event } = require('../../domain');
+const NextUuid = require('./next-uuid');
 
 class EventsRepository {
     constructor(database) {
         this.database = database;
         this.resourcesRepository = new ResourcesRepository(database);
         this.eventsResourcesRepository = new EventsResourcesRepository(database);
+        this.idGenerator = new NextUuid();
     }
     async save(event) {
+        if (event.id === undefined) {
+            event.id = this.idGenerator.next();
+        }
+        
         if (! await this.exists(event.id)) {
             await this.database.executeSync('insert into events(id, label, notes, start_time, end_time) values($1, $2, $3, $4, $5)', 
                 [event.getId(), event.getLabel(), event.getNotes(), event.getStart(), event.getEnd()]);

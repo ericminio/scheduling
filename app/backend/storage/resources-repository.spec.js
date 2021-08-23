@@ -27,6 +27,14 @@ describe('Resources storage', ()=> {
         expect(rows.length).to.equal(1);
     });
 
+    it('populates missing id', async ()=> {
+        let resource = new Resource({ type:'this-type', name:'this-name' })
+        await repository.save(resource);
+        var rows = await database.executeSync('select id from resources')
+
+        expect(rows.length).to.equal(1);
+    });
+
     it('can fetch', async ()=> {
         await repository.save(new Resource({ id:'this-id', type:'this-type', name:'this-name' }));
         let instance = await repository.get('this-id');

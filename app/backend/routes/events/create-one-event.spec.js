@@ -48,7 +48,7 @@ describe('CreateEventRoute', ()=> {
     
     it('populates missing id', async ()=>{
         delete payload.id;
-        route.eventFactory.idGenerator = { next: ()=> 42 };
+        eventsRepository.save = async (event)=> { event.id = 42; }
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');

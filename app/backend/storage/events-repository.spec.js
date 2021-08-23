@@ -46,6 +46,16 @@ describe('Events storage', ()=> {
         expect(association.length).to.equal(2);
     });
 
+    it('populates missing id', async ()=> {
+        delete event.id;
+        await repository.save(event);
+        
+        let events = await database.executeSync('select * from events')
+        expect(events.length).to.equal(1);
+        let association = await database.executeSync('select * from events_resources')
+        expect(association.length).to.equal(2);
+    });
+
     it('can fetch', async ()=> {
         await repository.save(event);
         let instance = await repository.get('event-id');
