@@ -11,7 +11,7 @@ describe('EventFactory', ()=> {
     });
 
     it('builds expected event', async ()=> {
-        let event = await factory.buildEvent({ label:'any', resources:[] });
+        let event = await factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[] });
 
         expect(event.getLabel()).to.equal('any');
     });
@@ -49,6 +49,22 @@ describe('EventFactory', ()=> {
             .catch((error)=>{
                 try {
                     expect(error).to.deep.equal({ message:'unknown resource with id "R2"' });
+                    done();
+                }
+                catch(raised) {
+                    done(raised)
+                }
+            });
+    });
+
+    it('rejects invalid fields, for example empty label', (done)=>{
+        factory.buildEvent({ start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[{id:'R2'}] })
+            .then(()=>{
+                done('should fail')
+            })
+            .catch((error)=>{
+                try {
+                    expect(error).to.deep.equal({ message:'Label can not be empty' });
                     done();
                 }
                 catch(raised) {

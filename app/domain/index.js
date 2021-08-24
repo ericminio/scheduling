@@ -21,9 +21,12 @@ module.exports = {
         '/domain/calendar/event-factory-validating-fields.js'
     ], 'EventFactoryValidatingFields'),
     EventFactoryValidatingNeighboursWithDependencies: codes([
+        '/domain/calendar/is-valid-label.js',
+        '/domain/calendar/is-valid-datetime.js',
         '/domain/calendar/overbooking.js',
         '/domain/calendar/event.js',
         '/domain/calendar/resource.js',
+        '/domain/calendar/event-factory-validating-fields.js',
         '/domain/calendar/event-factory-validating-neighbours.js',
     ], 'EventFactoryValidatingNeighbours'),
     ResourceFactoryWithDependencies: codes([

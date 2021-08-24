@@ -112,6 +112,25 @@ describe('Event creation', ()=>{
         }, 50);
     });
 
+    it('notifies on success', (done)=>{
+        let notification = {};
+        let spy = {
+            update: (value)=> { notification = value; }
+        };
+        window.events.register(spy, 'success');
+        
+        window.events.notify('event creation');
+        form.querySelector('#new-event-label').value = 'this label';
+        form.querySelector('#new-event-start').value = '1980-05-25 08:00';
+        form.querySelector('#new-event-end').value = '1980-05-25 10:00';
+        form.querySelector('#create-event').click();
+        
+        setTimeout(()=>{
+            expect(notification).to.deep.equal({ message:'Event created' });
+            done();
+        }, 50);
+    });
+
     it('does not send extra creation', (done)=> {
         let spy = 0;
         sut.eventsRepository.storeEvent = ()=> { spy ++; return new Promise((resolve)=> { resolve(); })};

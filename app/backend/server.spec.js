@@ -214,16 +214,16 @@ describe('Server', ()=>{
         };
         let payload = {
             id: 'this-event',
-            start: '08:30',
-            end: '12:00',
+            start: '2021-09-21 08:30',
+            end: '2021-09-21 12:00',
             label: 'Bob',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
         
-        expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-event' });
+        expect(response.statusCode).to.equal(201);
 
         const deletion = {
             hostname: 'localhost',
@@ -272,16 +272,16 @@ describe('Server', ()=>{
         };
         let payload = {
             id: 'this-event',
-            start: '08:30',
-            end: '12:00',
+            start: '2021-09-21 08:30',
+            end: '2021-09-21 12:00',
             label: 'Bob',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
         
+        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-event' });
         expect(response.statusCode).to.equal(201);
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
 
         const deletion = {
             hostname: 'localhost',
@@ -330,16 +330,16 @@ describe('Server', ()=>{
         };
         let payload = {
             id: 'this-event',
-            start: '08:30',
-            end: '12:00',
+            start: '2021-09-21 08:30',
+            end: '2021-09-21 12:00',
             label: 'Bob',
             resources: [{id:'R1'}, {id:'R2'}]
         };
         let response = await post(creation, payload);
         
-        expect(response.statusCode).to.equal(201);
+        expect(JSON.parse(response.body)).to.deep.equal({ location:'/data/events/this-event' });
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
+        expect(response.statusCode).to.equal(201);
 
         const deletion = {
             hostname: 'localhost',
