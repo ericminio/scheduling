@@ -38,6 +38,7 @@
     --color-add-ressource: var(--background-resource);
     --color-delete: white;
     --color-menu: black;
+    --color-day-name: gray;
 }
 body {
     margin: var(--body-margin);
@@ -46,6 +47,9 @@ body {
 body, input, textarea, button {
     font-family: Arial, sans-serif;    
     font-size: 16px;
+}
+input {
+    width: 100px;
 }
 
 textarea {
@@ -126,6 +130,9 @@ yop-calendar-resource, yop-calendar-event {
     body, input, textarea, button {
         font-size: 35px;
     }
+    input {
+        width: 200px;
+    }    
 }
 
 .inline-block {

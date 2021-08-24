@@ -60,12 +60,7 @@ class CalendarDay extends HTMLElement {
     }
     update() {
         let date = this.querySelector("#calendar-date").value;
-        if (isValidDate(date)) {
-            this.updateResourcesAndEvents(date);
-        }
-        else {
-            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
-        }
+        this.updateResourcesAndEvents(date);
     }
     updateResourcesAndEvents(date) {
         let resourcesLoaded = data.getResources();
