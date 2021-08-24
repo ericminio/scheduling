@@ -1,11 +1,11 @@
 const { expect } = require('chai');
-const { FactoryWithDependencies, Event } = require('..');
+const { EventFactoryValidatingNeighboursWithDependencies, Event } = require('..');
 
 describe('EventFactory', ()=> {
 
     let factory;
     beforeEach(()=> {
-        factory = new FactoryWithDependencies();
+        factory = new EventFactoryValidatingNeighboursWithDependencies();
         factory.eventsRepository = { all: async()=> [] }
         factory.resourcesRepository = { get: async(id)=> true }
     });

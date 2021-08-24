@@ -1,4 +1,4 @@
-class Factory {
+class EventFactoryValidatingNeighbours {
     
     async buildEvent(options) {
         let validation = { failed:false };

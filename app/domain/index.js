@@ -5,7 +5,6 @@ module.exports = {
     ResourceFactory: code('/domain/calendar/resource-factory.js', 'ResourceFactory'),
     Event: code('/domain/calendar/event.js', 'Event'),
     EventFactoryValidatingFields: code('/domain/calendar/event-factory-validating-fields.js', 'EventFactoryValidatingFields'),
-    Factory: code('/domain/calendar/factory.js', 'Factory'),
     User: code('/domain/user/user.js', 'User'),
     Configuration: code('/domain/configuration/configuration.js', 'Configuration'),
     isValidDate: code('/domain/calendar/is-valid-date.js', 'isValidDate'),
@@ -21,12 +20,12 @@ module.exports = {
         '/domain/calendar/event.js',
         '/domain/calendar/event-factory-validating-fields.js'
     ], 'EventFactoryValidatingFields'),
-    FactoryWithDependencies: codes([
+    EventFactoryValidatingNeighboursWithDependencies: codes([
         '/domain/calendar/overbooking.js',
         '/domain/calendar/event.js',
         '/domain/calendar/resource.js',
-        '/domain/calendar/factory.js',
-    ], 'Factory'),
+        '/domain/calendar/event-factory-validating-neighbours.js',
+    ], 'EventFactoryValidatingNeighbours'),
     ResourceFactoryWithDependencies: codes([
         '/domain/calendar/resource.js',
         '/domain/calendar/resource-factory.js'

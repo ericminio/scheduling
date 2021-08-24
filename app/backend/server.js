@@ -1,5 +1,5 @@
 let http = require('http');
-const { FactoryWithDependencies, ResourceFactoryWithDependencies } = require('../domain');
+const { EventFactoryValidatingNeighboursWithDependencies, ResourceFactoryWithDependencies } = require('../domain');
 const NextUuid = require('./storage/next-uuid');
 const Guard = require('./guard');
 const { SecurityRoute,
@@ -22,7 +22,7 @@ class Server {
                 new ErrorRoute(error).go(response);                
             }
         });
-        this.factory = new FactoryWithDependencies();
+        this.factory = new EventFactoryValidatingNeighboursWithDependencies();
         this.factory.idGenerator = new NextUuid();
         this.resourceFactory = new ResourceFactoryWithDependencies();
         this.resourceFactory.idGenerator = new NextUuid();
