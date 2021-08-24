@@ -11,7 +11,7 @@ module.exports = {
     isValidDatetime: code('/domain/calendar/is-valid-datetime.js', 'isValidDatetime'),
     nextDay: code('/domain/calendar/time.js', 'nextDay'),
     previousDay: code('/domain/calendar/time.js', 'previousDay'),
-    isAnOverbooking: code('/domain/calendar/overbooking.js', 'isAnOverbooking'),
+    isAnOverbooking: code('/domain/calendar/is-overbooking.js', 'isAnOverbooking'),
     formatDate: code('/domain/calendar/time.js', 'formatDate'),
 
     EventFactoryValidatingFieldsWithDependencies: codes([
@@ -23,7 +23,7 @@ module.exports = {
     EventFactoryValidatingNeighboursWithDependencies: codes([
         '/domain/calendar/is-valid-label.js',
         '/domain/calendar/is-valid-datetime.js',
-        '/domain/calendar/overbooking.js',
+        '/domain/calendar/is-overbooking.js',
         '/domain/calendar/event.js',
         '/domain/calendar/resource.js',
         '/domain/calendar/event-factory-validating-fields.js',
