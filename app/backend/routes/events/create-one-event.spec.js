@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { Server } = require('../../yop/server');
 const { post } = require('../../support/request');
-const { Event } = require('../../../domain');
+const { Event, EventFactoryValidatingNeighbours } = require('../../../domain');
 const CreateEventRoute = require('./create-one-event');
 const port = 8007;
 const creation = {
@@ -14,16 +14,14 @@ const creation = {
 describe('CreateEventRoute', ()=> {
     let route;
     let server;
-    let resourcesRepository;
     let eventsRepository;
     let payload;
     beforeEach((done)=>{
         route = new CreateEventRoute();
         server = new Server(port);
         server.start(done);
-        resourcesRepository = { get: async(id)=> true } ;
-        eventsRepository = { save: async(event)=>{}, all: async()=> [] };
-        server.services= { 'resources': resourcesRepository, 'events': eventsRepository };
+        eventsRepository = { save: async(event)=>{} };
+        server.services= { 'events': eventsRepository };
         server.routes = [route];        
         payload = new Event({
             start: '2015-09-21 08:30',
@@ -32,10 +30,15 @@ describe('CreateEventRoute', ()=> {
             notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         });
+        route.eventFactory = { buildEvent: ()=> new Promise((resolve, reject)=> resolve(payload) ) };
     });
     afterEach((done)=> {
         server.stop(done);
     });
+
+    it('is ready', ()=>{
+        expect(new CreateEventRoute().eventFactory.buildEvent).not.to.equal(undefined);
+    })
     
     it('provides event creation', async ()=>{
         eventsRepository.save = async (event)=> { event.id = 42; }

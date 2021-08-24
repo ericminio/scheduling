@@ -5,6 +5,7 @@ module.exports = {
     ResourceFactory: code('/domain/calendar/resource-factory.js', 'ResourceFactory'),
     Event: code('/domain/calendar/event.js', 'Event'),
     EventFactoryValidatingFields: code('/domain/calendar/event-factory-validating-fields.js', 'EventFactoryValidatingFields'),
+    EventFactoryValidatingNeighbours: code('/domain/calendar/event-factory-validating-neighbours.js', 'EventFactoryValidatingNeighbours'),
     User: code('/domain/user/user.js', 'User'),
     Configuration: code('/domain/configuration/configuration.js', 'Configuration'),
     isValidDate: code('/domain/calendar/is-valid-date.js', 'isValidDate'),
