@@ -24,8 +24,8 @@ describe('SearchEventsRoute', ()=> {
         };
         await new SearchEventsRoute().go(request, response, server);
         expect(spy).to.deep.equal({ 
-            start:'2015-09-21', 
-            end:'2015-09-22' 
+            start:'2015-09-21 00:00:00', 
+            end:'2015-09-22 00:00:00' 
         });
     })
 })

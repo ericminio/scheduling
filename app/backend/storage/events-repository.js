@@ -45,14 +45,12 @@ class EventsRepository {
         return event;
     }
     async search(start, end) {
-        let start_datetime = `${start} 00:00:00`;
-        let end_datetime = `${end} 00:00:00`;
         let rows = await this.database.executeSync(`
             select event_id, label, notes, start_time, end_time, resource_id 
             from events_resources, events
             where events_resources.event_id = events.id 
-            and end_time >= '${start_datetime}'
-            and start_time < '${end_datetime}'
+            and end_time >= '${start}'
+            and start_time < '${end}'
             order by event_id
             `);
 

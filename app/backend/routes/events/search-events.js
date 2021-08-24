@@ -12,8 +12,8 @@ class SearchEventsRoute {
         return date;
     }
     async go(request, response, server) {
-        let start = this.parse(request);
-        let end = formatDate(nextDay(start));
+        let start = `${this.parse(request)} 00:00:00`;
+        let end = `${formatDate(nextDay(start))} 00:00:00`;
         let events = server.services['events'];
         let all = await events.search(start, end);
         

@@ -163,7 +163,7 @@ describe('Events storage', ()=> {
             resources:[{id:'r1-id'}]
         }));
         
-        let found = await repository.search('2015-01-02', '2015-01-03');
+        let found = await repository.search('2015-01-02 00:00:00', '2015-01-03 00:00:00');
         expect(found.length).to.equal(1);
         expect(found[0].id).to.equal('2');
     });
@@ -183,7 +183,7 @@ describe('Events storage', ()=> {
             resources:[{id:'r1-id'}]
         }));
         
-        let found = await repository.search('2015-01-02', '2015-01-03');
+        let found = await repository.search('2015-01-02 00:00:00', '2015-01-03 00:00:00');
         expect(found.length).to.equal(0);
     });
 })
