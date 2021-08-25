@@ -67,4 +67,39 @@ describe('Day selection', ()=>{
 
         expect(spy).to.deep.equal('2015-09-21');
     });
+    describe('calendar day keyup', ()=>{
+
+        it('updates day name', ()=>{
+            let field = document.querySelector('#calendar-date');
+            field.value = '2021-09-21';
+            let keyupEvent = new window.CustomEvent('keyup');
+            field.dispatchEvent(keyupEvent);
+
+            expect(document.querySelector('#calendar-date-day-name').innerHTML).to.equal('Tuesday');
+        });
+
+        it('notifies on Enter key', ()=>{
+            let spy;
+            window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            let field = document.querySelector('#calendar-date');
+            field.value = '2021-09-21';
+            let keyupEvent = new window.CustomEvent('keyup');
+            keyupEvent.key = 'Enter';
+            field.dispatchEvent(keyupEvent);
+
+            expect(spy).to.deep.equal('2021-09-21');
+        });
+
+        it('notifies on Enter key only', ()=>{
+            let spy;
+            window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            let field = document.querySelector('#calendar-date');
+            field.value = '2021-09-21';
+            let keyupEvent = new window.CustomEvent('keyup');
+            keyupEvent.key = '1';
+            field.dispatchEvent(keyupEvent);
+
+            expect(spy).to.deep.equal(undefined);
+        });
+    })
 })
