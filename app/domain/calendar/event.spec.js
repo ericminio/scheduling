@@ -26,4 +26,8 @@ describe('Event', ()=>{
     it('resists empty notes', ()=>{
         expect(new Event({ label:'without notes' }).getNotes()).to.equal('');
     });
+
+    it('defaults to empty resource collection', ()=>{
+        expect(new Event({ label:'without notes' }).getResources()).to.deep.equal([]);
+    });
 })

@@ -5,7 +5,7 @@ class Event {
         this.notes = options.notes || '';
         this.start = options.start;
         this.end = options.end;
-        this.resources = options.resources;
+        this.resources = options.resources || [];
     }
 
     getId() { return this.id; }

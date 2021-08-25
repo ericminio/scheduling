@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { EventFactoryValidatingNeighboursWithDependencies, Event } = require('..');
 
-describe('EventFactory', ()=> {
+describe('EventFactoryValidatingNeighbours', ()=> {
 
     let factory;
     beforeEach(()=> {
@@ -11,7 +11,7 @@ describe('EventFactory', ()=> {
     });
 
     it('builds expected event', async ()=> {
-        let event = await factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[] });
+        let event = await factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[{ id:42 }] });
 
         expect(event.getLabel()).to.equal('any');
     });

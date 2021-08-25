@@ -104,6 +104,7 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
+        form.querySelector('#new-event-resource-two').checked = true;
         form.querySelector('#create-event').click();
         
         setTimeout(()=>{
@@ -123,6 +124,7 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
+        form.querySelector('#new-event-resource-two').checked = true;
         form.querySelector('#create-event').click();
         
         setTimeout(()=>{
@@ -172,6 +174,7 @@ describe('Event creation', ()=>{
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
+        form.querySelector('#new-event-resource-two').checked = true;
         form.querySelector('#create-event').click();
 
         setTimeout(()=>{
