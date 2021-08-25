@@ -21,6 +21,10 @@ class DaySelection extends HTMLElement {
     }
     async connectedCallback() {
         this.appendChild(daySelectionTemplate.content.cloneNode(true))
+        this.querySelector('#calendar-date').addEventListener('keyup', (e)=>{ 
+            this.updateDayName();
+            if (e.key == 'Enter') { this.notifiesWhenValid(); }
+        });
         this.querySelector('#calendar-search').addEventListener('click', (e)=>{
             this.updateDayName();
             this.notifiesWhenValid();
