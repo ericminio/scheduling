@@ -36,6 +36,11 @@ describe('Day selection - next day', ()=>{
         let field = document.querySelector('#calendar-date');
         expect(field.value).to.equal('2015-07-02');
     });
+    it('updates week day', ()=>{
+        nextDay.click();
+        let field = document.querySelector('#calendar-date-day-name');
+        expect(field.innerHTML).to.equal('Thursday');
+    });
     it('notifies', ()=>{
         let spy;
         window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');

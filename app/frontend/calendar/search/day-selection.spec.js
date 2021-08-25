@@ -33,9 +33,21 @@ describe('Day selection', ()=>{
         let field = document.querySelector('#calendar-date');
         expect(field.value).to.equal('2015-07-01');
     });
-    it('initializes week daay name field with today', ()=>{
+    it('initializes week day name with today', ()=>{
         let field = document.querySelector('#calendar-date-day-name');
         expect(field.innerHTML).to.equal('Wednesday');
+    });
+    it('updates week day name', ()=>{
+        document.querySelector('#calendar-date').value = '2015-07-02';
+        document.querySelector('#calendar-search').click();
+        let field = document.querySelector('#calendar-date-day-name');
+        expect(field.innerHTML).to.equal('Thursday');
+    });
+    it('clears week day name on invalid date', ()=>{
+        document.querySelector('#calendar-date').value = '2015-07-2';
+        document.querySelector('#calendar-search').click();
+        let field = document.querySelector('#calendar-date-day-name');
+        expect(field.innerHTML).to.equal('');
     });
     it('alerts on invalid date', ()=>{
         let field = document.querySelector('#calendar-date');
