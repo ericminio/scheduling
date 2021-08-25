@@ -49,7 +49,7 @@ class EventsRepository {
             select event_id, label, notes, start_time, end_time, resource_id 
             from events_resources, events
             where events_resources.event_id = events.id 
-            and end_time >= '${start}'
+            and end_time > '${start}'
             and start_time < '${end}'
             order by event_id
             `);
