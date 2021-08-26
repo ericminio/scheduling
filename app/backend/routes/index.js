@@ -11,7 +11,7 @@ module.exports = {
 
     SignIn: require('./sign-in'),
 
-    SearchEvents: require('./events/search-events'),
+    SearchEventsRoute: require('./events/search-events-route'),
     GetAllEvents: require('./events/get-all-events'),
     CreateOneEvent: require('./events/create-one-event'),
     GetOneEvent: require('./events/get-one-event'),

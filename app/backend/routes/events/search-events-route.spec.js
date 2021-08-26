@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const SearchEventsRoute = require('./search-events');
+const { SearchEventsRoute } = require('..');
 const { Server } = require('../../yop/server');
 const { request } = require('../../support/request');
 const { Event } = require('../../../domain');

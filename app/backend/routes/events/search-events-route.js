@@ -1,8 +1,9 @@
-const { nextDay, formatDate } = require('../../../domain');
+const { nextDay, formatDate, SearchEvents } = require('../../../domain');
 
 class SearchEventsRoute {
     constructor() {
         this.prefix = '/data/events?date=';
+        this.searchEvents = new SearchEvents();
     }
     matches(request) {
         return request.method=='GET' && request.url.indexOf(this.prefix) == 0;
@@ -14,7 +15,8 @@ class SearchEventsRoute {
     async go(request, response, server) {
         let start = `${this.parse(request)} 00:00:00`;
         let end = `${formatDate(nextDay(start))} 00:00:00`;
-        server.adapters.searchEvents.inRange(start, end)
+        this.searchEvents.use(server.adapters.searchEvents);
+        return this.searchEvents.inRange(start, end)
             .then((events)=>{
                 response.statusCode = 200;
                 response.setHeader('content-type', 'application/json');
