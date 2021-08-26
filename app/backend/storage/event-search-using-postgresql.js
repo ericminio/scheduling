@@ -14,9 +14,10 @@ class EventSearchUsingPostgresql {
             and start_time < $2
             order by event_id
         `;
-        let rows = await this.database.executeSync(query, [start, end]);
-        
-        return collectionFrom(rows);
+        return new Promise(async (resolve, reject)=> {
+            let rows = await this.database.executeSync(query, [start, end]);
+            resolve(collectionFrom(rows));
+        });
     }
 };
 

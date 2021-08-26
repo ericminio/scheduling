@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { Server } = require('../../yop/server');
 const { post } = require('../../support/request');
-const { Event, EventFactoryValidatingNeighbours } = require('../../../domain');
+const { Event } = require('../../../domain');
 const CreateEventRoute = require('./create-one-event');
 const port = 8007;
 const creation = {

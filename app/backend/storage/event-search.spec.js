@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { Database, drop, migrate, EventSearchUsingPostgresql } = require('.');
 
-describe.only('Events storage search', ()=> {
+describe('Events storage search', ()=> {
     
     let database;
     let searchEvents;
