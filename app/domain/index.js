@@ -15,8 +15,18 @@ module.exports = {
     isAnOverbooking: code('/domain/calendar/is-overbooking.js', 'isAnOverbooking'),
     formatDate: code('/domain/calendar/time.js', 'formatDate'),
 
-    CreateEvent: code('/domain/calendar/create-event.js', 'CreateEvent'),
     SearchEvents: code('/domain/calendar/search-events.js', 'SearchEvents'),
+    CreateEvent: code('/domain/calendar/create-event.js', 'CreateEvent'),
+    CreateEventWithDependencies: codes([
+        '/domain/calendar/is-valid-label.js',
+        '/domain/calendar/is-valid-datetime.js',
+        '/domain/calendar/is-overbooking.js',
+        '/domain/calendar/event.js',
+        '/domain/calendar/resource.js',
+        '/domain/calendar/event-factory-validating-fields.js',
+        '/domain/calendar/event-factory-validating-neighbours.js',
+        '/domain/calendar/create-event.js'
+    ], 'CreateEvent'),
 
     EventFactoryValidatingFieldsWithDependencies: codes([
         '/domain/calendar/is-valid-label.js',

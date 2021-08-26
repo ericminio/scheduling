@@ -1,9 +1,9 @@
 const payload = require('../../support/payload');
-const { EventFactoryValidatingNeighboursWithDependencies } = require('../../../domain');
+const { CreateEventWithDependencies } = require('../../../domain');
 
 class CreateEventRoute {
     constructor() {
-        this.eventFactory = new EventFactoryValidatingNeighboursWithDependencies();
+        this.createEvent = new CreateEventWithDependencies();
     }
     
     matches(request) {
@@ -11,13 +11,8 @@ class CreateEventRoute {
     }
     async go(request, response, server) {
         let incoming = await payload(request);
-        this.eventFactory.resourcesRepository = server.services['resources'];
-        this.eventFactory.eventsRepository = server.services['events'];
-        this.eventFactory.buildEvent(incoming)
-            .then(async (event)=>{
-                await server.services['events'].save(event);
-                return event;
-            })
+        this.createEvent.use(server.services);
+        this.createEvent.please(incoming)
             .then(async (event)=>{
                 response.statusCode = 201;
                 response.setHeader('content-type', 'application/json');

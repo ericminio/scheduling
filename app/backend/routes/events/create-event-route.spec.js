@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { Server } = require('../../yop/server');
 const { post } = require('../../support/request');
 const { Event } = require('../../../domain');
-const CreateEventRoute = require('./create-one-event');
+const CreateEventRoute = require('./create-event-route');
 const port = 8007;
 const creation = {
     hostname: 'localhost',
@@ -30,18 +30,13 @@ describe('CreateEventRoute', ()=> {
             notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         });
-        route.eventFactory = { buildEvent: ()=> new Promise((resolve, reject)=> resolve(payload) ) };
+        route.createEvent.please = ()=> new Promise((resolve, reject)=> { payload.id = 42; resolve(payload); } )
     });
     afterEach((done)=> {
         server.stop(done);
     });
-
-    it('is ready', ()=>{
-        expect(new CreateEventRoute().eventFactory.buildEvent).not.to.equal(undefined);
-    })
     
     it('provides event creation', async ()=>{
-        eventsRepository.save = async (event)=> { event.id = 42; }
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
@@ -49,29 +44,12 @@ describe('CreateEventRoute', ()=> {
         expect(response.statusCode).to.equal(201);
     });
     
-    it('stores incoming event', async ()=>{
-        let spy;
-        server.services['events'].save = (event)=> { spy = event; }
-        await post(creation, payload);
-
-        expect(spy.getLabel()).to.equal('Bob');
-    });
-    
-    it('propagates factory errors', async ()=>{
-        route.eventFactory.buildEvent = async (options)=> new Promise((resolve, reject)=> { reject({ message:'build failed' }) })
+    it('propagates errors', async ()=>{
+        route.createEvent.please = ()=> new Promise((resolve, reject)=> { reject({ message:'creation failed' }); } )
         let response = await post(creation, payload);
         
         expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'build failed' });
-        expect(response.statusCode).to.equal(400);
-    });
-    
-    it('propagates save errors', async ()=>{
-        eventsRepository.save = async (event)=> { throw { message:'save failed' }; }
-        let response = await post(creation, payload);
-        
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ message:'save failed' });
+        expect(JSON.parse(response.body)).to.deep.equal({ message:'creation failed' });
         expect(response.statusCode).to.equal(400);
     });
 

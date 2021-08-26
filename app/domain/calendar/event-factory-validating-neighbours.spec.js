@@ -6,8 +6,10 @@ describe('EventFactoryValidatingNeighbours', ()=> {
     let factory;
     beforeEach(()=> {
         factory = new EventFactoryValidatingNeighboursWithDependencies();
-        factory.eventsRepository = { all: async()=> [] }
-        factory.resourcesRepository = { get: async(id)=> true }
+        factory.use({
+            events: { all: async()=> [] },
+            resources: { get: async(id)=> true }
+        })
     });
 
     it('builds expected event', async ()=> {

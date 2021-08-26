@@ -3,6 +3,11 @@ class EventFactoryValidatingNeighbours {
         this.eventFactoryValidatingFields = new EventFactoryValidatingFields();
     }
     
+    use(adapters) {
+        this.eventsRepository = adapters.events;
+        this.resourcesRepository = adapters.resources;
+    }
+
     async buildEvent(options) {
         return this.eventFactoryValidatingFields.buildEvent(options)
             .then(async (event)=>{

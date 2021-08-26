@@ -13,7 +13,7 @@ module.exports = {
 
     SearchEventsRoute: require('./events/search-events-route'),
     GetAllEvents: require('./events/get-all-events'),
-    CreateOneEvent: require('./events/create-one-event'),
+    CreateEventRoute: require('./events/create-event-route'),
     GetOneEvent: require('./events/get-one-event'),
     DeleteOneEvent: require('./events/delete-one-event'),
     DeleteAllEventsRoute: require('./events/delete-all-events'),
