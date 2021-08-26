@@ -6,5 +6,6 @@ module.exports = {
     ResourcesRepository: require('./resources-repository'),
     EventsRepository: require('./events-repository'),
     UsersRepository: require('./users-repository'),
-    ConfigurationRepository: require('./configuration-repository')
+    ConfigurationRepository: require('./configuration-repository'),
+    EventSearchUsingPostgresql: require('./event-search-using-postgresql.js')
 }

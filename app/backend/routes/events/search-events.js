@@ -14,12 +14,11 @@ class SearchEventsRoute {
     async go(request, response, server) {
         let start = `${this.parse(request)} 00:00:00`;
         let end = `${formatDate(nextDay(start))} 00:00:00`;
-        let events = server.services['events'];
-        let all = await events.search(start, end);
+        let events = await server.adapters.searchEvents.inRange(start, end);
         
         response.statusCode = 200;
         response.setHeader('content-type', 'application/json');
-        response.write(JSON.stringify({ events:all }));
+        response.write(JSON.stringify({ events:events }));
         response.end();
     }
 }

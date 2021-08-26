@@ -471,44 +471,4 @@ describe('Server', ()=>{
         expect(JSON.parse(getResponse.body)).to.deep.equal(
             { title:'Yop', 'opening-hours':'0-24', openingHoursStart:0, openingHoursEnd:24 });
     });
-    it('is open to event search by date', async ()=>{
-        let resources = new RepositoryUsingMap();
-        let r1 = new Resource({ id:'R1', type:'type-1', name:'name-1' });
-        let r2 = new Resource({ id:'R2', type:'type-2', name:'name-2' });
-        resources.save(r1);
-        resources.save(r2);
-        server.services['resources'] = resources;
-        let repository = new RepositoryUsingMap();
-        server.services['events'] = repository;
-        const creation = {
-            hostname: 'localhost',
-            port: port,
-            path: '/data/events/create',
-            method: 'POST'
-        };
-        let payload = {
-            id: 'this-event',
-            start: '2015-10-01 08:30',
-            end: '2015-10-01 12:00',
-            label: 'Bob',
-            notes: 'birthday',
-            resources: [{id:'R1'}, {id:'R2'}]
-        };
-        let response = await post(creation, payload);
-        
-        expect(response.statusCode).to.equal(201);
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body).location).to.equal('/data/events/this-event');
-
-        const search = {
-            hostname: 'localhost',
-            port: port,
-            path: '/data/events?date=2015-10-01',
-            method: 'GET'
-        }
-        response = await request(search);
-        expect(response.statusCode).to.equal(200);
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ events:[payload] });
-    });
 })

@@ -1,14 +1,13 @@
 const { expect } = require('chai');
-const { Database, EventsRepository, drop, migrate } = require('.');
-const { Event } = require('../../domain');
+const { Database, drop, migrate, EventSearchUsingPostgresql } = require('.');
 
-describe('Events storage search', ()=> {
+describe.only('Events storage search', ()=> {
     
     let database;
-    let repository;
+    let searchEvents;
     beforeEach(async ()=>{
         database = new Database();
-        repository = new EventsRepository(database);
+        searchEvents = new EventSearchUsingPostgresql(database);
         await drop(database);
         await migrate(database);
     });
@@ -52,17 +51,15 @@ describe('Events storage search', ()=> {
     let found;
     let givenEvent = async (spec)=>{
         let event_range = range(spec);
-        await repository.save(new Event({ 
-            id:'2', 
-            label:'event-label', 
-            start:event_range.start_time, 
-            end:event_range.end_time,
-            resources:[{id:'r1-id'}]
-        }));
+        await database.executeSync(
+            'insert into events(id, label, notes, start_time, end_time) values($1, $2, $3, $4, $5)', 
+            [15, 'label', 'notes', event_range.start_time, event_range.end_time]);
+        await database.executeSync("insert into resources(id, type, name) values(15, 'type', 'name')");
+        await database.executeSync("insert into events_resources(event_id, resource_id) values(15, 15)");
     }
     let whenSearch = async (spec)=>{
         let search_range = range(spec);
-        found = await repository.search(search_range.start_time, search_range.end_time);
+        found = await searchEvents.inRange(search_range.start_time, search_range.end_time);
     }
     let range = (spec)=> {
         let start = 1 + spec.indexOf('|');
