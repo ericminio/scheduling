@@ -6,8 +6,8 @@ const { SecurityRoute,
         Yop, Scripts, Styles, 
         Ping, GetConfiguration, UpdateConfiguration,
         SignIn, 
-        SearchEventsRoute, GetAllEvents, CreateEventRoute, GetOneEvent, DeleteOneEvent, DeleteAllEventsRoute,
-        GetAllResources, CreateOneResource, GetOneResource, DeleteOneResource,
+        SearchEventsRoute, CreateEventRoute, DeleteOneEvent,
+        GetAllResources, CreateOneResource, DeleteOneResource,
         NotImplemented, DefaultRoute, ErrorRoute } = require('./routes');
 
 class Server {
@@ -33,8 +33,8 @@ class Server {
             new Yop(), new Scripts(), new Styles(), 
             new Ping(), new GetConfiguration(), new UpdateConfiguration(),
             new SignIn(),
-            new SearchEventsRoute(), new GetAllEvents(), new CreateEventRoute(), new GetOneEvent(), new DeleteOneEvent(), new DeleteAllEventsRoute(),
-            new GetAllResources(), new CreateOneResource(), new GetOneResource(), new DeleteOneResource(),
+            new SearchEventsRoute(), new CreateEventRoute(), new DeleteOneEvent(),
+            new GetAllResources(), new CreateOneResource(), new DeleteOneResource(),
             new NotImplemented(),
             new DefaultRoute()
         ];

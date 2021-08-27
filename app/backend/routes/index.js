@@ -12,15 +12,11 @@ module.exports = {
     SignIn: require('./sign-in'),
 
     SearchEventsRoute: require('./events/search-events-route'),
-    GetAllEvents: require('./events/get-all-events'),
     CreateEventRoute: require('./events/create-event-route'),
-    GetOneEvent: require('./events/get-one-event'),
     DeleteOneEvent: require('./events/delete-one-event'),
-    DeleteAllEventsRoute: require('./events/delete-all-events'),
-
+    
     GetAllResources: require('./resources/get-all-resources'),
     CreateOneResource: require('./resources/create-one-resource'),
-    GetOneResource: require('./resources/get-one-resource'),
     DeleteOneResource: require('./resources/delete-one-resource'),
 
     NotImplemented: require('./not-implemented'),
