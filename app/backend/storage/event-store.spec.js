@@ -25,7 +25,6 @@ describe('Events store', ()=> {
                     done();
                 }
                 catch(error) {
-                    console.log(error);
                     done(error);
                 }
             })
@@ -43,7 +42,6 @@ describe('Events store', ()=> {
                     done();
                 }
                 catch(error) {
-                    console.log(error);
                     done(error);
                 }
             })
@@ -59,7 +57,6 @@ describe('Events store', ()=> {
                     done();
                 }
                 catch(error) {
-                    console.log(error);
                     done(error);
                 }
             })

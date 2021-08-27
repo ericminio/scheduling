@@ -35,7 +35,6 @@ describe('SearchEventsRoute', ()=> {
             }
         };
         server.routes = [route]; 
-        route.eventFactory = { buildEvent: ()=> new Promise((resolve, reject)=> resolve(payload) ) };
     });
     afterEach((done)=> {
         server.stop(done);

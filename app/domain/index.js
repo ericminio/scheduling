@@ -27,6 +27,7 @@ module.exports = {
         '/domain/calendar/event-factory-validating-neighbours.js',
         '/domain/calendar/create-event.js'
     ], 'CreateEvent'),
+    DeleteEvent: code('/domain/calendar/delete-event.js', 'DeleteEvent'),
 
     EventFactoryValidatingFieldsWithDependencies: codes([
         '/domain/calendar/is-valid-label.js',
