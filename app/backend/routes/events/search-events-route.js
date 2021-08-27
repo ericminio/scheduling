@@ -15,7 +15,7 @@ class SearchEventsRoute {
     async go(request, response, server) {
         let start = `${this.parse(request)} 00:00:00`;
         let end = `${formatDate(nextDay(start))} 00:00:00`;
-        this.searchEvents.use(server.adapters.searchEvents);
+        this.searchEvents.use(server.adapters);
         return this.searchEvents.inRange(start, end)
             .then((events)=>{
                 response.statusCode = 200;

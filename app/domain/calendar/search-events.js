@@ -1,10 +1,10 @@
 class SearchEvents {
 
-    use(search) {
-        this.search = search;
+    use(adapters) {
+        this.searchEvents = adapters.searchEvents;
     }
 
     async inRange(start, end) {
-        return this.search.inRange(start, end);
+        return this.searchEvents.inRange(start, end);
     }
 };
