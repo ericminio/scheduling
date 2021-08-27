@@ -4,32 +4,37 @@ class EventFactoryValidatingNeighbours {
     }
     
     use(adapters) {
-        this.eventsRepository = adapters.events;
-        this.resourcesRepository = adapters.resources;
+        this.searchEvents = adapters.searchEvents;
+        this.resourceExists = adapters.resourceExists;
     }
 
     async buildEvent(options) {
         return this.eventFactoryValidatingFields.buildEvent(options)
-            .then(async (event)=>{
-                return await this.failIfOneResourceDoesNotExist(event)? false : event;
+            .then((event)=>{
+                return this.failIfOneResourceDoesNotExist(event);
             })
-            .then(async (event)=> {
-                return await this.failIfOverbooking(event)? false : event;
+            .then((event)=> {
+                return this.failIfOverbooking(event);
             });
     }
 
     async failIfOneResourceDoesNotExist(event) {
+        let resourcePromises = []
         for (let i=0; i<event.getResources().length; i++) {
             let id = event.getResources()[i].id;
-            if (! await this.resourcesRepository.get(id)) {
-                throw { message:`unknown resource with id "${id}"` };
-            }
+            resourcePromises.push(this.resourceExists.withId(id));
         }
+        return Promise.all(resourcePromises)
+                .then(()=> event)
+                .catch((id)=> { throw { message:`unknown resource with id "${id}"` }; });
     }
     async failIfOverbooking(event) {
-        let events = await this.eventsRepository.all();
-        if (isAnOverbooking(event, events)) {
-            throw { message:'Overbooking forbidden' };
-        }
+        return this.searchEvents.inRange(event.getStart(), event.getEnd())
+            .then((events)=>{
+                if (isAnOverbooking(event, events)) {
+                    throw { message:'Overbooking forbidden' };
+                }
+            })
+            .then(()=> event);     
     }
 };

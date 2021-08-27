@@ -7,8 +7,8 @@ describe('EventFactoryValidatingNeighbours', ()=> {
     beforeEach(()=> {
         factory = new EventFactoryValidatingNeighboursWithDependencies();
         factory.use({
-            events: { all: async()=> [] },
-            resources: { get: async(id)=> true }
+            searchEvents: { inRange: async(start, end)=> new Promise((resolve, reject)=>{ resolve([]); }) },
+            resourceExists: { withId: async(id)=> new Promise((resolve, reject)=>{ resolve(); }) }
         })
     });
 
@@ -19,14 +19,14 @@ describe('EventFactoryValidatingNeighbours', ()=> {
     });
 
     it('rejects overbooking', (done)=>{
-        factory.eventsRepository.all = async () => [new Event({
+        factory.searchEvents.inRange = async(start, end)=> new Promise((resolve, reject)=>{ resolve([new Event({
             id: 'this-event',
             start: '2015-09-21 11:00',
             end: '2015-09-21 15:00',
             label: 'Bob',
             notes: 'birthday',
             resources: [{id:'R2'}]
-        })];
+        })]); }) 
         factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[{id:'R2'}] })
             .then(()=>{
                 done('should fail')
@@ -43,14 +43,14 @@ describe('EventFactoryValidatingNeighbours', ()=> {
     });
 
     it('rejects event referencing unknown resource', (done)=>{
-        factory.resourcesRepository = { get: async(id)=> undefined }
-        factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[{id:'R2'}] })
+        factory.resourceExists = { withId: async(id)=> new Promise((resolve, reject)=>{ if (id == 1) resolve(); else reject(id); }) }
+        factory.buildEvent({ label:'any', start:'2015-09-21 08:00', end:'2015-09-21 12:00', resources:[{id:1}, {id:2}, {id:3}] })
             .then(()=>{
                 done('should fail')
             })
             .catch((error)=>{
                 try {
-                    expect(error).to.deep.equal({ message:'unknown resource with id "R2"' });
+                    expect(error).to.deep.equal({ message:'unknown resource with id "2"' });
                     done();
                 }
                 catch(raised) {

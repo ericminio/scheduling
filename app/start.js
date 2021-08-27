@@ -1,5 +1,5 @@
 const { Database, migrate,
-        EventSearchUsingPostgresql,
+        EventSearchUsingPostgresql, EventStoreUsingPostgresql, ResourceExistsUsingPostgresql,
         ResourcesRepository, EventsRepository, 
         UsersRepository, 
         ConfigurationRepository } = require('./backend/storage');
@@ -16,7 +16,10 @@ server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
 
 server.adapters = { 
-    searchEvents: new EventSearchUsingPostgresql(database)
+    searchEvents: new EventSearchUsingPostgresql(database),
+    storeEvent: new EventStoreUsingPostgresql(database),
+
+    resourceExists: new ResourceExistsUsingPostgresql(database)
 };
 
 const { User } = require('./domain');

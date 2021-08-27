@@ -7,5 +7,7 @@ module.exports = {
     EventsRepository: require('./events-repository'),
     UsersRepository: require('./users-repository'),
     ConfigurationRepository: require('./configuration-repository'),
-    EventSearchUsingPostgresql: require('./event-search-using-postgresql.js')
+    EventSearchUsingPostgresql: require('./event-search-using-postgresql.js'),
+    EventStoreUsingPostgresql: require('./event-store-using-postgresql.js'),
+    ResourceExistsUsingPostgresql: require('./resource-exists-using-postgresql.js')
 }

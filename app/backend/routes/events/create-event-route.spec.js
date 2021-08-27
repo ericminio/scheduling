@@ -14,14 +14,11 @@ const creation = {
 describe('CreateEventRoute', ()=> {
     let route;
     let server;
-    let eventsRepository;
     let payload;
+    let shared;
     beforeEach((done)=>{
         route = new CreateEventRoute();
         server = new Server(port);
-        server.start(done);
-        eventsRepository = { save: async(event)=>{} };
-        server.services= { 'events': eventsRepository };
         server.routes = [route];        
         payload = new Event({
             start: '2015-09-21 08:30',
@@ -30,11 +27,22 @@ describe('CreateEventRoute', ()=> {
             notes: 'birthday',
             resources: [{id:'R1'}, {id:'R2'}]
         });
-        route.createEvent.please = ()=> new Promise((resolve, reject)=> { payload.id = 42; resolve(payload); } )
+        route.createEvent = {
+            use: (adapters)=> { shared = adapters; },
+            please: (incoming)=> new Promise((resolve, reject)=> { payload.id = 42; resolve(payload); } )
+        };
+        server.adapters = 'shared';
+        server.start(done);
     });
     afterEach((done)=> {
         server.stop(done);
     });
+
+    it('shares adapters', async ()=>{
+        await post(creation, payload);
+
+        expect(shared).to.equal('shared');
+    })
     
     it('provides event creation', async ()=>{
         let response = await post(creation, payload);

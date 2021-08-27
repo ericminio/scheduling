@@ -11,9 +11,9 @@ class CreateEventRoute {
     }
     async go(request, response, server) {
         let incoming = await payload(request);
-        this.createEvent.use(server.services);
+        this.createEvent.use(server.adapters);
         this.createEvent.please(incoming)
-            .then(async (event)=>{
+            .then((event)=>{
                 response.statusCode = 201;
                 response.setHeader('content-type', 'application/json');
                 response.write(JSON.stringify({ location:'/data/events/' + event.id }));                

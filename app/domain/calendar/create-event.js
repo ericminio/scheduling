@@ -5,14 +5,13 @@ class CreateEvent {
 
     use(adapters) {
         this.eventFactory.use(adapters)
-        this.eventsRepository = adapters['events'];
+        this.storeEvent = adapters.storeEvent;
     }
 
     async please(incoming) {
         return this.eventFactory.buildEvent(incoming)
-                .then(async (event)=> {
-                    await this.eventsRepository.save(event);
-                    return event;
+                .then((event)=> {
+                    return this.storeEvent.please(event);
                 });
     }
 };
