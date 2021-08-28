@@ -3,7 +3,7 @@ class EventsRepositoryUsingHttp {
         this.http = http;
     }
 
-    storeEvent(payload) {
-        return this.http.post('/data/events/create', payload)
+    please(event) {
+        return this.http.post('/data/events/create', event)
     }
 };

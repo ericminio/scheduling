@@ -17,7 +17,7 @@ describe('CreateEventRoute', ()=> {
     let payload;
     let shared;
     beforeEach((done)=>{
-        route = new CreateEventRoute();
+        route = new CreateEventRoute({});
         server = new Server(port);
         server.routes = [route];        
         payload = new Event({

@@ -10,7 +10,7 @@ describe('CreateEvent', ()=>{
         createEvent.use({ 
             storeEvent:{ please: async(event)=> new Promise((resolve, reject)=>{ event.notes='stored'; resolve(event); }) } 
         });
-        createEvent.eventFactory.buildEvent = (incoming)=> new Promise((resolve, reject)=>{ resolve(new Event({ label:'built' })) })
+        createEvent.eventFactory = { buildEvent: (incoming)=> new Promise((resolve, reject)=>{ resolve(new Event({ label:'built' })) }) }
     });
 
     it('builds the event', (done)=>{

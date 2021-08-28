@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { request } = require('./support/request');
 const { Server } = require('./server');
 const port = 8005;
+const { Ping } = require('./routes');
 
 describe('Server healthcheck', ()=>{
 
@@ -16,6 +17,7 @@ describe('Server healthcheck', ()=>{
     
     beforeEach((done)=>{
         server = new Server(port);
+        server.routes = [new Ping()];
         server.start(async () => {
             pong = await request(ping);
             done();

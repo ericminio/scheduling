@@ -1,10 +1,9 @@
 class CreateEvent {
-    constructor() {
-        this.eventFactory = new EventFactoryValidatingNeighbours();
+    constructor(eventFactory) {
+        this.eventFactory = eventFactory;
     }
 
     use(adapters) {
-        this.eventFactory.use(adapters)
         this.storeEvent = adapters.storeEvent;
     }
 

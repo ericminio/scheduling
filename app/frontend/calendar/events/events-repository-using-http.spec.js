@@ -13,7 +13,7 @@ describe('Events repository using Http', ()=>{
     it('exposes event storage', ()=> {
         let spy = {};
         http.post = (uri, payload)=> { spy = { uri:uri, payload:payload }; }
-        eventsRepository.storeEvent({ any:42 });
+        eventsRepository.please({ any:42 });
 
         expect(spy).to.deep.equal({
             uri: '/data/events/create',

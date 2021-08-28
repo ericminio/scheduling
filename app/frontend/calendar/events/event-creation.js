@@ -31,13 +31,14 @@ eventCreationTemplate.innerHTML = `
 class EventCreation extends HTMLElement {
 
     constructor() {
-        super()
-        this.eventFactory = new EventFactoryValidatingFields();
-        this.eventsRepository = new EventsRepositoryUsingHttp(api);
+        super();
+        this.createEvent = new CreateEvent(new EventFactoryValidatingFields());
+        this.createEvent.use ({ storeEvent:new EventsRepositoryUsingHttp(api) });
+
     }
     connectedCallback() {
         this.appendChild(eventCreationTemplate.content.cloneNode(true));
-        this.querySelector('#create-event').addEventListener('click', ()=> { this.createEvent(); });
+        this.querySelector('#create-event').addEventListener('click', ()=> { this.goCreateEvent(); });
         events.register(this, 'event creation');
     }
     update(date) {
@@ -63,9 +64,8 @@ class EventCreation extends HTMLElement {
             this.querySelector('#new-event-end').value = `${date} 20:00`;
         }
     }
-    createEvent() {
-        this.eventFactory.buildEvent(this.payload())
-            .then(event => this.eventsRepository.storeEvent(event))
+    goCreateEvent() {
+        this.createEvent.please(this.payload())
             .then(()=> { 
                 events.notify('success', { message:'Event created' }); 
                 events.notify('event created'); 

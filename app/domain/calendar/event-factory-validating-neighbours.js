@@ -1,13 +1,10 @@
 class EventFactoryValidatingNeighbours {
-    constructor() {
+    constructor(adapters) {
         this.eventFactoryValidatingFields = new EventFactoryValidatingFields();
-    }
-    
-    use(adapters) {
         this.searchEvents = adapters.searchEvents;
         this.resourceExists = adapters.resourceExists;
     }
-
+    
     async buildEvent(options) {
         return this.eventFactoryValidatingFields.buildEvent(options)
             .then((event)=>{

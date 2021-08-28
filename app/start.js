@@ -11,6 +11,15 @@ const { UsersService, ResourcesService } = require('./backend/services');
 const { Server } = require('./backend/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
+const { ResourceFactoryWithDependencies } = require('./domain');
+const NextUuid = require('./backend/storage/next-uuid');
+const Guard = require('./backend/guard');
+
+server.resourceFactory = new ResourceFactoryWithDependencies();
+server.resourceFactory.idGenerator = new NextUuid();
+server.services = {};
+server.guard = new Guard();
+
 server.services['resources'] = new ResourcesService(new ResourcesRepository(database));
 server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
@@ -22,6 +31,25 @@ server.adapters = {
 
     resourceExists: new ResourceExistsUsingPostgresql(database)
 };
+const { SecurityRoute,
+    Yop, Scripts, Styles, 
+    Ping, GetConfiguration, UpdateConfiguration,
+    SignIn, 
+    SearchEventsRoute, CreateEventRoute, DeleteOneEvent,
+    GetAllResources, CreateOneResource, DeleteOneResource,
+    NotImplemented, DefaultRoute } = require('./backend/routes');
+
+server.routes = [ 
+    new SecurityRoute(),
+    new Yop(), new Scripts(), new Styles(), 
+    new Ping(), new GetConfiguration(), new UpdateConfiguration(),
+    new SignIn(),
+    new SearchEventsRoute(), new CreateEventRoute(server.adapters), new DeleteOneEvent(),
+    new GetAllResources(), new CreateOneResource(), new DeleteOneResource(),
+    new NotImplemented(),
+    new DefaultRoute()
+];
+
 
 const { User } = require('./domain');
 let ready = new Promise(async (resolve, reject)=> {

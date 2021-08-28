@@ -5,11 +5,10 @@ describe('EventFactoryValidatingNeighbours', ()=> {
 
     let factory;
     beforeEach(()=> {
-        factory = new EventFactoryValidatingNeighboursWithDependencies();
-        factory.use({
+        factory = new EventFactoryValidatingNeighboursWithDependencies({
             searchEvents: { inRange: async(start, end)=> new Promise((resolve, reject)=>{ resolve([]); }) },
             resourceExists: { withId: async(id)=> new Promise((resolve, reject)=>{ resolve(); }) }
-        })
+        });
     });
 
     it('builds expected event', async ()=> {

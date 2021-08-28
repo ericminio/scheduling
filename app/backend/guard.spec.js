@@ -13,6 +13,7 @@ describe('Guard', ()=>{
         guard = new Guard();
         server = new Server(8001);
         users = new RepositoryUsingMap();
+        server.services = {};
         server.services['users'] = users;
     });
 

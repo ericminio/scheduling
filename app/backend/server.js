@@ -1,14 +1,5 @@
 let http = require('http');
-const { EventFactoryValidatingNeighboursWithDependencies, ResourceFactoryWithDependencies } = require('../domain');
-const NextUuid = require('./storage/next-uuid');
-const Guard = require('./guard');
-const { SecurityRoute,
-        Yop, Scripts, Styles, 
-        Ping, GetConfiguration, UpdateConfiguration,
-        SignIn, 
-        SearchEventsRoute, CreateEventRoute, DeleteOneEvent,
-        GetAllResources, CreateOneResource, DeleteOneResource,
-        NotImplemented, DefaultRoute, ErrorRoute } = require('./routes');
+const {ErrorRoute } = require('./routes');
 
 class Server {
     constructor(port) {
@@ -22,22 +13,6 @@ class Server {
                 new ErrorRoute(error).go(response);                
             }
         });
-        this.factory = new EventFactoryValidatingNeighboursWithDependencies();
-        this.factory.idGenerator = new NextUuid();
-        this.resourceFactory = new ResourceFactoryWithDependencies();
-        this.resourceFactory.idGenerator = new NextUuid();
-        this.services = {};
-        this.guard = new Guard();
-        this.routes = [ 
-            new SecurityRoute(),
-            new Yop(), new Scripts(), new Styles(), 
-            new Ping(), new GetConfiguration(), new UpdateConfiguration(),
-            new SignIn(),
-            new SearchEventsRoute(), new CreateEventRoute(), new DeleteOneEvent(),
-            new GetAllResources(), new CreateOneResource(), new DeleteOneResource(),
-            new NotImplemented(),
-            new DefaultRoute()
-        ];
     }
     start(done) {
         this.internal.listen(this.port, done);

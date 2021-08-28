@@ -1,9 +1,9 @@
 const payload = require('../../support/payload');
-const { CreateEventWithDependencies } = require('../../../domain');
+const { CreateEvent, EventFactoryValidatingNeighboursWithDependencies } = require('../../../domain');
 
 class CreateEventRoute {
-    constructor() {
-        this.createEvent = new CreateEventWithDependencies();
+    constructor(adapters) {
+        this.createEvent = new CreateEvent(new EventFactoryValidatingNeighboursWithDependencies(adapters));
     }
     
     matches(request) {
