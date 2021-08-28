@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { request } = require('./support/request');
-const { Server } = require('./server');
+const { Server } = require('./yop/server');
 const port = 8005;
 const { Ping } = require('./routes');
 

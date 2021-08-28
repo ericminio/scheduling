@@ -8,7 +8,7 @@ let database = new Database();
 
 const { UsersService, ResourcesService } = require('./backend/services');
 
-const { Server } = require('./backend/server');
+const { Server } = require('./backend/yop/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
 const { ResourceFactoryWithDependencies } = require('./domain');

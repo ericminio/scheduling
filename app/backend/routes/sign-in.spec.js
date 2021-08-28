@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { User } = require('../../domain');
-const { Server } = require('../server');
+const { Server } = require('../yop/server');
 const AlwaysSameId = require('../support/always-same-id');
 const port = 8007;
 const RepositoryUsingMap = require('../support/repository-using-map');

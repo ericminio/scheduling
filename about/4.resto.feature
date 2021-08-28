@@ -16,10 +16,6 @@ Feature: Bookings
             | table      | table #1  |
             | table      | table #2  |
             | table      | table #3  |
-            | table      | table #4  |
-            | table      | table #5  |
-            | table      | table #6  |
-            | table      | table #7  |
                     
     Scenario: Taking reservation
         Given he opens the calendar on "2015-09-21"
