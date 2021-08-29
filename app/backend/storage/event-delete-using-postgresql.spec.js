@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { Database, drop, migrate, EventDeleteUsingPostgresql } = require('.');
+const { Event } = require('../../domain')
 
 describe('Event delete', ()=> {
     
@@ -18,7 +19,7 @@ describe('Event delete', ()=> {
     });
 
     it('deletes the event', (done)=>{
-        deleteEvent.please(1)
+        deleteEvent.please(new Event({ id:1 }))
             .then(async ()=> {
                 try {
                     let rows = await database.executeSync('select id from events where id = $1', [1]);
@@ -33,7 +34,7 @@ describe('Event delete', ()=> {
     });
 
     it('preserves the other events', (done)=>{
-        deleteEvent.please(1)
+        deleteEvent.please(new Event({ id:1 }))
             .then(async ()=> {
                 try {
                     let rows = await database.executeSync('select id from events where id = $1', [15]);
@@ -48,7 +49,7 @@ describe('Event delete', ()=> {
     });
 
     it('deletes the associated events_resources', (done)=>{
-        deleteEvent.please(1)
+        deleteEvent.please(new Event({ id:1 }))
             .then(async ()=> {
                 try {
                     let rows = await database.executeSync('select event_id from events_resources where event_id = $1', [1]);
@@ -63,7 +64,7 @@ describe('Event delete', ()=> {
     });
 
     it('preserves the other associations', (done)=>{
-        deleteEvent.please(1)
+        deleteEvent.please(new Event({ id:1 }))
             .then(async ()=> {
                 try {
                     let rows = await database.executeSync('select event_id from events_resources where event_id = $1', [15]);
@@ -80,7 +81,7 @@ describe('Event delete', ()=> {
     it('propagates errors', async ()=>{
         try {
             await database.executeSync('drop table events');
-            await deleteEvent.please(1);
+            await deleteEvent.please(new Event({ id:1 }));
             throw { message:'should fail' };
         }
         catch(error) {

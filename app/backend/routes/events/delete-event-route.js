@@ -1,4 +1,4 @@
-const { DeleteEvent } = require('../../../domain');
+const { DeleteEvent, Event } = require('../../../domain');
 
 class DeleteOneEventRoute {
     constructor() {
@@ -11,7 +11,7 @@ class DeleteOneEventRoute {
     async go(request, response, server) {
         let id = request.url.substring('/data/events/'.length);
         this.deleteEvent.use(server.adapters);
-        return this.deleteEvent.please(id)
+        return this.deleteEvent.please(new Event({ id:id }))
             .then(()=>{
                 response.statusCode = 200;
                 response.setHeader('content-type', 'application/json');

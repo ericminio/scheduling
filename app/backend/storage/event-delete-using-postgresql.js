@@ -3,11 +3,11 @@ class EventDeleteUsingPostgresql {
         this.database = database;
     }
 
-    async please(id) {
+    async please(event) {
         return new Promise(async (resolve, reject)=> {
             try {
-                await this.database.executeSync('delete from events_resources where event_id = $1', [id]);
-                await this.database.executeSync('delete from events where id = $1', [id]);
+                await this.database.executeSync('delete from events_resources where event_id = $1', [event.getId()]);
+                await this.database.executeSync('delete from events where id = $1', [event.getId()]);
                 resolve();
             }
             catch(error) {

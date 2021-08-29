@@ -27,7 +27,7 @@ describe('Event deletion', ()=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
         document = window.document;    
         sut = document.querySelector('show-event');
-        sut.deleteEvent.please = (id)=> new Promise((resolve, reject)=> { resolve(); })
+        sut.deleteEvent.please = (event)=> new Promise((resolve, reject)=> { resolve(); })
     })
 
     it('is available from event info box', ()=>{
@@ -38,7 +38,7 @@ describe('Event deletion', ()=>{
 
     it('sends the expected request', ()=>{
         let spy;
-        sut.deleteEvent.please = (id)=> { spy = id; return new Promise((resolve, reject)=> { resolve(); }) }
+        sut.deleteEvent.please = (event)=> { spy = event.getId(); return new Promise((resolve, reject)=> { resolve(); }) }
         window.events.notify('show event', new Event({id:42}));
         document.querySelector('#delete-event').click();
 

@@ -4,7 +4,7 @@ class DeleteEvent {
         this.deleteEvent = adapters.deleteEvent;
     }
 
-    please(id) {
-        return this.deleteEvent.please(id);
+    please(event) {
+        return this.deleteEvent.please(event);
     }
 };

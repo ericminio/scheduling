@@ -3,7 +3,7 @@ class EventDeleteUsingHttp {
         this.http = http;
     }
 
-    please(id) {
-        return this.http.delete(`/data/events/${id}`)
+    please(event) {
+        return this.http.delete(`/data/events/${event.getId()}`)
     }
 };

@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { code } = require('../../../utils/files');
 const EventDeleteUsingHttp = code('./frontend/calendar/events/event-delete-using-http.js', 'EventDeleteUsingHttp');
+const { Event } = require('../../../domain')
 
 describe('Event delete using Http', ()=>{
 
@@ -13,7 +14,7 @@ describe('Event delete using Http', ()=>{
     it('exposes event delete', ()=> {
         let spy = {};
         http.delete = (uri)=> { spy = { uri:uri }; }
-        eventDelete.please(42);
+        eventDelete.please(new Event({ id:42 }));
 
         expect(spy).to.deep.equal({
             uri: '/data/events/42'

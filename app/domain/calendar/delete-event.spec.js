@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { DeleteEvent } = require('..');
+const { DeleteEvent, Event } = require('..');
 
 describe('DeleteEvent', ()=>{
 
@@ -8,28 +8,31 @@ describe('DeleteEvent', ()=>{
     beforeEach(()=>{
         deleteEvent = new DeleteEvent();
         deleteEvent.use({ 
-            deleteEvent:{ please: (id)=> new Promise((resolve, reject)=>{ resolve(42) }) } 
+            deleteEvent:{ please: (event)=> new Promise((resolve, reject)=>{ resolve(event.getId()) }) } 
         });
     });
 
     it('does it', (done)=>{
-        deleteEvent.please()
-            .then((ignored)=>{
+        deleteEvent.please(new Event({ id:42 }))
+            .then((id)=>{
                 try {
-                    expect(ignored).to.equal(42);
+                    expect(id).to.equal(42);
                     done();
                 }
                 catch(raised) {
                     done(raised);
                 }
             })
+            .catch((error)=> {
+                done(error);
+            })
     });
 
     it('propagates error if any', (done)=>{
         deleteEvent.use({ 
-            deleteEvent:{ please: (id)=> new Promise((resolve, reject)=>{ reject(66) }) } 
+            deleteEvent:{ please: (event)=> new Promise((resolve, reject)=>{ reject(event.getId()) }) } 
         });
-        deleteEvent.please()
+        deleteEvent.please(new Event({ id:66 }))
             .then(()=>{
                 done('should fail');
             })

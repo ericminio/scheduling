@@ -45,7 +45,7 @@ class ShowEvent extends HTMLElement {
         this.querySelector('#event-info-end').value = event.getEnd();
     }
     goDeleteEvent() {
-        this.deleteEvent.please(this.event.id)
+        this.deleteEvent.please(this.event)
             .then(()=> { 
                 events.notify('event deleted'); 
                 this.querySelector('#show-event-form').classList.add('hidden');

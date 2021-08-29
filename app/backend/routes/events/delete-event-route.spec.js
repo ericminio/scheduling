@@ -20,7 +20,7 @@ describe('DeleteEventRoute', ()=> {
         server.routes = [route];
         route.deleteEvent = {
             use: (adapters)=> { shared = adapters; },
-            please: (id)=> new Promise((resolve, reject)=> { resolve(); } )
+            please: (event)=> new Promise((resolve, reject)=> { resolve(event.getId()); } )
         };
         server.adapters = 'shared';
         server.start(done);
@@ -38,9 +38,9 @@ describe('DeleteEventRoute', ()=> {
     it('provides event deletion', async ()=>{
         let response = await request(deletion);
         
-        expect(response.statusCode).to.equal(200);
         expect(response.body).to.equal(JSON.stringify({ message:'Event deleted' }));
         expect(response.headers['content-type']).to.equal('application/json');
+        expect(response.statusCode).to.equal(200);
     });
     
     it('propagates errors', async ()=>{
