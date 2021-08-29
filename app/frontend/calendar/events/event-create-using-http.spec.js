@@ -1,19 +1,19 @@
 const { expect } = require('chai');
 const { code } = require('../../../utils/files');
-const EventsRepositoryUsingHttp = code('./frontend/calendar/events/events-repository-using-http.js', 'EventsRepositoryUsingHttp');
+const EventCreateUsingHttp = code('./frontend/calendar/events/event-create-using-http.js', 'EventCreateUsingHttp');
 
 describe('Events repository using Http', ()=>{
 
-    let eventsRepository;
+    let eventCreate;
     let http = {};
     beforeEach(()=> {
-        eventsRepository = new EventsRepositoryUsingHttp(http);
+        eventCreate = new EventCreateUsingHttp(http);
     })
 
     it('exposes event storage', ()=> {
         let spy = {};
         http.post = (uri, payload)=> { spy = { uri:uri, payload:payload }; }
-        eventsRepository.please({ any:42 });
+        eventCreate.please({ any:42 });
 
         expect(spy).to.deep.equal({
             uri: '/data/events/create',

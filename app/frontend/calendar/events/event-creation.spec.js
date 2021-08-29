@@ -109,7 +109,7 @@ describe('Event creation', ()=>{
         setTimeout(()=>{
             expect(wasCalled).to.equal(true);
             done();
-        }, 50);
+        }, wait);
     });
 
     it('notifies on success', (done)=>{
@@ -129,7 +129,7 @@ describe('Event creation', ()=>{
         setTimeout(()=>{
             expect(notification).to.deep.equal({ message:'Event created' });
             done();
-        }, 50);
+        }, wait);
     });
 
     it('does not send extra creation', (done)=> {

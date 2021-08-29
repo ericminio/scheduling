@@ -30,7 +30,7 @@ class EventCreation extends HTMLElement {
     constructor() {
         super();
         this.createEvent = new CreateEvent(new EventFactoryValidatingFields());
-        this.createEvent.use ({ storeEvent:new EventsRepositoryUsingHttp(api) });
+        this.createEvent.use ({ storeEvent:new EventCreateUsingHttp(api) });
 
     }
     connectedCallback() {

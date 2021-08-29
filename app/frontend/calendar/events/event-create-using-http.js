@@ -1,4 +1,4 @@
-class EventsRepositoryUsingHttp {
+class EventCreateUsingHttp {
     constructor(http) {
         this.http = http;
     }
