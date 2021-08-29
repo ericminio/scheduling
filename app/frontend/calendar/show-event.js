@@ -3,9 +3,6 @@ showEventTemplate.innerHTML = `
 
 <style>
     #show-event-form {
-        position: absolute;
-        right: var(--padding);
-        width: calc(var(--agendaAreaWidth) / 2 - 2 * var(--padding) - 2 * var(--body-margin));
     }
     #delete-event {
         background-color: var(--background-delete);

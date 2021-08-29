@@ -8,12 +8,20 @@ calendarTemplate.innerHTML = `
     }
     .calendar-table td {
         padding: 0px;
+        vertical-align: top;
     }
     .column-one {
         width: var(--resourceAreaWidth);
     }
-    .column-two {
+    .column-two, .column-three {
+        width: calc(var(--agendaAreaWidth) / 2);
+    }
+    .column-two-three-together {
         width: var(--agendaAreaWidth);
+    }
+
+    .calendar-table .vertical-form {
+        margin-top: 0px;
     }
 </style>
 
@@ -22,7 +30,7 @@ calendarTemplate.innerHTML = `
         <tbody>
             <tr>
                 <td class="column-one"></td>
-                <td class="column-two">
+                <td class="column-two-three-together" colspan="2">
                     <yop-day-selection></yop-day-selection>
                     <yop-timeline></yop-timeline>
                 </td>
@@ -31,9 +39,25 @@ calendarTemplate.innerHTML = `
                 <td class="column-one">
                     <resources></resources>
                 </td>
-                <td class="column-two">
+                <td class="column-two-three-together" colspan="2">
                     <events></events>                    
                     <show-resource></show-resource>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <resource-creation-trigger></resource-creation-trigger>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <resource-creation-form></resource-creation-form>
+                </td>
+                <td class="column-two">
+                    <event-creation></event-creation>
+                </td>
+                <td class="column-three">
+                    <show-event></show-event>
                 </td>
             </tr>
         </tbody>

@@ -3,9 +3,6 @@ pageCalendarDayTemplate.innerHTML = `
 <yop-menu></yop-menu>
 
 <yop-calendar-day></yop-calendar-day>
-<resource-creation></resource-creation>
-<event-creation></event-creation>
-<show-event></show-event>
 `;
 
 class PageCalendarDay extends HTMLElement {

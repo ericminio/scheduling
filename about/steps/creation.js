@@ -16,7 +16,7 @@ Given('he creates the following events', async (events)=> {
     await createEvents(events);
 });
 let createResources = async(resources)=> {
-    await World.robot.click('#resource-creation');
+    await World.robot.click('#resource-creation-trigger');
     let lines = resources.rawTable;
     for (let i=1; i<lines.length; i++) {
         let data = lines[i];
@@ -24,7 +24,7 @@ let createResources = async(resources)=> {
         let name = data[1];
         await createResource(type, name);
     }
-    await World.robot.click('#resource-creation');
+    await World.robot.click('#resource-creation-trigger');
 }
 let createResource = async (type, name)=> {
     await World.robot.input('#resource-type', type);

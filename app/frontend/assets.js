@@ -12,6 +12,8 @@ module.exports = {
         '/frontend/data/facade.js'
     ]),
     components: contents([
+        '/frontend/calendar/resources/resource-creation-trigger.js',
+        '/frontend/calendar/resources/resource-creation-form.js',
         '/frontend/calendar/timeline/timeline-marker.js',
         '/frontend/calendar/timeline/timeline.js',
         '/frontend/calendar/search/day-selection.js',
@@ -21,10 +23,9 @@ module.exports = {
         '/frontend/calendar/calendar.js',
         '/frontend/calendar/events/events-repository-using-http.js',
         '/frontend/calendar/events/event-creation.js',
-        '/frontend/calendar/page-calendar-day.js',
-        '/frontend/calendar/resource-creation.js',
         '/frontend/calendar/show-event.js',
         '/frontend/calendar/show-resource.js',
+        '/frontend/calendar/page-calendar-day.js',
         '/frontend/common/error-message.js',
         '/frontend/common/header.js',
         '/frontend/common/menu.js',

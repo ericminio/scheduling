@@ -3,9 +3,6 @@ eventCreationTemplate.innerHTML = `
 
 <style>
     #event-creation-form {
-        position: absolute;
-        left: calc(var(--body-margin) + var(--resourceAreaWidth));
-        width: calc(var(--agendaAreaWidth) / 2 - 2 * var(--padding) - 2 * var(--body-margin));
     }
     #new-event-resources input, #new-event-resources label {
         display: unset;
