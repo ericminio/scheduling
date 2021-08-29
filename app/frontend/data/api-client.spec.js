@@ -139,24 +139,6 @@ describe('Api client', ()=>{
             .catch(error => done(error));
     });
 
-    it('exposes event deletion', (done)=> {
-        window.api.deleteEvent({ id:'42' })
-            .then((data) => {
-                expect(data).to.deep.equal({ 
-                    method: 'DELETE',
-                    url: '/data/events/42',
-                    payload: '',
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        'x-user-key': 'any-key'
-                    }
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
     it('exposes resource deletion', (done)=> {
         window.api.deleteResource({ id:'15' })
             .then((data) => {

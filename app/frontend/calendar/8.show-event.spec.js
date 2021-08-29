@@ -12,6 +12,8 @@ describe('Show event', ()=>{
                 <show-event></show-event>
                 <script>
                     ${yop}
+                    ${domain}
+                    ${data}                    
                     ${components}
                 </script>
             </body>

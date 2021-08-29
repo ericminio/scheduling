@@ -23,6 +23,7 @@ module.exports = {
         '/frontend/calendar/calendar.js',
         '/frontend/calendar/events/events-repository-using-http.js',
         '/frontend/calendar/events/event-creation.js',
+        '/frontend/calendar/events/event-delete-using-http.js',
         '/frontend/calendar/show-event.js',
         '/frontend/calendar/show-resource.js',
         '/frontend/calendar/page-calendar-day.js',

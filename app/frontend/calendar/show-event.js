@@ -28,10 +28,12 @@ class ShowEvent extends HTMLElement {
 
     constructor() {
         super();
+        this.deleteEvent = new DeleteEvent();
+        this.deleteEvent.use({ deleteEvent:new EventDeleteUsingHttp(api) });
     }
     connectedCallback() {
         this.appendChild(showEventTemplate.content.cloneNode(true));
-        this.querySelector('#delete-event').addEventListener('click', ()=> { this.deleteEvent(); });
+        this.querySelector('#delete-event').addEventListener('click', ()=> { this.goDeleteEvent(); });
         events.register(this, 'show event');
     }
     update(event) {
@@ -42,11 +44,13 @@ class ShowEvent extends HTMLElement {
         this.querySelector('#event-info-start').value = event.getStart();
         this.querySelector('#event-info-end').value = event.getEnd();
     }
-    deleteEvent() {
-        api.deleteEvent(this.event).then(()=> { 
-            events.notify('event deleted'); 
-            this.querySelector('#show-event-form').classList.add('hidden');
-        });
+    goDeleteEvent() {
+        this.deleteEvent.please(this.event.id)
+            .then(()=> { 
+                events.notify('event deleted'); 
+                this.querySelector('#show-event-form').classList.add('hidden');
+            })
+            .catch(error => { events.notify('error', { message:error.message }); });
     }
 };
 customElements.define('show-event', ShowEvent);

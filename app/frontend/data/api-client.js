@@ -82,10 +82,6 @@ class ApiClient {
         return this.post('/data/resources/create', payload)
     }
 
-    deleteEvent(event) {
-        return this.delete(`/data/events/${event.id}`);
-    }
-
     deleteResource(resource) {
         return this.delete(`/data/resources/${resource.id}`);
     }

@@ -1,7 +1,7 @@
 const { expect } = require('chai');
-const { yop, domain, data, components } = require('../assets');
+const { yop, domain, data, components } = require('../../assets');
 const { JSDOM } = require("jsdom");
-const { Event } = require('../../domain');
+const { Event } = require('../../../domain');
 
 describe('Event deletion', ()=>{
 
@@ -12,9 +12,8 @@ describe('Event deletion', ()=>{
                 <show-event></show-event>
                 <script>
                     ${yop}
-                    var api = {
-                        deleteEvent: (event)=> new Promise((resolve)=>{ resolve(); })  
-                    };
+                    ${domain}
+                    ${data}                    
                     ${components}
                 </script>
             </body>
@@ -22,10 +21,13 @@ describe('Event deletion', ()=>{
         `;
     let window;
     let document;
+    let sut;
 
     beforeEach(()=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
-        document = window.document;        
+        document = window.document;    
+        sut = document.querySelector('show-event');
+        sut.deleteEvent.please = (id)=> new Promise((resolve, reject)=> { resolve(); })
     })
 
     it('is available from event info box', ()=>{
@@ -36,7 +38,7 @@ describe('Event deletion', ()=>{
 
     it('sends the expected request', ()=>{
         let spy;
-        window.api = { deleteEvent:(event)=> { spy = event.id; return new Promise((resolve)=> { resolve(); })} }
+        sut.deleteEvent.please = (id)=> { spy = id; return new Promise((resolve, reject)=> { resolve(); }) }
         window.events.notify('show event', new Event({id:42}));
         document.querySelector('#delete-event').click();
 
@@ -71,7 +73,7 @@ describe('Event deletion', ()=>{
 
     it('does not send extra deletion', ()=>{
         let spy = 0;
-        window.api = { deleteEvent:(event)=> { spy ++ ; return new Promise((resolve)=> { resolve(); })} }
+        sut.deleteEvent.please = (id)=> { spy ++; return new Promise((resolve, reject)=> { resolve(); }) }
         window.events.notify('show event', new Event({id:'42'}));
         window.events.notify('show event', new Event({id:'42'}));
         window.events.notify('show event', new Event({id:'42'}));
