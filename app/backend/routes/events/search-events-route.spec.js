@@ -7,7 +7,7 @@ const port = 8007;
 const search = {
     hostname: 'localhost',
     port: port,
-    path: '/data/events?date=2015-09-21',
+    path: '/data/events?from=2015-07-01%2000%3A00%3A00&to=2015-07-02%2000%3A00%3A00',
     method: 'GET'
 };
 
@@ -20,16 +20,16 @@ describe('SearchEventsRoute', ()=> {
         server.start(done);
         server.adapters = {
             searchEvents: { 
-                async inRange(start, end) { 
+                inRange(start, end) { 
                     return new Promise((resolve, reject)=>{
-                        resolve([new Event({
+                        resolve([ new Event({ 
                             id: 42,
-                            start: '2015-09-21 08:30',
-                            end: '2015-09-21 12:00',
-                            label: 'Bob',
-                            notes: 'birthday',
-                            resources: [{id:'R1'}, {id:'R2'}]
-                        })]);
+                            start: 'ignored',
+                            end: 'ignored',
+                            notes: 'ignored',
+                            resources: [],
+                            label: `received start:${start}, end:${end}`
+                        }) ]);
                      }); 
                 } 
             }
@@ -40,19 +40,44 @@ describe('SearchEventsRoute', ()=> {
         server.stop(done);
     });
 
-    it('provides event search', async ()=>{
-        let response = await request(search);
-        
-        expect(response.headers['content-type']).to.equal('application/json');
-        expect(JSON.parse(response.body)).to.deep.equal({ events:[new Event({
-            id: 42,
-            start: '2015-09-21 08:30',
-            end: '2015-09-21 12:00',
-            label: 'Bob',
-            notes: 'birthday',
-            resources: [{id:'R1'}, {id:'R2'}]
-        })] });
-        expect(response.statusCode).to.equal(200);
+    describe('matching', ()=> {
+
+        it('accepts url with expected fields and values', ()=> {
+            expect(route.matchesUrl(search.path)).to.equal(true);
+        });
+        it('accepts url with expected fields', ()=> {
+            expect(route.matchesUrl('/data/events?from=any&to=any')).to.equal(true);
+        });
+        it('rejects url with missing to', ()=> {
+            expect(route.matchesUrl('/data/events?from=any')).to.equal(false);
+        });
+        it('rejects url with missing from', ()=> {
+            expect(route.matchesUrl('/data/events?to=any')).to.equal(false);
+        });
+        it('rejects url with empty to', ()=> {
+            expect(route.matchesUrl('/data/events?from=any&to=')).to.equal(false);
+        });
+        it('rejects url with empty from', ()=> {
+            expect(route.matchesUrl('/data/events?from=&to=any')).to.equal(false);
+        });
+    });
+
+    it('provides event search', (done)=>{
+        request(search)
+            .then(response => {
+                expect(response.statusCode).to.equal(200);        
+                expect(response.headers['content-type']).to.equal('application/json');
+                expect(JSON.parse(response.body)).to.deep.equal({ events:[new Event({
+                    id: 42,
+                    start: 'ignored',
+                    end: 'ignored',
+                    notes: 'ignored',
+                    resources: [],
+                    label: 'received start:2015-07-01 00:00:00, end:2015-07-02 00:00:00'
+                })] });
+                done();
+            })
+            .catch(error => done(error))
     });
 
     it('propagates search errors', async ()=>{
@@ -68,5 +93,27 @@ describe('SearchEventsRoute', ()=> {
         expect(response.headers['content-type']).to.equal('application/json');
         expect(JSON.parse(response.body)).to.deep.equal({ message:'search failed' });
         expect(response.statusCode).to.equal(400);
+    });
+
+    it('propagates parse errors', (done)=>{
+        let search = {
+            hostname: 'localhost',
+            port: port,
+            path: '/data/events?from=2015-07-01 00%3A00%3A00&to=2015-07-02%2000%3A00%3A00',
+            method: 'GET'
+        };
+        request(search)
+            .then(response => {
+                done('should fail');
+            })
+            .catch(error => {
+                try {
+                    expect(error.message).to.equal('Request path contains unescaped characters');
+                    done();
+                }
+                catch(raised) {
+                    done(raised);
+                }
+            });
     });
 })

@@ -28,13 +28,21 @@ class Server {
         this.internal.close(done);
     }
     async route(request, response) {
+        let found = false;
         for (let i =0; i<this.routes.length; i++) {
             let route = this.routes[i];
             let matching = await route.matches(request, this);
             if (matching) {
+                found = true;
                 await route.go(request, response, this);
                 break;
             }
+        }
+        if (! found) {
+            response.statusCode = 404;
+            response.setHeader('content-type', 'text/plain');
+            response.write('NOT FOUND');
+            response.end();
         }
     }
 }

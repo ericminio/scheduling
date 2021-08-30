@@ -14,7 +14,9 @@ describe('Calendar', ()=>{
                 <script>
                     ${yop}
                     ${domain}
-                    ${data}                    
+                    ${data}     
+                    today = ()=> { return new Date(2015, 6, 1); }
+
                     api.getResources = ()=> {
                         return new Promise((resolve, reject)=>{
                             resolve({ resources:[
@@ -24,7 +26,7 @@ describe('Calendar', ()=>{
                             ] });
                         });
                     };
-                    api.getEvents = ()=> {
+                    api.get = ()=> {
                         return new Promise((resolve, reject)=>{
                             resolve({ events:[
                                 new Event({ id:'42', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'1'}] }),
@@ -48,11 +50,33 @@ describe('Calendar', ()=>{
         document = window.document;
         calendar = document.querySelector('yop-calendar-day');
         setTimeout(done, wait);
-    })
+    });
 
     it('is available', ()=>{
         expect(calendar).not.to.equal(null);
-    })
+    });
+
+    it('leverages search events', (done)=>{
+        calendar.searchEvents.inRange = (start, end)=> {
+            return new Promise((resolve, reject)=> { 
+                resolve({
+                    events:[ 
+                        new Event({ 
+                            label:`from ${start} to ${end}`,
+                            start:'2015-07-01 15:00', end:'2015-07-01 19:30', resources:[{id:'1'}]
+                        }) 
+                    ]
+                });
+            })
+        }
+        calendar.update();
+        setTimeout(()=>{
+            expect(calendar.events.length).to.equal(1);
+            expect(calendar.events[0].getLabel()).to.equal('from 2015-07-01 00:00:00 to 2015-07-02 00:00:00');
+            done();
+        }, wait)
+    });
+
     it('displays expected resources', (done)=>{
         setTimeout(()=> {
             expect(document.querySelector('yop-calendar-day resources #resource-1')).not.to.equal(null);
@@ -77,7 +101,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.api.getEvents = ()=> {
+        window.api.get = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
                     new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
@@ -99,7 +123,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.api.getEvents = ()=> {
+        window.api.get = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
                     new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
@@ -121,7 +145,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.api.getEvents = ()=> {
+        window.api.get = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
                     new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })
@@ -143,7 +167,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.api.getEvents = ()=> {
+        window.api.get = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ events:[
                     new Event({ id:'422', start:'2015-09-21 15:00', end:'2015-09-21 19:30', resources:[{id:'11'}] })

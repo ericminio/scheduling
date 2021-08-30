@@ -70,10 +70,6 @@ class ApiClient {
         return this.get('/ping');
     }
 
-    getEvents(date) {
-        return this.get(`/data/events?date=${date}`);
-    }
-
     getResources() {
         return this.get('/data/resources');
     }

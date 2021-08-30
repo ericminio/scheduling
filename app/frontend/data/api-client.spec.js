@@ -66,24 +66,6 @@ describe('Api client', ()=>{
             .catch(error => done(error));
     });
 
-    it('exposes events', (done)=> {
-        window.api.getEvents('2015-09-21')
-            .then((data) => {
-                expect(data).to.deep.equal({                     
-                    method: 'GET',
-                    url: '/data/events?date=2015-09-21',
-                    payload: '',
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        'x-user-key': 'any-key'
-                    }
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
     it('exposes resources', (done)=> {
         window.api.getResources()
             .then((data) => {
@@ -179,34 +161,6 @@ describe('Api client', ()=>{
                 done();
             })
             .catch(error => done(error));
-    });
-
-    it('notifies on error', (done)=> {
-        let value = {};
-        let spy = {
-            update: (error)=> { value = error; }
-        };
-        window.events.register(spy, 'error');
-        server.route = async (request, response)=> {
-            response.setHeader('content-type', 'application/json');
-            response.statusCode = 403;
-            response.write(JSON.stringify({ 
-                message: 'forbidden'
-            }));
-            response.end();
-        };
-        window.api.getEvents()
-            .then(()=> done('should fail'))
-            .catch((pointless)=> {
-                try {
-                    expect(pointless).to.equal(undefined);
-                    expect(value).to.deep.equal({ message:'forbidden' });
-                    done();
-                }
-                catch(error) {
-                    done(error);
-                }
-            })
     });
 
     it('exposes configuration even disconnected', (done)=> {

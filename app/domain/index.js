@@ -59,6 +59,7 @@ module.exports = {
         '/domain/calendar/is-valid-label.js',
         '/domain/calendar/event-factory-validating-fields.js',
         '/domain/calendar/create-event.js',
-        '/domain/calendar/delete-event.js'
+        '/domain/calendar/delete-event.js',
+        '/domain/calendar/search-events.js'
     ])
 }

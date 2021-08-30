@@ -68,7 +68,9 @@ calendarTemplate.innerHTML = `
 class CalendarDay extends HTMLElement {
 
     constructor() {
-        super()
+        super();
+        this.searchEvents = new SearchEvents();
+        this.searchEvents.use({ searchEvents:new EventsSearchUsingHttp(api) });
     }
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
@@ -101,14 +103,18 @@ class CalendarDay extends HTMLElement {
                 store.delete('resources'); 
                 events.notify('maybe signed-out')
             });
-        let eventsLoaded = data.getEvents(date);
+            
+        let start = `${date} 00:00:00`;
+        let end = `${formatDate(nextDay(date))} 00:00:00`;
+        let eventsLoaded = this.searchEvents.inRange(start, end);
         eventsLoaded.then(data => this.events = data.events);
 
-        Promise.all([resourcesLoaded, eventsLoaded]).then(()=> { 
-            this.clear();
-            this.displayResources();
-            this.displayEvents(); 
-        })
+        Promise.all([resourcesLoaded, eventsLoaded])
+            .then(()=> { 
+                this.clear();
+                this.displayResources();
+                this.displayEvents(); 
+            })
     }
     clear() {
         let size = this.resources.length;
