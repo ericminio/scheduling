@@ -12,6 +12,7 @@ module.exports = {
         '/frontend/data/facade.js'
     ]),
     components: contents([
+        '/frontend/calendar/resources/resource-create-using-http.js',
         '/frontend/calendar/resources/resource-creation-trigger.js',
         '/frontend/calendar/resources/resource-creation-form.js',
         '/frontend/calendar/timeline/timeline-marker.js',

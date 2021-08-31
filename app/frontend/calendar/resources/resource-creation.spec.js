@@ -1,13 +1,6 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'resource-creation-trigger.js')).toString()
-    + fs.readFileSync(path.join(__dirname, 'resource-creation-form.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Resource creation', ()=>{
 
@@ -19,14 +12,9 @@ describe('Resource creation', ()=>{
                 <resource-creation-form></resource-creation-form>
                 <script>
                     ${yop}
-                    var api = {
-                        createResource: ()=> {
-                            return new Promise((resolve, reject)=>{
-                                resolve();
-                            });
-                        }                        
-                    };
-                    ${sut}
+                    ${domain}
+                    ${data}                    
+                    ${components}
                 </script>
             </body>
         </html>
@@ -35,6 +23,7 @@ describe('Resource creation', ()=>{
     let document;
     let trigger;
     let form;
+    let sut;
     let wait = 10;
 
     beforeEach(()=>{
@@ -42,6 +31,8 @@ describe('Resource creation', ()=>{
         document = window.document;
         trigger = document.querySelector('#resource-creation-trigger');
         form = document.querySelector('#resource-creation-form');
+        sut = document.querySelector('resource-creation-form')
+        sut.createResource.please = ()=> new Promise((resolve)=>{ resolve(); })
     });
 
     it('starts hidden', ()=>{
@@ -56,7 +47,7 @@ describe('Resource creation', ()=>{
     it('sends expected payload', ()=> {
         trigger.click();
         let spy = {};
-        window.api = { createResource:(payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })} }
+        sut.createResource.please = (payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); }) } 
         form.querySelector('#resource-type').value = 'this type';
         form.querySelector('#resource-name').value = 'this name';
         form.querySelector('#create-resource').click();

@@ -20,6 +20,8 @@ class ResourceCreationForm extends HTMLElement {
 
     constructor() {
         super()
+        this.createResource = new CreateResource();
+        this.createResource.use ({ storeResource:new ResourceCreateUsingHttp(api) });
     }
     async connectedCallback() {
         this.appendChild(resourceCreationFormTemplate.content.cloneNode(true))
@@ -36,7 +38,7 @@ class ResourceCreationForm extends HTMLElement {
             type: this.querySelector('#resource-type').value,
             name: this.querySelector('#resource-name').value
         };
-        api.createResource(payload)
+        this.createResource.please(payload)
             .then(()=> { events.notify('resource created'); } );
     }
 };
