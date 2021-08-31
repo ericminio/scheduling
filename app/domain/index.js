@@ -29,6 +29,13 @@ module.exports = {
     ], 'CreateEvent'),
     DeleteEvent: code('/domain/calendar/delete-event.js', 'DeleteEvent'),
 
+    CreateResource: code('/domain/calendar/create-resource.js', 'CreateResource'),
+    CreateResourceWithDependencies: codes([
+        '/domain/calendar/resource.js',
+        '/domain/calendar/resource-factory.js',
+        '/domain/calendar/create-resource.js'
+    ], 'CreateResource'),
+
     EventFactoryValidatingFieldsWithDependencies: codes([
         '/domain/calendar/is-valid-label.js',
         '/domain/calendar/is-valid-datetime.js',
@@ -60,6 +67,8 @@ module.exports = {
         '/domain/calendar/event-factory-validating-fields.js',
         '/domain/calendar/create-event.js',
         '/domain/calendar/delete-event.js',
-        '/domain/calendar/search-events.js'
+        '/domain/calendar/search-events.js',
+        '/domain/calendar/resource-factory.js',
+        '/domain/calendar/create-resource.js'
     ])
 }

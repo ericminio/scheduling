@@ -1,5 +1,6 @@
 const { Database, migrate,
-        EventSearchUsingPostgresql, EventStoreUsingPostgresql, ResourceExistsUsingPostgresql,
+        EventSearchUsingPostgresql, EventStoreUsingPostgresql, 
+        ResourceExistsUsingPostgresql, ResourceStoreUsingPostgresql,
         EventDeleteUsingPostgresql,
         ResourcesRepository, 
         UsersRepository, 
@@ -32,7 +33,8 @@ server.adapters = {
     storeEvent: new EventStoreUsingPostgresql(database),
     deleteEvent: new EventDeleteUsingPostgresql(database),
 
-    resourceExists: new ResourceExistsUsingPostgresql(database)
+    resourceExists: new ResourceExistsUsingPostgresql(database),
+    storeResource: new ResourceStoreUsingPostgresql(database), 
 };
 const { SecurityRoute,
     Yop, Scripts, Styles, 
