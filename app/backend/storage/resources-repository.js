@@ -33,7 +33,6 @@ class ResourcesRepository {
     }
     async all() {
         let rows = await this.database.executeSync('select id, type, name from resources order by type, name');
-        console.log(rows);
         let collection = [];
         for (let i=0; i<rows.length; i++) {
             let record = rows[i];

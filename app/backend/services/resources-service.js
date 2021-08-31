@@ -27,7 +27,6 @@ class ResourcesService {
             all = await this.store.all();
             this.cache.put('all', all);
         }
-        console.log('cached', all);
         return all;
     }
 

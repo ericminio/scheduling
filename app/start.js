@@ -34,7 +34,7 @@ server.adapters = {
     deleteEvent: new EventDeleteUsingPostgresql(database),
 
     resourceExists: new ResourceExistsUsingPostgresql(database),
-    storeResource: new ResourceStoreUsingPostgresql(database), 
+    storeResource: new ResourceStoreUsingPostgresql(database, resourcesCache), 
 };
 const { SecurityRoute,
     Yop, Scripts, Styles, 

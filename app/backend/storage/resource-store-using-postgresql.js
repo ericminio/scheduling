@@ -1,8 +1,9 @@
 const NextUuid = require('./next-uuid');
 
 class ResourceStoreUsingPostgresql {
-    constructor(database) {
+    constructor(database, cache) {
         this.database = database;
+        this.cache = cache;
         this.idGenerator = new NextUuid();
     }
 
@@ -14,7 +15,7 @@ class ResourceStoreUsingPostgresql {
                 await this.database.executeSync('insert into resources(id, type, name) values($1, $2, $3)', 
                     [resource.getId(), resource.getType(), resource.getName()]);
 
-                console.log(resource);
+                this.cache.delete('all')
                 resolve(resource);
             }
             catch(error) {

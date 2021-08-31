@@ -7,9 +7,11 @@ describe('Resource store', ()=> {
     let database;
     let storeResource;
     let resource;
+    let cacheWasReset;
     beforeEach(async ()=>{
+        cacheReset = false;
         database = new Database();
-        storeResource = new ResourceStoreUsingPostgresql(database);
+        storeResource = new ResourceStoreUsingPostgresql(database, { delete:(key)=> { cacheReset = key; } });
         await drop(database);
         await migrate(database);
         resource = new Resource({ type:'this type', name:'this name' });        
@@ -56,5 +58,11 @@ describe('Resource store', ()=> {
         catch(error) {
             expect(error.message).to.equal('relation "resources" does not exist');
         }
+    });
+
+    it('propagates errors', async ()=>{
+        await storeResource.please(resource);
+        
+        expect(cacheReset).to.equal('all');
     });
 })
