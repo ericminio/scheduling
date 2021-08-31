@@ -1,32 +1,31 @@
 class ResourcesService {
-    constructor(store) {
+    constructor(store, cache) {
         this.store = store;
-        this.cacheById = {};
-        this.cacheAll = undefined;
+        this.cache = cache;
     }
     async save(resource) {
         await this.store.save(resource);
-        delete this.cacheById[resource.id];
-        this.cacheAll = undefined;
+        this.cache.delete(resource.id);
+        this.cache.delete('all');
     }
     async delete(id) {
         await this.store.delete(id);
-        delete this.cacheById[id];
-        this.cacheAll = undefined;
+        this.cache.delete(id);
+        this.cache.delete('all');
     }
     async get(id) {
-        let resource = this.cacheById[id];
+        let resource = this.cache.get(id);
         if (resource === undefined) {
             resource = await this.store.get(id);
-            this.cacheById[id] = resource;
+            this.cache.put(id, resource);
         }
         return resource;
     }
     async all() {
-        let all = this.cacheAll;
+        let all = this.cache.get('all');
         if (all === undefined) {
             all = await this.store.all();
-            this.cacheAll = all;
+            this.cache.put('all', all);
         }
         return all;
     }

@@ -20,7 +20,10 @@ server.resourceFactory.idGenerator = new NextUuid();
 server.services = {};
 server.guard = new Guard();
 
-server.services['resources'] = new ResourcesService(new ResourcesRepository(database));
+const YopCache = require('./backend/yop/yop-cache');
+let resourcesCache = new YopCache();
+
+server.services['resources'] = new ResourcesService(new ResourcesRepository(database), resourcesCache);
 server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
 

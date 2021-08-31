@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const YopCache = require('./yop-cache');
 
-describe.only('yop cache', ()=> {
+describe('yop cache', ()=> {
 
     let cache;
     beforeEach(()=> {
