@@ -16,6 +16,7 @@ module.exports = {
         '/frontend/calendar/resources/resource-creation-trigger.js',
         '/frontend/calendar/resources/resource-creation-form.js',
         '/frontend/calendar/resources/delete-resource-using-http.js',
+        '/frontend/calendar/resources/get-resources-using-http.js',
         '/frontend/calendar/timeline/timeline-marker.js',
         '/frontend/calendar/timeline/timeline.js',
         '/frontend/calendar/search/day-selection.js',
