@@ -71,6 +71,8 @@ class CalendarDay extends HTMLElement {
         super();
         this.searchEvents = new SearchEvents();
         this.searchEvents.use({ searchEvents:new EventsSearchUsingHttp(api) });
+        this.getResources = new GetResources();
+        this.getResources.use({ getResources:new GetResourcesUsingHttp(api) });
     }
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
@@ -89,7 +91,7 @@ class CalendarDay extends HTMLElement {
         this.updateResourcesAndEvents(date);
     }
     updateResourcesAndEvents(date) {
-        let resourcesLoaded = data.getResources();
+        let resourcesLoaded = this.getResources.please();
         resourcesLoaded
             .then(data => {
                 this.resources = data.resources;

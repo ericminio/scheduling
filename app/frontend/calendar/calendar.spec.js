@@ -1,8 +1,7 @@
 const { expect } = require('chai');
 const { yop, domain, data, components } = require('../assets');
-const jsdom = require("jsdom");
+const { JSDOM } = require("jsdom");
 const { Resource, Event } = require('../../domain');
-const { JSDOM } = jsdom;
 
 describe('Calendar', ()=>{
 
@@ -32,7 +31,7 @@ describe('Calendar', ()=>{
         document = window.document;
         calendar = document.createElement('yop-calendar-day');
         page = document.querySelector('#page');
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[
                     new Resource({ id:'1', type:'plane', name:'GSDZ' }),
@@ -96,7 +95,7 @@ describe('Calendar', ()=>{
     })
     it('listens to resource created event and refreshes', (done)=>{
         showCalendar();
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[
                     new Resource({ id:'11', type:'plane', name:'GSDZ' })
@@ -119,7 +118,7 @@ describe('Calendar', ()=>{
     });
     it('listens to event created event and refreshes', (done)=>{
         showCalendar();
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[
                     new Resource({ id:'11', type:'plane', name:'GSDZ' })
@@ -142,7 +141,7 @@ describe('Calendar', ()=>{
     });
     it('listens to event deleted event and refreshes', (done)=>{
         showCalendar();
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[
                     new Resource({ id:'11', type:'plane', name:'GSDZ' })
@@ -165,10 +164,10 @@ describe('Calendar', ()=>{
     });
     it('listens to resource deleted event and refreshes', (done)=>{
         showCalendar();
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[
-                    { id:'11', type:'plane', name:'GSDZ' }
+                    new Resource({ id:'11', type:'plane', name:'GSDZ' })
                 ]});
             });
         };

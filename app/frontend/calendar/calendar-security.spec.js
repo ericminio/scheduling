@@ -1,9 +1,8 @@
 const { expect } = require('chai');
 const { yop, domain, data, components } = require('../assets');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { JSDOM } = require("jsdom");
 
-describe.only('When resource load fails', ()=>{
+describe('When resource load fails', ()=>{
 
     let html = `
         <!DOCTYPE html>
@@ -30,7 +29,7 @@ describe.only('When resource load fails', ()=>{
         document = window.document;
         calendar = document.createElement('yop-calendar-day');
         page = document.querySelector('#page');
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 resolve({ resources:[] });
             });
@@ -48,7 +47,7 @@ describe.only('When resource load fails', ()=>{
 
     it('deletes locally stored resources', (done)=>{
         showCalendar();
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 reject();
             });
@@ -67,7 +66,7 @@ describe.only('When resource load fails', ()=>{
             update: ()=> { wasCalled = true; }
         };
         window.events.register(spy, 'maybe signed-out');
-        window.api.getResources = ()=> {
+        calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 reject();
             });

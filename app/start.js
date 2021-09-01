@@ -2,7 +2,7 @@ const { Database, migrate,
         EventSearchUsingPostgresql, EventStoreUsingPostgresql, 
         ResourceExistsUsingPostgresql, ResourceStoreUsingPostgresql,
         EventDeleteUsingPostgresql, DeleteResourceUsingPostgresql,
-        ResourcesRepository, GetResourcesUsingPostgresql,
+        GetResourcesUsingPostgresql,
         UsersRepository, 
         ConfigurationRepository } = require('./backend/storage');
 let database = new Database();
