@@ -13,4 +13,5 @@ module.exports = {
     ResourceExistsUsingPostgresql: require('./resource-exists-using-postgresql.js'),
     ResourceStoreUsingPostgresql: require('./resource-store-using-postgresql.js'),
     DeleteResourceUsingPostgresql: require('./delete-resource-using-postgresql.js'),
+    GetResourcesUsingPostgresql: require('./get-resources-using-postgresql.js')
 }
