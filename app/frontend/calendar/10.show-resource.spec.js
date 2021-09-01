@@ -1,12 +1,6 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'show-resource.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Show resource', ()=>{
 
@@ -17,7 +11,9 @@ describe('Show resource', ()=>{
                 <show-resource></show-resource>
                 <script>
                     ${yop}
-                    ${sut}
+                    ${domain}
+                    ${data}                    
+                    ${components}
                 </script>
             </body>
         </html>

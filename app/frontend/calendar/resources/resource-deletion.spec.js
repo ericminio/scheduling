@@ -1,12 +1,6 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
-const fs = require('fs');
-const path = require('path');
-const sut = ''
-    + fs.readFileSync(path.join(__dirname, 'show-resource.js')).toString()
-    ;
+const { yop, domain, data, components } = require('../../assets');
+const { JSDOM } = require("jsdom");
 
 describe('Resource deletion', ()=>{
 
@@ -17,10 +11,9 @@ describe('Resource deletion', ()=>{
                 <show-resource></show-resource>
                 <script>
                     ${yop}
-                    var api = {
-                        deleteResource: (resource)=> new Promise((resolve)=>{ resolve(); })  
-                    };
-                    ${sut}
+                    ${domain}
+                    ${data}                    
+                    ${components}
                 </script>
             </body>
         </html>
@@ -28,10 +21,13 @@ describe('Resource deletion', ()=>{
     let window;
     let document;
     let form;
+    let sut;
 
     beforeEach(()=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
-        document = window.document;        
+        document = window.document;  
+        sut = document.querySelector('show-resource');   
+        sut.deleteResource.please = ()=> new Promise((resolve)=> { resolve(); })
     })
 
     it('is available from show resource box', ()=>{
@@ -42,7 +38,7 @@ describe('Resource deletion', ()=>{
 
     it('sends the expected request', ()=>{
         let spy;
-        window.api = { deleteResource:(resource)=> { spy = resource; return new Promise((resolve)=> { resolve(); })} }
+        sut.deleteResource.please = (resource)=> { spy = resource; return new Promise((resolve)=> { resolve(); }) }
         window.events.notify('show resource', { id:'this-resource' });
         document.querySelector('#delete-resource').click();
 
@@ -73,16 +69,5 @@ describe('Resource deletion', ()=>{
             expect(form.classList.toString()).to.equal('vertical-form hidden');
             done();
         }, 50);
-    });
-
-    it('does not send extra deletion', ()=>{
-        let spy = 0;
-        window.api = { deleteResource:(resource)=> { spy ++; return new Promise((resolve)=> { resolve(); })} }
-        window.events.notify('show resource', { id:'this-resource' });
-        window.events.notify('show resource', { id:'this-resource' });
-        window.events.notify('show resource', { id:'this-resource' });
-        document.querySelector('#delete-resource').click();
-
-        expect(spy).to.equal(1);
     });
 })

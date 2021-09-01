@@ -28,10 +28,12 @@ class ShowResource extends HTMLElement {
 
     constructor() {
         super();
+        this.deleteResource = new DeleteResource();
+        this.deleteResource.use({ deleteResource: new DeleteResourceUsingHttp(api) });
     }
     connectedCallback() {
         this.appendChild(showResourceTemplate.content.cloneNode(true));
-        this.querySelector('#delete-resource').addEventListener('click', ()=> { this.deleteResource(); });
+        this.querySelector('#delete-resource').addEventListener('click', ()=> { this.goDeleteResource(); });
         events.register(this, 'show resource');
     }
     update(resource) {
@@ -40,11 +42,12 @@ class ShowResource extends HTMLElement {
         this.querySelector('#resource-info-type').value = resource.type;
         this.querySelector('#resource-info-name').value = resource.name;
     }
-    deleteResource() {
-        api.deleteResource(this.resource).then(()=> {
-            events.notify('resource deleted');
-            this.querySelector('#show-resource-form').classList.add('hidden');
-        });
+    goDeleteResource() {
+        this.deleteResource.please(this.resource)
+            .then(()=> {
+                events.notify('resource deleted');
+                this.querySelector('#show-resource-form').classList.add('hidden');
+            });
     }
 };
 customElements.define('show-resource', ShowResource);
