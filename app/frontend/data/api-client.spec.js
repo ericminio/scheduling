@@ -102,43 +102,6 @@ describe('Api client', ()=>{
             .catch(error => done(error));
     });
 
-    it('exposes resource creation', (done)=> {
-        window.api.createResource({ type:'table', name:'window' })
-            .then((data) => {
-                expect(data).to.deep.equal({ 
-                    method: 'POST',
-                    url: '/data/resources/create',
-                    payload: JSON.stringify({ type:'table', name:'window' }),
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        "transfer-encoding": "chunked",
-                        'x-user-key': 'any-key'
-                    },
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
-    it('exposes resource deletion', (done)=> {
-        window.api.deleteResource({ id:'15' })
-            .then((data) => {
-                expect(data).to.deep.equal({ 
-                    method: 'DELETE',
-                    url: '/data/resources/15',
-                    payload: '',
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        'x-user-key': 'any-key'
-                    }
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
     it('exposes sign in', (done)=> {
         let credentials = {
             username: 'this-username',

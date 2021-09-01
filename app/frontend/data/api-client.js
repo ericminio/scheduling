@@ -74,14 +74,6 @@ class ApiClient {
         return this.get('/data/resources');
     }
 
-    createResource(payload) {
-        return this.post('/data/resources/create', payload)
-    }
-
-    deleteResource(resource) {
-        return this.delete(`/data/resources/${resource.id}`);
-    }
-
     signIn(credentials) {
         let payload = { encoded: window.btoa(JSON.stringify(credentials)) };
         return this.post('/sign-in', payload);
