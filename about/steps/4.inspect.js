@@ -22,6 +22,10 @@ When('I inspect resource {string}', async (name)=> {
     let resourceElement = await getResourceElement(name);
     await resourceElement.click();
 });
+When('he inspects resource {string}', async (name)=> {
+    let resourceElement = await getResourceElement(name);
+    await resourceElement.click();
+});
 Then('I see that this resource type is {string}', async (type)=> {
     let element = await World.robot.findElement('#resource-info-type');
     let actual = await element.getAttribute('value');

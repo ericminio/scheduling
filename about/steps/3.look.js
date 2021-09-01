@@ -41,14 +41,23 @@ Then('I see that {string} is scheduled with {string}', async (label, name)=> {
         throw Error('nope')
     }
 });
+Then('he sees that {string} is scheduled with {string}', async (label, name)=> {
+    let resourceElement = await getResourceElement(name);
+    let eventsWithLabel = await getEventElements(label);
+    let event = await getEventScheduledWith(resourceElement, eventsWithLabel);
+    if (!event) {
+        throw Error('nope')
+    }
+});
 
-Then('he sees that the resources are ordered as follows', async (expected)=> {
+Then('he sees that the resources are', async (expected)=> {
     let resources = await World.driver.findElements(By.css('yop-calendar-resource'));
     for (let i=0; i<resources.length; i++) {
         let candidate = resources[i];
         let actual = await candidate.getText();
-        expect(actual).to.equal(expected.rawTable[i][0]);
+        expect(actual).to.equal(expected.rawTable[i+1][0]);
     }
+    expect(resources.length).to.equal(expected.rawTable.length - 1);
 });
 Then('he sees that the first timeline marker is {string}', async (expected)=> {
     let markers = await World.driver.findElements(By.css('yop-timeline-marker'));

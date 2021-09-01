@@ -30,9 +30,27 @@ Feature: Securing data
         When he tries to delete this event
         Then he receives the error message "forbidden: insufficient privilege"
     
+    Scenario: delete of resource forbidden
+        When "Joe" signs in with password "secret"
+        When he opens the calendar on "2015-10-01"
+        When he inspects resource "helmet #1"
+        When he tries to delete this resource
+        Then he receives the error message "forbidden: insufficient privilege"
+    
     Scenario: delete authorized
         When "Max" signs in with password "secret"
         When he opens the calendar on "2015-10-01"
         When he inspects event "Alex" scheduled with "blue bicycle"
         When he tries to delete this event
         Then he sees that the calendar is empty
+    
+    Scenario: delete of resource authorized
+        When "Max" signs in with password "secret"
+        When he opens the calendar on "2015-10-01"
+        When he inspects resource "helmet #1"
+        When he tries to delete this resource
+        Then he sees that the resources are 
+            | Name           |
+            | blue bicycle   |
+            | white bicycle  |
+        Then he sees that "Alex" is scheduled with "blue bicycle"

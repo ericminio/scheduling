@@ -39,3 +39,8 @@ Then('he receives the error message {string}', async (message)=> {
 Given('he acknowledges the error message', async ()=> {
     await World.robot.click("#error-message");
 });
+
+When('he tries to delete this resource', async ()=> {
+    let action = await World.robot.findElement('#delete-resource');
+    action.click(); 
+});
