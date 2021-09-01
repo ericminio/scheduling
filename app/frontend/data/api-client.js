@@ -70,10 +70,6 @@ class ApiClient {
         return this.get('/ping');
     }
 
-    getResources() {
-        return this.get('/data/resources');
-    }
-
     signIn(credentials) {
         let payload = { encoded: window.btoa(JSON.stringify(credentials)) };
         return this.post('/sign-in', payload);

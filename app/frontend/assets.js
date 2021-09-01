@@ -7,8 +7,6 @@ module.exports = {
     data: contents([
         '/frontend/data/api-client.js',
         '/frontend/data/configuration-reader.js',
-        '/frontend/data/resources-reader.js',
-        '/frontend/data/events-reader.js',
         '/frontend/data/facade.js'
     ]),
     components: contents([

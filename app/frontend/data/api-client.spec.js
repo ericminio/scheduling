@@ -66,24 +66,6 @@ describe('Api client', ()=>{
             .catch(error => done(error));
     });
 
-    it('exposes resources', (done)=> {
-        window.api.getResources()
-            .then((data) => {
-                expect(data).to.deep.equal({ 
-                    method: 'GET',
-                    url: '/data/resources',
-                    payload: '',
-                    headers: {
-                        connection: 'close',
-                        host: 'localhost:8006',
-                        'x-user-key': 'any-key'
-                    }
-                });            
-                done();
-            })
-            .catch(error => done(error));
-    });
-
     it('exposes ping even disconnected', (done)=> {
         window.store.delete('user');
         window.api.ping()
