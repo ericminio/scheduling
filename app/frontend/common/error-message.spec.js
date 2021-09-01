@@ -1,7 +1,7 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { expect } = require('chai');
-const yop = require('../yop');
+const { yop } = require('../assets');
 const fs = require('fs');
 const path = require('path');
 const sut = ''

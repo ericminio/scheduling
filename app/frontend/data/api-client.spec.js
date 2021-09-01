@@ -1,7 +1,7 @@
 const { JSDOM } = require("jsdom");
 const { expect } = require('chai');
 const { yop, domain, data } = require('../assets');
-const { Server } = require('../../backend/yop/server');
+const { Server } = require('../../../yop/node/server');
 const port = 8006;
 const payload = require('../../backend/support/payload-raw')
 const fetch = require('./custom-fetch');

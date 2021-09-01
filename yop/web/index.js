@@ -9,7 +9,7 @@ let yop = [
     './2.events.js',
     './3.navigate.js',
     './4.route.js',
-    './link.js'
+    './5.link.js'
 ].reduce((acc, current)=> acc + file(current), '');
 
 module.exports = yop;

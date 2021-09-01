@@ -1,4 +1,4 @@
-let http = require('http');
+const http = require('http');
 const ErrorRoute = require('./error-route')
 
 class Server {

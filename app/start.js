@@ -9,7 +9,7 @@ let database = new Database();
 
 const { UsersService, ResourcesService } = require('./backend/services');
 
-const { Server } = require('./backend/yop/server');
+const { Server } = require('../yop/node/server');
 const port = process.env.PORT || 8015;
 let server = new Server(port);
 const { ResourceFactoryWithDependencies } = require('./domain');
@@ -21,7 +21,7 @@ server.resourceFactory.idGenerator = new NextUuid();
 server.services = {};
 server.guard = new Guard();
 
-const YopCache = require('./backend/yop/yop-cache');
+const YopCache = require('../yop/node/yop-cache');
 let resourcesCache = new YopCache();
 
 server.services['users'] = new UsersService(new UsersRepository(database));

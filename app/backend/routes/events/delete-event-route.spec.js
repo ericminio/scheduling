@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { DeleteOneEvent } = require('..');
-const { Server } = require('../../yop/server');
+const { Server } = require('../../../../yop/node/server');
 const { request } = require('../../support/request');
 const port = 8007;
 const deletion = {

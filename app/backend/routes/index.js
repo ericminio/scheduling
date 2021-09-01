@@ -21,5 +21,5 @@ module.exports = {
 
     NotImplemented: require('./not-implemented'),
     DefaultRoute: require('./defaut-route'),
-    ErrorRoute: require('../yop/error-route')
+    ErrorRoute: require('../../../yop/node/error-route')
 };

@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { Server } = require('../../yop/server');
+const { Server } = require('../../../../yop/node/server');
 const { post } = require('../../support/request');
 const { Resource } = require('../../../domain');
 const CreateResourceRoute = require('./create-one-resource');

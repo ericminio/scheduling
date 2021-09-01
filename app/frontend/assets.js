@@ -2,7 +2,7 @@ const { contents } = require('../utils/files');
 const { domain } = require('../domain')
 
 module.exports = {
-    yop: require('./yop'),
+    yop: require('../../yop/web'),
     domain: domain,
     data: contents([
         '/frontend/data/api-client.js',
