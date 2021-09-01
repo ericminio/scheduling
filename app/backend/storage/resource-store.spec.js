@@ -60,7 +60,7 @@ describe('Resource store', ()=> {
         }
     });
 
-    it('propagates errors', async ()=>{
+    it('resets the cache', async ()=>{
         await storeResource.please(resource);
         
         expect(cacheReset).to.equal('all');

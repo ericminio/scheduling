@@ -11,5 +11,6 @@ module.exports = {
     EventStoreUsingPostgresql: require('./event-store-using-postgresql.js'),
     EventDeleteUsingPostgresql: require('./event-delete-using-postgresql.js'),
     ResourceExistsUsingPostgresql: require('./resource-exists-using-postgresql.js'),
-    ResourceStoreUsingPostgresql: require('./resource-store-using-postgresql.js')
+    ResourceStoreUsingPostgresql: require('./resource-store-using-postgresql.js'),
+    DeleteResourceUsingPostgresql: require('./delete-resource-using-postgresql.js'),
 }
