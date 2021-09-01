@@ -1,14 +1,20 @@
 const { expect } = require('chai');
 const { Database, drop, migrate, GetResourcesUsingPostgresql } = require('.');
+const { Resource } = require('../../domain');
 
 describe('Get Resources', ()=> {
     
     let database;
     let getResources;
     let cached;
+    let cache;
     beforeEach(async ()=>{
+        cache = {
+            put:(key, value)=> { cached = { key:key, value:value } },
+            get: (key)=> undefined
+        };
         database = new Database();
-        getResources = new GetResourcesUsingPostgresql(database, { put:(key, value)=> { cached = { key:key, value:value } } });
+        getResources = new GetResourcesUsingPostgresql(database, cache);
         await drop(database);
         await migrate(database);   
         await database.executeSync(`insert into resources (id, type, name) values (3, 'type-3', 'name-3')`);
@@ -48,5 +54,18 @@ describe('Get Resources', ()=> {
         
         expect(cached.key).to.equal('all');
         expect(cached.value.length).to.equal(4);
+    });
+
+    it('returns resources from the cache when present', (done)=>{
+        cache.get = ()=> [new Resource({id:15})]
+        getResources.please()
+            .then(resources => { 
+                expect(resources.length).to.equal(1);
+                expect(resources[0].getId()).to.equal(15);
+                done();
+             })
+            .catch(error=> { 
+                done(error);
+            })
     });
 })

@@ -9,18 +9,21 @@ class GetResourcesUsingPostgresql {
     async please() {
         return new Promise(async (resolve, reject)=>{
             try {
-                let rows = await this.database.executeSync('select id, type, name from resources order by type, name');
-                let collection = [];
-                for (let i=0; i<rows.length; i++) {
-                    let record = rows[i];
-                    let resource = new Resource({
-                        id: record.id,
-                        type: record.type,
-                        name: record.name
-                    });
-                    collection.push(resource);
+                let collection = this.cache.get('all')
+                if (collection === undefined) {
+                    let rows = await this.database.executeSync('select id, type, name from resources order by type, name');
+                    collection = [];
+                    for (let i=0; i<rows.length; i++) {
+                        let record = rows[i];
+                        let resource = new Resource({
+                            id: record.id,
+                            type: record.type,
+                            name: record.name
+                        });
+                        collection.push(resource);
+                    }
+                    this.cache.put('all', collection);
                 }
-                this.cache.put('all', collection);
                 resolve(collection)
             }
             catch (error) {
