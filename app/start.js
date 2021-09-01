@@ -41,7 +41,7 @@ const { SecurityRoute,
     Ping, GetConfiguration, UpdateConfiguration,
     SignIn, 
     SearchEventsRoute, CreateEventRoute, DeleteOneEvent,
-    GetAllResources, CreateOneResource, DeleteOneResource,
+    GetAllResources, CreateOneResource, DeleteResourceRoute,
     NotImplemented, DefaultRoute } = require('./backend/routes');
 
 server.routes = [ 
@@ -50,7 +50,7 @@ server.routes = [
     new Ping(), new GetConfiguration(), new UpdateConfiguration(),
     new SignIn(),
     new SearchEventsRoute(), new CreateEventRoute(server.adapters), new DeleteOneEvent(),
-    new GetAllResources(), new CreateOneResource(), new DeleteOneResource(),
+    new GetAllResources(), new CreateOneResource(), new DeleteResourceRoute(),
     new NotImplemented(),
     new DefaultRoute()
 ];

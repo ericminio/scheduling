@@ -17,7 +17,7 @@ module.exports = {
     
     GetAllResources: require('./resources/get-all-resources'),
     CreateOneResource: require('./resources/create-one-resource'),
-    DeleteOneResource: require('./resources/delete-one-resource'),
+    DeleteResourceRoute: require('./resources/delete-one-resource'),
 
     NotImplemented: require('./not-implemented'),
     DefaultRoute: require('./defaut-route'),

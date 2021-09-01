@@ -1,25 +1,25 @@
 const { expect } = require('chai');
-const { DeleteOneEvent } = require('..');
+const { DeleteResourceRoute } = require('..');
 const { Server } = require('../../yop/server');
 const { request } = require('../../support/request');
 const port = 8007;
 const deletion = {
     hostname: 'localhost',
     port: port,
-    path: '/data/events/42',
+    path: '/data/resources/42',
     method: 'DELETE'
 };
 
-describe('DeleteEventRoute', ()=> {
+describe('DeleteResourceRoute', ()=> {
     let route;
     let server;
     let shared;
     beforeEach((done)=>{
-        route = new DeleteOneEvent();
+        route = new DeleteResourceRoute();
         server = new Server(port);
         server.routes = [route];
-        route.deleteEvent.use = (adapters)=> { shared = adapters; }
-        route.deleteEvent.please = (event)=> new Promise((resolve, reject)=> { resolve(event.getId()); } )
+        route.deleteResource.use = (adapters)=> { shared = adapters; }
+        route.deleteResource.please = (resource)=> new Promise((resolve, reject)=> { resolve(resource.getId()); } )        
         server.adapters = 'shared';
         server.start(done);
     });
@@ -33,16 +33,16 @@ describe('DeleteEventRoute', ()=> {
         expect(shared).to.equal('shared');
     });
 
-    it('provides event deletion', async ()=>{
+    it('provides resource deletion', async ()=>{
         let response = await request(deletion);
         
-        expect(response.body).to.equal(JSON.stringify({ message:'Event deleted' }));
+        expect(response.body).to.equal(JSON.stringify({ message:'Resource deleted' }));
         expect(response.headers['content-type']).to.equal('application/json');
         expect(response.statusCode).to.equal(200);
     });
     
     it('propagates errors', async ()=>{
-        route.deleteEvent.please = ()=> new Promise((resolve, reject)=> { reject({ message:'deletion failed' }); } )
+        route.deleteResource.please = ()=> new Promise((resolve, reject)=> { reject({ message:'deletion failed' }); } )
         let response = await request(deletion);
         
         expect(response.headers['content-type']).to.equal('application/json');
