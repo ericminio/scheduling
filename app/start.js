@@ -1,7 +1,7 @@
 const { Database, migrate,
         EventSearchUsingPostgresql, EventStoreUsingPostgresql, 
         ResourceExistsUsingPostgresql, ResourceStoreUsingPostgresql,
-        EventDeleteUsingPostgresql,
+        EventDeleteUsingPostgresql, DeleteResourceUsingPostgresql,
         ResourcesRepository, 
         UsersRepository, 
         ConfigurationRepository } = require('./backend/storage');
@@ -35,6 +35,7 @@ server.adapters = {
 
     resourceExists: new ResourceExistsUsingPostgresql(database),
     storeResource: new ResourceStoreUsingPostgresql(database, resourcesCache), 
+    deleteResource: new DeleteResourceUsingPostgresql(database, resourcesCache)
 };
 const { SecurityRoute,
     Yop, Scripts, Styles, 
