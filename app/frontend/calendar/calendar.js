@@ -94,9 +94,11 @@ class CalendarDay extends HTMLElement {
             .then(data => {
                 this.resources = data.resources;
                 this.resourceMap = {};
-                this.resources.forEach((resource) => {
-                    this.resourceMap[resource.getId()] = resource; 
-                });
+                for (let i=0; i<this.resources.length; i++) {
+                    let resource = this.resources[i];
+                    resource.line = i;
+                    this.resourceMap[resource.getId()] = resource;
+                }
                 store.saveObject('resources', data.resources);
             })
             .catch(()=> { 

@@ -2,7 +2,7 @@ const { Database, migrate,
         EventSearchUsingPostgresql, EventStoreUsingPostgresql, 
         ResourceExistsUsingPostgresql, ResourceStoreUsingPostgresql,
         EventDeleteUsingPostgresql, DeleteResourceUsingPostgresql,
-        ResourcesRepository, 
+        ResourcesRepository, GetResourcesUsingPostgresql,
         UsersRepository, 
         ConfigurationRepository } = require('./backend/storage');
 let database = new Database();
@@ -24,7 +24,6 @@ server.guard = new Guard();
 const YopCache = require('./backend/yop/yop-cache');
 let resourcesCache = new YopCache();
 
-server.services['resources'] = new ResourcesService(new ResourcesRepository(database), resourcesCache);
 server.services['users'] = new UsersService(new UsersRepository(database));
 server.services['configuration'] = new ConfigurationRepository(database);
 
@@ -35,7 +34,8 @@ server.adapters = {
 
     resourceExists: new ResourceExistsUsingPostgresql(database),
     storeResource: new ResourceStoreUsingPostgresql(database, resourcesCache), 
-    deleteResource: new DeleteResourceUsingPostgresql(database, resourcesCache)
+    deleteResource: new DeleteResourceUsingPostgresql(database, resourcesCache),
+    getResources: new GetResourcesUsingPostgresql(database, resourcesCache)
 };
 const { SecurityRoute,
     Yop, Scripts, Styles, 
