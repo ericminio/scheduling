@@ -56,6 +56,7 @@ module.exports = {
         '/domain/calendar/resource-factory.js'
     ], 'ResourceFactory'),
     DeleteResource: code('/domain/calendar/delete-resource.js', 'DeleteResource'),
+    GetResources: code('/domain/calendar/get-resources.js', 'GetResources'),
 
     domain: contents([
         '/domain/configuration/configuration.js',
@@ -71,6 +72,7 @@ module.exports = {
         '/domain/calendar/search-events.js',
         '/domain/calendar/resource-factory.js',
         '/domain/calendar/create-resource.js',
-        '/domain/calendar/delete-resource.js'
+        '/domain/calendar/delete-resource.js',
+        '/domain/calendar/get-resources.js'
     ])
 }
