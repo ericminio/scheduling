@@ -1,6 +1,8 @@
 class ResourceFactory {
 
-    async buildResource(options) {
-        return new Resource(options);
+    buildResource(options) {
+        return new Promise((resolve, reject)=> {
+            resolve(new Resource(options));
+        })
     }
 };
