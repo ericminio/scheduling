@@ -1,4 +1,4 @@
-const { contents } = require('../utils/files');
+const { contents } = require('../../yop/utils/files');
 const { domain } = require('../domain')
 
 module.exports = {

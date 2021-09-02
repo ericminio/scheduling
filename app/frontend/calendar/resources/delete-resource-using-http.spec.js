@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { code } = require('../../../utils/files');
+const { code } = require('../../../../yop/utils/files');
 const DeleteResourceUsingHttp = code('./frontend/calendar/resources/delete-resource-using-http.js', 'DeleteResourceUsingHttp');
 const { Resource } = require('../../../domain')
 

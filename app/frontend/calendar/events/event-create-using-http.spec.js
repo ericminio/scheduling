@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { code } = require('../../../utils/files');
+const { code } = require('../../../../yop/utils/files');
 const EventCreateUsingHttp = code('./frontend/calendar/events/event-create-using-http.js', 'EventCreateUsingHttp');
 
 describe('Events repository using Http', ()=>{

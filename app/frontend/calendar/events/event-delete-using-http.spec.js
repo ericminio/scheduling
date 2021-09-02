@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { code } = require('../../../utils/files');
+const { code } = require('../../../../yop/utils/files');
 const EventDeleteUsingHttp = code('./frontend/calendar/events/event-delete-using-http.js', 'EventDeleteUsingHttp');
 const { Event } = require('../../../domain')
 

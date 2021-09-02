@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { codes } = require('../../../utils/files');
+const { codes } = require('../../../../yop/utils/files');
 const GetResourcesUsingHttp = codes([
     './domain/calendar/resource.js',
     './frontend/calendar/resources/get-resources-using-http.js'

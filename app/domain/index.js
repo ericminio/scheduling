@@ -1,4 +1,4 @@
-const { code, codes, contents } = require('../utils/files');
+const { code, codes, contents } = require('../../yop/utils/files');
 
 module.exports = {
     Resource: code('/domain/calendar/resource.js', 'Resource'),

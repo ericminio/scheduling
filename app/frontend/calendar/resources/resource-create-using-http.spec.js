@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { code } = require('../../../utils/files');
+const { code } = require('../../../../yop/utils/files');
 const ResourceCreateUsingHttp = code('./frontend/calendar/resources/resource-create-using-http.js', 'ResourceCreateUsingHttp');
 
 describe('Create resource using Http', ()=>{
