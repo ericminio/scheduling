@@ -39,7 +39,13 @@ class ResourceCreationForm extends HTMLElement {
             name: this.querySelector('#resource-name').value
         };
         this.createResource.please(payload)
-            .then(()=> { events.notify('resource created'); } );
+            .then(()=> { 
+                events.notify('success', { message:'Resource created' }); 
+                events.notify('resource created'); 
+            })
+            .catch((error) => {
+                events.notify('error', { message:error.message }); 
+            });
     }
 };
 customElements.define('resource-creation-form', ResourceCreationForm);

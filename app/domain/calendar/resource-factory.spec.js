@@ -22,4 +22,36 @@ describe('ResourceFactory', ()=>{
             })
             .catch(error => done(error));
     });
+
+    it('rejects empty type', (done)=>{
+        factory.buildResource({  name: 'empty type' })
+            .then(() => {
+                done('shoud fail')
+            })
+            .catch(error => {
+                try {
+                    expect(error.message).to.equal('Type can not be empty');
+                    done();
+                }
+                catch(error) {
+                    done(error);
+                }
+            });
+    });
+
+    it('rejects empty name', (done)=>{
+        factory.buildResource({  type: 'empty name' })
+            .then(() => {
+                done('shoud fail')
+            })
+            .catch(error => {
+                try {
+                    expect(error.message).to.equal('Name can not be empty');
+                    done();
+                }
+                catch(error) {
+                    done(error);
+                }
+            });
+    });
 })

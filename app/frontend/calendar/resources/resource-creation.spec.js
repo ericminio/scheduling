@@ -71,6 +71,41 @@ describe('Resource creation', ()=>{
         setTimeout(()=>{
             expect(wasCalled).to.equal(true);
             done();
+        }, wait);        
+    });
+
+    it('notifies on resource creation success', (done)=>{
+        trigger.click();
+        let notification = {};
+        let spy = {
+            update: (value)=> { notification = value; }
+        };
+        window.events.register(spy, 'success');
+
+        form.querySelector('#resource-type').value = 'this type';
+        form.querySelector('#resource-name').value = 'this name';
+        form.querySelector('#create-resource').click();
+        setTimeout(()=>{
+            expect(notification).to.deep.equal({ message:'Resource created' });
+            done();
+        }, wait);
+    });
+
+    it('notifies on resource creation failure', (done)=>{
+        sut.createResource.please = ()=> new Promise((resolve, reject)=>{ reject({ message:'creation failed' }); })
+        trigger.click();
+        let notification = {};
+        let spy = {
+            update: (value)=> { notification = value; }
+        };
+        window.events.register(spy, 'error');
+
+        form.querySelector('#resource-type').value = 'this type';
+        form.querySelector('#resource-name').value = 'this name';
+        form.querySelector('#create-resource').click();
+        setTimeout(()=>{
+            expect(notification).to.deep.equal({ message:'creation failed' });
+            done();
         }, wait);
     });
 })

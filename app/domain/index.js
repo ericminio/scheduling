@@ -18,7 +18,7 @@ module.exports = {
     SearchEvents: code('/domain/services/search-events.js', 'SearchEvents'),
     CreateEvent: code('/domain/services/create-event.js', 'CreateEvent'),
     CreateEventWithDependencies: codes([
-        '/domain/rules/is-valid-label.js',
+        '/domain/rules/is-not-empty.js',
         '/domain/rules/is-valid-datetime.js',
         '/domain/rules/is-overbooking.js',
         '/domain/calendar/event.js',
@@ -31,19 +31,20 @@ module.exports = {
 
     CreateResource: code('/domain/services/create-resource.js', 'CreateResource'),
     CreateResourceWithDependencies: codes([
+        '/domain/rules/is-not-empty.js',
         '/domain/calendar/resource.js',
         '/domain/calendar/resource-factory.js',
         '/domain/services/create-resource.js'
     ], 'CreateResource'),
 
     EventFactoryValidatingFieldsWithDependencies: codes([
-        '/domain/rules/is-valid-label.js',
+        '/domain/rules/is-not-empty.js',
         '/domain/rules/is-valid-datetime.js',
         '/domain/calendar/event.js',
         '/domain/calendar/event-factory-validating-fields.js'
     ], 'EventFactoryValidatingFields'),
     EventFactoryValidatingNeighboursWithDependencies: codes([
-        '/domain/rules/is-valid-label.js',
+        '/domain/rules/is-not-empty.js',
         '/domain/rules/is-valid-datetime.js',
         '/domain/rules/is-overbooking.js',
         '/domain/calendar/event.js',
@@ -52,6 +53,7 @@ module.exports = {
         '/domain/calendar/event-factory-validating-neighbours.js',
     ], 'EventFactoryValidatingNeighbours'),
     ResourceFactoryWithDependencies: codes([
+        '/domain/rules/is-not-empty.js',
         '/domain/calendar/resource.js',
         '/domain/calendar/resource-factory.js'
     ], 'ResourceFactory'),
@@ -65,7 +67,7 @@ module.exports = {
         '/domain/calendar/time.js',
         '/domain/rules/is-valid-date.js',
         '/domain/rules/is-valid-datetime.js',
-        '/domain/rules/is-valid-label.js',
+        '/domain/rules/is-not-empty.js',
         '/domain/calendar/event-factory-validating-fields.js',
         '/domain/services/create-event.js',
         '/domain/services/delete-event.js',
