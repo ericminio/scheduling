@@ -18,7 +18,7 @@ jobs:
         heroku_app_name: "yop-resto"
         heroku_email: "eric.mignot+scheduling@gmail.com"
         usedocker: true
-        appdir: app
+        appdir: .
         docker_heroku_process_type: web
         stack: container
         healthcheck: "https://yop-resto.herokuapp.com/ping"

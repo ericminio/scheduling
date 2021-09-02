@@ -16,7 +16,7 @@ services:
             - .:/usr/local/src
 
     app:
-        build: app
+        build: .
         image: scheduling:app
         container_name: scheduling-app
         ports: 
