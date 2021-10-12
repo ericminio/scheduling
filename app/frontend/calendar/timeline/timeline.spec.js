@@ -34,7 +34,7 @@ describe('Timeline', ()=>{
     let window;
     let document;
     let calendar;
-    let wait = 10;
+    let wait = 1;
 
     beforeEach((done)=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;

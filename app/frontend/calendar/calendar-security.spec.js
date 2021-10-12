@@ -22,7 +22,7 @@ describe('When resource load fails', ()=>{
     let document;
     let calendar;
     let page;
-    let wait = 10;
+    let wait = 1;
 
     beforeEach(()=>{
         window = (new JSDOM(html, { url:'http://localhost/calendar-day', runScripts: "dangerously", resources: "usable" })).window;

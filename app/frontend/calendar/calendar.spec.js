@@ -24,7 +24,7 @@ describe('Calendar', ()=>{
     let document;
     let page;
     let calendar;
-    let wait = 10;
+    let wait = 1;
 
     beforeEach(()=>{
         window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;

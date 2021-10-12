@@ -21,7 +21,7 @@ describe('Day selection - previous day', ()=>{
         `;
     let window;
     let document;
-    let wait = 10;
+    let wait = 1;
     let previousDay;
 
     beforeEach((done)=>{
