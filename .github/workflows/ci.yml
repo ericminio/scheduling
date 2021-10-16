@@ -26,6 +26,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      MOZ_HEADLESS: 1
+      DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
+
     steps:
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
@@ -40,23 +44,15 @@ jobs:
           cd app
           npm install
       - name: ping database
-        env:
-          DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
         run: |
           cd app
           npm run ping:database
       - name: internal tests
-        env:
-          DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
         run: |
           cd app
           npm run tests:internal
       - name: external tests
-        env:
-          MOZ_HEADLESS: 1
-          DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
         run: |
           cd app
           npm run tests:external
-
-  
+          

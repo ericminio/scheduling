@@ -30,6 +30,7 @@ When('he inspects event {string} scheduled with {string}', async (label, name)=>
 When('he tries to delete this event', async ()=> {
     let action = await World.robot.findElement('#delete-event');
     action.click(); 
+    await World.robot.wait(300);
 });
 
 Then('he receives the error message {string}', async (message)=> {
@@ -43,4 +44,5 @@ Given('he acknowledges the error message', async ()=> {
 When('he tries to delete this resource', async ()=> {
     let action = await World.robot.findElement('#delete-resource');
     action.click(); 
+    await World.robot.wait(300);
 });
