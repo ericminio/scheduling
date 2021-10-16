@@ -43,4 +43,5 @@ Given('he acknowledges the error message', async ()=> {
 When('he tries to delete this resource', async ()=> {
     let action = await World.robot.findElement('#delete-resource');
     action.click(); 
+    await World.robot.wait(300);
 });
