@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tests:external": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about",
-    "tests:external-with-only": "./node_modules/.bin/cucumber-js --publish-quiet -r ../about/steps --exit ../about --tags '@only'",
+    "tests:external-with-only": "./node_modules/.bin/cucumber-js --format @cucumber/pretty-formatter -r ../about/steps --exit ../about --tags '@only'",
     "tests:internal": "mocha './{,!(node_modules)/**}/*.spec.js' --exit --timeout 0",
     "tests:backend": "mocha './backend/**/*.spec.js' --exit --timeout 0",
     "tests:storage": "mocha './backend/storage/**/*.spec.js' --exit --timeout 0",
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/ericminio/yop-scheduling#readme",
   "devDependencies": {
     "@cucumber/cucumber": "^7.3.0",
+    "@cucumber/pretty-formatter": "^1.0.0-alpha.1",
     "chai": "^4.3.4",
     "jsdom": "^16.6.0",
     "mocha": "^9.0.1",

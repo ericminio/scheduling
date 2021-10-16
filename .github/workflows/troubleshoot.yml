@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - troubleshoot
+
+jobs:
+
+  test:
+    name: run tests
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: scheduling
+          POSTGRES_USER: dev
+          POSTGRES_PASSWORD: dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: setup firefox
+        uses: browser-actions/setup-firefox@latest
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: info
+        run: |
+          node --version
+          npm --version
+      - name: install
+        run: |
+          cd app
+          npm install
+      - name: run
+        env:
+          MOZ_HEADLESS: 1
+          DATABASE_URL: postgres://dev:dev@localhost:5432/scheduling
+        run: |
+          cd app
+          npm run ping:database
+          npm run tests:external-with-only
+
+  
