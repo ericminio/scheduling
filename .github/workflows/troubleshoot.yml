@@ -8,11 +8,8 @@ on:
 jobs:
 
   test:
+    name: run tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        firefox: [ '91.0.2' ]
-    name: run tests on firefox ${{ matrix.firefox }}
     
     services:
       postgres:
@@ -32,6 +29,8 @@ jobs:
     steps:
       - name: setup firefox
         uses: browser-actions/setup-firefox@latest
+        with:
+          firefox-version: 91.0.2
       - name: checkout code
         uses: actions/checkout@v2
       - name: info
