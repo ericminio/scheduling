@@ -1,4 +1,4 @@
-name: CI
+name: troubleshoot
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: setup firefox
-        uses: browser-actions/setup-firefox@latest
+        uses: browser-actions/setup-firefox@91.0.2
       - name: checkout code
         uses: actions/checkout@v2
       - name: info
