@@ -54,6 +54,14 @@ describe('Calendar', ()=>{
         page.appendChild(calendar);
     }
 
+    it('requests current date', ()=>{
+        let wasCalled;
+        window.events.register(()=> wasCalled = true, 'share date please');
+        showCalendar();
+        
+        expect(wasCalled).to.equal(true);
+    });
+
     it('leverages search events', (done)=>{
         calendar.searchEvents.inRange = (start, end)=> {
             return new Promise((resolve, reject)=> { 

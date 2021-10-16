@@ -101,5 +101,12 @@ describe('Day selection', ()=>{
 
             expect(spy).to.deep.equal(undefined);
         });
-    })
+    });
+    it('answers to share date requests', ()=> {
+        let spy;
+        window.events.register((value)=> spy = value, 'calendar update');
+        window.events.notify('share date please');
+
+        expect(spy).to.equal('2015-07-01');
+    });
 })

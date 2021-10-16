@@ -79,16 +79,20 @@ class CalendarDay extends HTMLElement {
         this.querySelector('events').addEventListener('click', (e)=>{
             events.notify('event creation', this.querySelector("#calendar-date").value);
         });
-        events.register(this, 'calendar update');
+        events.register(this.setDate.bind(this), 'calendar update');
         events.register(this, 'resource created');
         events.register(this, 'event created');
         events.register(this, 'event deleted');
         events.register(this, 'resource deleted');
+        
+        events.notify('share date please');
+    }
+    setDate(date) {
+        this.date = date;
         this.update();
     }
     update() {
-        let date = this.querySelector("#calendar-date").value;
-        this.updateResourcesAndEvents(date);
+        this.updateResourcesAndEvents(this.date);
     }
     updateResourcesAndEvents(date) {
         let resourcesLoaded = this.getResources.please();
