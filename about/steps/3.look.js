@@ -52,8 +52,10 @@ Then('he sees that {string} is scheduled with {string}', async (label, name)=> {
 
 Then('he sees that the resources are', async (expected)=> {
     let resources = await World.driver.findElements(By.css('yop-calendar-resource'));
+    console.log(`${resources.length} resources found`);
     for (let i=0; i<resources.length; i++) {
         let candidate = resources[i];
+        console.log('resource innerHTML', await candidate.getAttribute('innerHTML'));
         let actual = await candidate.getText();
         expect(actual).to.equal(expected.rawTable[i+1][0]);
     }
