@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { User } = require('./domain');
 const { Database, drop, migrate, UsersRepository } = require('./backend/storage');
 const Hash = require('./backend/storage/hash');
+const { request } = require('./backend/support/request');
 
 describe('start', ()=> {
 
@@ -143,4 +144,41 @@ describe('start', ()=> {
         })
     });
 
+    describe('healthcheck', () => {
+
+        let hash;
+        let server;
+        let database;
+        beforeEach(async ()=> {
+            database = new Database();
+            await drop(database);
+            await migrate(database);
+
+            hash = new Hash();
+            process.env.YOP_ADMIN_USERNAME = 'admin';
+            process.env.YOP_ADMIN_PASSWORD = hash.encrypt('admin');
+            let maybeLoaded = require.resolve('./start');
+            delete require.cache[maybeLoaded];
+            let start = require('./start');
+            await start.ready;            
+            server = start.server;         
+        });
+        afterEach((done)=> {
+            server.stop(done)
+        });
+        
+        it('is available via /ping', async ()=>{
+            const ping = {
+                hostname: 'localhost',
+                port: server.port,
+                path: '/ping',
+                method: 'GET'
+            };
+            let pong = await request(ping);
+
+            expect(pong.statusCode).to.equal(200);
+            expect(pong.headers['content-type']).to.equal('application/json');
+            expect(JSON.parse(pong.body)).to.deep.equal( { alive:true } );
+        });
+    });
 })
