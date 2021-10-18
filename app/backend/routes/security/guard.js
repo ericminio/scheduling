@@ -1,4 +1,4 @@
-const { SignIn, GetConfiguration, UpdateConfiguration } = require('./routes');
+const { SignIn, GetConfiguration, UpdateConfiguration } = require('..');
 
 class Guard {
     
@@ -21,6 +21,6 @@ class Guard {
         return true;
     }
     
-}
+};
 
 module.exports = Guard;

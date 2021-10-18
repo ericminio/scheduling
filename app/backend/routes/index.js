@@ -1,5 +1,5 @@
 module.exports = {
-    SecurityRoute: require('./security-route'),
+    SecurityRoute: require('./security/security-route'),
 
     Yop: require('./yop'),
     Scripts: require('./scripts'),

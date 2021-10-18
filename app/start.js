@@ -14,12 +14,11 @@ const port = process.env.PORT || 8015;
 let server = new Server(port);
 const { ResourceFactoryWithDependencies } = require('./domain');
 const NextUuid = require('./backend/storage/next-uuid');
-const Guard = require('./backend/guard');
+const Guard = require('./backend/routes/security/guard');
 
 server.resourceFactory = new ResourceFactoryWithDependencies();
 server.resourceFactory.idGenerator = new NextUuid();
 server.services = {};
-server.guard = new Guard();
 
 const YopCache = require('../yop/node/yop-cache');
 let resourcesCache = new YopCache();
@@ -46,7 +45,7 @@ const { SecurityRoute,
     NotImplemented, DefaultRoute } = require('./backend/routes');
 
 server.routes = [ 
-    new SecurityRoute(),
+    new SecurityRoute(new Guard()),
     new Yop(), new Scripts(), new Styles(), 
     new Ping(), new GetConfiguration(), new UpdateConfiguration(),
     new SignIn(),

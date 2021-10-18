@@ -1,7 +1,10 @@
 class SecurityRoute {
+    constructor(guard) {
+        this.guard = guard;
+    }
 
     async matches(request, server) {
-        let isAuthorized = await server.guard.isAuthorized(request, server);
+        let isAuthorized = await this.guard.isAuthorized(request, server);
         return ! isAuthorized;
     }
     async go(request, response) {

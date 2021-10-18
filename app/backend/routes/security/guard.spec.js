@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const Guard = require('./guard')
-const RepositoryUsingMap = require('./support/repository-using-map');
-const { Server } = require('../../yop/node/server');
-const { User } = require('../domain');
+const RepositoryUsingMap = require('../../support/repository-using-map');
+const { Server } = require('../../../../yop/node/server');
+const { User } = require('../../../domain');
 
 describe('Guard', ()=>{
 
