@@ -53,16 +53,25 @@ describe('Day selection', ()=>{
         let field = document.querySelector('#calendar-date');
         field.value = '2015-9-21';
         let spy;
-        window.events.register({ update:(value)=> { spy = value; } }, 'error');
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'error');
         document.querySelector('#calendar-search').click();
 
         expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
+    });
+    it('notifies immediately new listener of calendar update', ()=> {
+        let field = document.querySelector('#calendar-date');
+        field.value = '2015-09-21';
+        let spy;
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
+
+        expect(spy).to.deep.equal('2015-09-21');
     });
     it('notifies on valid date', ()=>{
         let field = document.querySelector('#calendar-date');
         field.value = '2015-09-21';
         let spy;
-        window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
+        spy = undefined;
         document.querySelector('#calendar-search').click();
 
         expect(spy).to.deep.equal('2015-09-21');
@@ -80,7 +89,8 @@ describe('Day selection', ()=>{
 
         it('notifies on Enter key', ()=>{
             let spy;
-            window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            spy = undefined;
             let field = document.querySelector('#calendar-date');
             field.value = '2021-09-21';
             let keyupEvent = new window.CustomEvent('keyup');
@@ -92,7 +102,8 @@ describe('Day selection', ()=>{
 
         it('notifies on Enter key only', ()=>{
             let spy;
-            window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
+            spy = undefined;
             let field = document.querySelector('#calendar-date');
             field.value = '2021-09-21';
             let keyupEvent = new window.CustomEvent('keyup');
@@ -101,12 +112,5 @@ describe('Day selection', ()=>{
 
             expect(spy).to.deep.equal(undefined);
         });
-    });
-    it('answers to share date requests', ()=> {
-        let spy;
-        window.events.register((value)=> spy = value, 'calendar update');
-        window.events.notify('share date please');
-
-        expect(spy).to.equal('2015-07-01');
     });
 })

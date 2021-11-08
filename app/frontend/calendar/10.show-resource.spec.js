@@ -28,20 +28,20 @@ describe('Show resource', ()=>{
     })
 
     it('displays resource when notified', ()=>{
-        window.events.notify('show resource', {});
+        window.eventBus.notify('show resource', {});
         form = document.querySelector('#show-resource-form');
 
         expect(form.classList.toString()).to.equal('vertical-form');
     });
 
     it('displays resource type', ()=>{
-        window.events.notify('show resource', { type:'bicycle' });
+        window.eventBus.notify('show resource', { type:'bicycle' });
 
         expect(document.querySelector('#resource-info-type').value).to.equal('bicycle');
     });
 
     it('displays resource name', ()=>{
-        window.events.notify('show resource', { name:'window table' });
+        window.eventBus.notify('show resource', { name:'window table' });
 
         expect(document.querySelector('#resource-info-name').value).to.equal('window table');
     });

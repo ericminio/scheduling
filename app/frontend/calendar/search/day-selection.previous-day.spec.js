@@ -43,7 +43,7 @@ describe('Day selection - previous day', ()=>{
     });
     it('notifies', ()=>{
         let spy;
-        window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
         previousDay.click();
 
         expect(spy).to.deep.equal('2015-06-30');

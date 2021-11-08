@@ -6,7 +6,7 @@ let file = (name)=>{
 }
 let yop = [
     './1.store.js',
-    './2.events.js',
+    './2.event-bus.js',
     './3.navigate.js',
     './4.route.js',
     './5.link.js'

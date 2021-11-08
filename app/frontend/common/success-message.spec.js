@@ -39,17 +39,17 @@ describe('Success message', ()=>{
     });
 
     it('becomes visible on success', ()=>{
-        window.events.notify('success', {})
+        window.eventBus.notify('success', {})
         expect(document.querySelector('#success-message').classList.toString()).to.equal('');
     });
 
     it('displays provided message', ()=>{
-        window.events.notify('success', { message: 'nice!' });
+        window.eventBus.notify('success', { message: 'nice!' });
         expect(document.querySelector('#success-message').innerHTML).to.equal('nice!');
     });
 
     it('will close on click', ()=>{
-        window.events.notify('success', { message: 'nice!' });
+        window.eventBus.notify('success', { message: 'nice!' });
         document.querySelector('#success-message').click();
         expect(document.querySelector('#success-message').classList.toString()).to.equal('hidden');
     });

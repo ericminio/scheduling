@@ -34,7 +34,7 @@ class ShowEvent extends HTMLElement {
     connectedCallback() {
         this.appendChild(showEventTemplate.content.cloneNode(true));
         this.querySelector('#delete-event').addEventListener('click', ()=> { this.goDeleteEvent(); });
-        events.register(this, 'show event');
+        eventBus.register(this, 'show event');
     }
     update(event) {
         this.event = event;
@@ -47,10 +47,10 @@ class ShowEvent extends HTMLElement {
     goDeleteEvent() {
         this.deleteEvent.please(this.event)
             .then(()=> { 
-                events.notify('event deleted'); 
+                eventBus.notify('event deleted'); 
                 this.querySelector('#show-event-form').classList.add('hidden');
             })
-            .catch(error => { events.notify('error', { message:error.message }); });
+            .catch(error => { eventBus.notify('error', { message:error.message }); });
     }
 };
 customElements.define('show-event', ShowEvent);

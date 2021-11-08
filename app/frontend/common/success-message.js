@@ -26,7 +26,7 @@ class SuccessMessage extends HTMLElement {
         this.appendChild(successMessageTemplate.content.cloneNode(true));
         this.querySelector('#success-message').addEventListener('click', ()=> { this.acknowledge(); } );
         this.element = this.querySelector('#success-message');
-        events.register(this, 'success');
+        eventBus.register(this, 'success');
     }
     update(value) {        
         this.opacity = 1.0;

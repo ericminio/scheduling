@@ -10,7 +10,7 @@ class ResourceRenderer extends HTMLElement {
         `;
         this.addEventListener('click', (e)=> {
             e.stopPropagation();
-            events.notify('show resource', resource);
+            eventBus.notify('show resource', resource);
         })
     }
     top(index) {

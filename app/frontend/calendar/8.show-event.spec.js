@@ -29,43 +29,43 @@ describe('Show event', ()=>{
     })
 
     it('displays event when notified', ()=>{
-        window.events.notify('show event', new Event({}));
+        window.eventBus.notify('show event', new Event({}));
         form = document.querySelector('#show-event-form');
 
         expect(form.classList.toString()).to.equal('vertical-form');
     });
 
     it('displays event label', ()=>{
-        window.events.notify('show event', new Event({ label:'Alex' }));
+        window.eventBus.notify('show event', new Event({ label:'Alex' }));
 
         expect(document.querySelector('#event-info-label').value).to.equal('Alex');
     });
 
     it('displays event start', ()=>{
-        window.events.notify('show event', new Event({ start:'2021-09-21 19:30' }));
+        window.eventBus.notify('show event', new Event({ start:'2021-09-21 19:30' }));
 
         expect(document.querySelector('#event-info-start').value).to.equal('2021-09-21 19:30');
     });
 
     it('displays event end', ()=>{
-        window.events.notify('show event', new Event({ end:'2021-09-21 23:30' }));
+        window.eventBus.notify('show event', new Event({ end:'2021-09-21 23:30' }));
 
         expect(document.querySelector('#event-info-end').value).to.equal('2021-09-21 23:30');
     });
 
     it('displays event notes', ()=>{
-        window.events.notify('show event', new Event({ notes:'birthday' }));
+        window.eventBus.notify('show event', new Event({ notes:'birthday' }));
 
         expect(document.querySelector('#event-info-notes').value).to.equal('birthday');
     });
 
     it('resists empty event label', ()=>{
-        window.events.notify('show event', new Event({ notes:'without label' }));
+        window.eventBus.notify('show event', new Event({ notes:'without label' }));
 
         expect(document.querySelector('#event-info-label').value).to.equal('');
     });
     it('resists empty event notes', ()=>{
-        window.events.notify('show event', new Event({ label:'without notes' }));
+        window.eventBus.notify('show event', new Event({ label:'without notes' }));
 
         expect(document.querySelector('#event-info-notes').value).to.equal('');
     });

@@ -37,7 +37,7 @@ describe('Resource click', ()=>{
         let spy = {
             update: (value)=> { actual = value; }
         };
-        window.events.register(spy, 'show resource');
+        window.eventBus.register(spy, 'show resource');
         calendarResource.digest(new Resource({ id:'this-id', name:'this-name', type:'this-type', line:42 }), 0);
         calendarResource.click();
         

@@ -64,7 +64,7 @@ describe('Resource creation', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'resource created');
+        window.eventBus.register(spy, 'resource created');
         form.querySelector('#resource-type').value = 'this type';
         form.querySelector('#resource-name').value = 'this name';
         form.querySelector('#create-resource').click();
@@ -80,7 +80,7 @@ describe('Resource creation', ()=>{
         let spy = {
             update: (value)=> { notification = value; }
         };
-        window.events.register(spy, 'success');
+        window.eventBus.register(spy, 'success');
 
         form.querySelector('#resource-type').value = 'this type';
         form.querySelector('#resource-name').value = 'this name';
@@ -98,7 +98,7 @@ describe('Resource creation', ()=>{
         let spy = {
             update: (value)=> { notification = value; }
         };
-        window.events.register(spy, 'error');
+        window.eventBus.register(spy, 'error');
 
         form.querySelector('#resource-type').value = 'this type';
         form.querySelector('#resource-name').value = 'this name';

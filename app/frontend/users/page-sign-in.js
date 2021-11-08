@@ -24,7 +24,7 @@ class PageSignIn extends HTMLElement {
         this.querySelector('#signin').addEventListener('click', ()=>{ this.login(); });
         this.querySelector('#username').focus();
         store.delete('user');
-        events.notify('signing-in')
+        eventBus.notify('signing-in')
     }
     login() {
         let credentials = {
@@ -34,10 +34,10 @@ class PageSignIn extends HTMLElement {
         api.signIn(credentials)
             .then((data)=> { 
                 store.saveObject('user', data);
-                events.notify('connected');
+                eventBus.notify('connected');
                 navigate.to('/calendar-day'); 
             })
-            .catch((error)=> { events.notify('error', error); })
+            .catch((error)=> { eventBus.notify('error', error); })
             ;
     }
 };

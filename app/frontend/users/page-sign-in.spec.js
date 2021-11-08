@@ -98,7 +98,7 @@ describe('Page Sign in', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'connected');
+        window.eventBus.register(spy, 'connected');
         window.api = { signIn:()=> { return new Promise((resolve)=> { resolve({ 
             username:'this-username', 
             key:'send-me' 

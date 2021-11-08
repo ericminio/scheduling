@@ -43,25 +43,25 @@ describe('Event creation', ()=>{
 
     it('becomes available via message', ()=> {
         expect(form.classList.toString()).to.equal('vertical-form hidden');
-        window.events.notify('event creation', '2015-07-01');
+        window.eventBus.notify('event creation', '2015-07-01');
 
         expect(form.classList.toString()).to.equal('vertical-form');
     });
 
     it('prepopulates start', ()=> {
-        window.events.notify('event creation', '1980-05-25');
+        window.eventBus.notify('event creation', '1980-05-25');
 
         expect(form.querySelector('#new-event-start').value).to.equal('1980-05-25 08:00');
     });
 
     it('prepopulates end', ()=> {
-        window.events.notify('event creation', '1980-05-25');
+        window.eventBus.notify('event creation', '1980-05-25');
 
         expect(form.querySelector('#new-event-end').value).to.equal('1980-05-25 20:00');
     });
 
     it('presents available resources present in store', ()=> {
-        window.events.notify('event creation', '1980-05-25');
+        window.eventBus.notify('event creation', '1980-05-25');
 
         expect(form.querySelector('#new-event-resource-one').value).to.equal('one');
         expect(form.querySelector('#new-event-resource-two').value).to.equal('two');
@@ -71,7 +71,7 @@ describe('Event creation', ()=>{
     it('sends expected payload', (done)=> {
         let spy = {};
         sut.createEvent.please = (payload)=> { spy = payload; return new Promise((resolve)=> { resolve(); })};
-        window.events.notify('event creation');
+        window.eventBus.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-notes').value = 'these-notes';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
@@ -97,9 +97,9 @@ describe('Event creation', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'event created');
+        window.eventBus.register(spy, 'event created');
         
-        window.events.notify('event creation');
+        window.eventBus.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
@@ -117,9 +117,9 @@ describe('Event creation', ()=>{
         let spy = {
             update: (value)=> { notification = value; }
         };
-        window.events.register(spy, 'success');
+        window.eventBus.register(spy, 'success');
         
-        window.events.notify('event creation');
+        window.eventBus.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
@@ -135,9 +135,9 @@ describe('Event creation', ()=>{
     it('does not send extra creation', (done)=> {
         let spy = 0;
         sut.createEvent.please = ()=> { spy ++; return new Promise((resolve)=> { resolve(); })};
-        window.events.notify('event creation');
-        window.events.notify('event creation');
-        window.events.notify('event creation');
+        window.eventBus.notify('event creation');
+        window.eventBus.notify('event creation');
+        window.eventBus.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';
@@ -153,8 +153,8 @@ describe('Event creation', ()=>{
 
     it('alerts on event save failure', (done)=> {
         sut.createEvent.please = ()=> new Promise((resolve, reject)=>{ reject({ message:'creation failed' }); })
-        window.events.register({ update:(value)=> { spy = value; } }, 'error');
-        window.events.notify('event creation');
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'error');
+        window.eventBus.notify('event creation');
         form.querySelector('#new-event-label').value = 'this label';
         form.querySelector('#new-event-start').value = '1980-05-25 08:00';
         form.querySelector('#new-event-end').value = '1980-05-25 10:00';

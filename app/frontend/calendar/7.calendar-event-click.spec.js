@@ -43,7 +43,7 @@ describe('Calendar Event click', ()=>{
         let spy = {
             update: (value)=> { actual = value; }
         };
-        window.events.register(spy, 'show event');
+        window.eventBus.register(spy, 'show event');
         calendarEvent.digest(
             new Event({ id:'event-id', label:'event-label', start:'18:00', end:'20:30', resources:[{ id:'resource-id' }] }), 
             new Resource({ id:'resource-id' })

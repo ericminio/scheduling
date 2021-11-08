@@ -25,8 +25,8 @@ class ErrorMessage extends HTMLElement {
     connectedCallback() {
         this.appendChild(errorMessageTemplate.content.cloneNode(true));
         this.querySelector('#error-message').addEventListener('click', ()=> { this.acknowledge(); } );
-        events.register(this, 'error');
-        events.register(this, 'acknowledge error')
+        eventBus.register(this, 'error');
+        eventBus.register(this, 'acknowledge error')
     }
     update(error, event) {
         if (event == 'acknowledge error') {

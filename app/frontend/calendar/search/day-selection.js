@@ -45,7 +45,7 @@ class DaySelection extends HTMLElement {
         });
         this.setDate(formatDate(today()));
         this.updateDayName();
-        events.register(this.notifiesWhenValid.bind(this), 'share date please');
+        eventBus.registerForNewListener(this.notifiesWhenValid.bind(this), 'calendar update');
     }
     setDate(value) {
         this.querySelector("#calendar-date").value = value;
@@ -64,10 +64,10 @@ class DaySelection extends HTMLElement {
     notifiesWhenValid() {
         let value = this.querySelector("#calendar-date").value;
         if (isValidDate(value)) {
-            events.notify('calendar update', value);
+            eventBus.notify('calendar update', value);
         }
         else {
-            events.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
+            eventBus.notify('error', { message:'Invalid date. Expected format is yyyy-mm-dd' });
         }
     }
 }

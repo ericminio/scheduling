@@ -194,7 +194,7 @@ describe('Header', ()=>{
 
         it('uses the new title', (done)=>{
             window.store.saveObject('configuration', { title:'Agenda', 'opening-hours':'8-18' });
-            window.events.notify('configuration updated')
+            window.eventBus.notify('configuration updated')
             setTimeout(()=> {
                 expect(document.querySelector('yop-header #title').innerHTML).to.equal('Agenda');
                 done();
@@ -203,7 +203,7 @@ describe('Header', ()=>{
 
         it('uses new opening hours', (done)=>{
             window.store.saveObject('configuration', { title:'Agenda', 'opening-hours':'8-18' });
-            window.events.notify('configuration updated');
+            window.eventBus.notify('configuration updated');
             setTimeout(()=> {
                 let root = document.documentElement;
                 let start = root.style.cssText;

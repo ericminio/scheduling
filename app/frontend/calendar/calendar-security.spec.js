@@ -52,7 +52,7 @@ describe('When resource load fails', ()=>{
                 reject();
             });
         };
-        window.events.notify('resource created');
+        window.eventBus.notify('resource created');
         setTimeout(()=>{
             expect(window.store.getObject('resources')).to.equal(null);
             done();
@@ -65,13 +65,13 @@ describe('When resource load fails', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'maybe signed-out');
+        window.eventBus.register(spy, 'maybe signed-out');
         calendar.getResources.please = ()=> {
             return new Promise((resolve, reject)=>{
                 reject();
             });
         };
-        window.events.notify('resource created');
+        window.eventBus.notify('resource created');
         setTimeout(()=>{
             expect(wasCalled).to.equal(true);
             done();

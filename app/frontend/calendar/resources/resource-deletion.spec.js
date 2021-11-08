@@ -31,7 +31,7 @@ describe('Resource deletion', ()=>{
     })
 
     it('is available from show resource box', ()=>{
-        window.events.notify('show resource', {});
+        window.eventBus.notify('show resource', {});
         
         expect(document.querySelector('#delete-resource')).not.to.equal(null);
     });
@@ -39,7 +39,7 @@ describe('Resource deletion', ()=>{
     it('sends the expected request', ()=>{
         let spy;
         sut.deleteResource.please = (resource)=> { spy = resource; return new Promise((resolve)=> { resolve(); }) }
-        window.events.notify('show resource', { id:'this-resource' });
+        window.eventBus.notify('show resource', { id:'this-resource' });
         document.querySelector('#delete-resource').click();
 
         expect(spy).to.deep.equal({ id:'this-resource' });
@@ -50,8 +50,8 @@ describe('Resource deletion', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'resource deleted');
-        window.events.notify('show resource', { id:'this-resource' });
+        window.eventBus.register(spy, 'resource deleted');
+        window.eventBus.notify('show resource', { id:'this-resource' });
         document.querySelector('#delete-resource').click();
         
         setTimeout(()=>{
@@ -61,7 +61,7 @@ describe('Resource deletion', ()=>{
     });
 
     it('closes resource info box', (done)=>{
-        window.events.notify('show resource', { id:'this-resource' });
+        window.eventBus.notify('show resource', { id:'this-resource' });
         document.querySelector('#delete-resource').click();
 
         setTimeout(()=>{

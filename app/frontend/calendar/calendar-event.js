@@ -12,7 +12,7 @@ class CalendarEvent extends HTMLElement {
         `;
         this.addEventListener('click', (e)=> {
             e.stopPropagation();
-            events.notify('show event', event);
+            eventBus.notify('show event', event);
         })
     }
     width(event) {

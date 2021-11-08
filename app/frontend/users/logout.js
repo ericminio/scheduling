@@ -34,9 +34,9 @@ class Logout extends HTMLElement {
         this.appendChild(logoutTemplate.content.cloneNode(true));
         this.querySelector('#logout-link').addEventListener('click', ()=> { this.logout(); });
         this.update();
-        events.register(this, 'maybe signed-out');
-        events.register(this, 'connected');
-        events.register(this, 'signing-in');
+        eventBus.register(this, 'maybe signed-out');
+        eventBus.register(this, 'connected');
+        eventBus.register(this, 'signing-in');
     }
     logout() {
         store.delete('user');

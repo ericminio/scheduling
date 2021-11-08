@@ -34,58 +34,58 @@ describe('Logout', ()=>{
 
     it('becomes visible when connected', ()=>{
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
+        window.eventBus.notify('connected');
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block');
     });
 
     it('navigates to /', ()=>{
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
+        window.eventBus.notify('connected');
         document.querySelector('#logout-link').click();
         expect(window.location.pathname).to.equal('/');
     });
 
     it('becomes hidden', ()=>{
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
+        window.eventBus.notify('connected');
         document.querySelector('#logout-link').click();
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
     });
 
     it('hidden when disconnected', ()=>{
         window.store.delete('user');
-        window.events.notify('maybe signed-out');
+        window.eventBus.notify('maybe signed-out');
 
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
     });
 
     it('hidden when signing-in', ()=>{
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
-        window.events.notify('signing-in');
+        window.eventBus.notify('connected');
+        window.eventBus.notify('signing-in');
 
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block hidden');
     });
 
     it('navigates when disconnected', ()=>{
         window.store.delete('user');
-        window.events.notify('maybe signed-out');
+        window.eventBus.notify('maybe signed-out');
 
         expect(window.location.pathname).to.equal('/');
     });
 
     it('visible when connected again', ()=>{
         window.store.delete('user');
-        window.events.notify('maybe signed-out');
+        window.eventBus.notify('maybe signed-out');
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
+        window.eventBus.notify('connected');
 
         expect(document.querySelector('#logout').classList.toString()).to.equal('logout inline-block');
     });
 
     it('display greetings', ()=>{
         window.store.saveObject('user', { username:'Alex' });
-        window.events.notify('connected');
+        window.eventBus.notify('connected');
         expect(document.querySelector('#logout-greetings').innerHTML).to.equal('Welcome, Alex');
     });
 })

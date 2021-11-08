@@ -77,15 +77,13 @@ class CalendarDay extends HTMLElement {
     async connectedCallback() {
         this.appendChild(calendarTemplate.content.cloneNode(true))
         this.querySelector('events').addEventListener('click', (e)=>{
-            events.notify('event creation', this.querySelector("#calendar-date").value);
+            eventBus.notify('event creation', this.querySelector("#calendar-date").value);
         });
-        events.register(this.setDate.bind(this), 'calendar update');
-        events.register(this, 'resource created');
-        events.register(this, 'event created');
-        events.register(this, 'event deleted');
-        events.register(this, 'resource deleted');
-        
-        events.notify('share date please');
+        eventBus.register(this.setDate.bind(this), 'calendar update');
+        eventBus.register(this, 'resource created');
+        eventBus.register(this, 'event created');
+        eventBus.register(this, 'event deleted');
+        eventBus.register(this, 'resource deleted');
     }
     setDate(date) {
         this.date = date;
@@ -109,7 +107,7 @@ class CalendarDay extends HTMLElement {
             })
             .catch(()=> { 
                 store.delete('resources'); 
-                events.notify('maybe signed-out')
+                eventBus.notify('maybe signed-out')
             });
             
         let start = `${date} 00:00:00`;

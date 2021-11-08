@@ -23,7 +23,7 @@ class ResourceCreationTrigger extends HTMLElement {
     async connectedCallback() {
         this.appendChild(resourceCreationTriggerTemplate.content.cloneNode(true))
         this.querySelector('#resource-creation-trigger').addEventListener('click', ()=>{
-            events.notify('resource creation trigger')
+            eventBus.notify('resource creation trigger')
         })
     }
 };

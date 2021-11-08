@@ -31,7 +31,7 @@ describe('Event deletion', ()=>{
     })
 
     it('is available from event info box', ()=>{
-        window.events.notify('show event', new Event({id:'42'}));
+        window.eventBus.notify('show event', new Event({id:'42'}));
 
         expect(document.querySelector('#delete-event')).not.to.equal(null);
     });
@@ -39,7 +39,7 @@ describe('Event deletion', ()=>{
     it('sends the expected request', ()=>{
         let spy;
         sut.deleteEvent.please = (event)=> { spy = event.getId(); return new Promise((resolve, reject)=> { resolve(); }) }
-        window.events.notify('show event', new Event({id:42}));
+        window.eventBus.notify('show event', new Event({id:42}));
         document.querySelector('#delete-event').click();
 
         expect(spy).to.equal(42);
@@ -50,8 +50,8 @@ describe('Event deletion', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'event deleted');
-        window.events.notify('show event', new Event({id:'42'}));
+        window.eventBus.register(spy, 'event deleted');
+        window.eventBus.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
         
         setTimeout(()=>{
@@ -61,7 +61,7 @@ describe('Event deletion', ()=>{
     });
 
     it('closes event info box', (done)=>{
-        window.events.notify('show event', new Event({id:'42'}));
+        window.eventBus.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
 
         setTimeout(()=>{
@@ -74,9 +74,9 @@ describe('Event deletion', ()=>{
     it('does not send extra deletion', ()=>{
         let spy = 0;
         sut.deleteEvent.please = (id)=> { spy ++; return new Promise((resolve, reject)=> { resolve(); }) }
-        window.events.notify('show event', new Event({id:'42'}));
-        window.events.notify('show event', new Event({id:'42'}));
-        window.events.notify('show event', new Event({id:'42'}));
+        window.eventBus.notify('show event', new Event({id:'42'}));
+        window.eventBus.notify('show event', new Event({id:'42'}));
+        window.eventBus.notify('show event', new Event({id:'42'}));
         document.querySelector('#delete-event').click();
 
         expect(spy).to.equal(1);

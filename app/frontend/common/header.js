@@ -42,7 +42,7 @@ class Header extends HTMLElement {
     connectedCallback() {
         this.appendChild(headerTemplate.content.cloneNode(true))
         this.update();
-        events.register(this, 'configuration updated');
+        eventBus.register(this, 'configuration updated');
     }
 
     async update() {

@@ -76,7 +76,7 @@ describe('Page Configuration', ()=>{
         let spy = {
             update: ()=> { wasCalled = true; }
         };
-        window.events.register(spy, 'configuration updated');
+        window.eventBus.register(spy, 'configuration updated');
         window.api = { saveConfiguration:()=> { return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#configuration-title').value = 'new-title';
         document.querySelector('#save-configuration').click();
@@ -91,7 +91,7 @@ describe('Page Configuration', ()=>{
         let spy = {
             update: (value)=> { wasCalled = value; }
         };
-        window.events.register(spy, 'success');
+        window.eventBus.register(spy, 'success');
         window.api = { saveConfiguration:()=> { return new Promise((resolve)=> { resolve(); })} };
         document.querySelector('#configuration-title').value = 'new-title';
         document.querySelector('#save-configuration').click();
@@ -131,7 +131,7 @@ describe('Page Configuration', ()=>{
             let spy = {
                 update: ()=> { wasCalled = true; }
             };
-            window.events.register(spy, 'maybe signed-out');
+            window.eventBus.register(spy, 'maybe signed-out');
             window.api.configuration = ()=> {
                 return new Promise((resolve, reject)=>{
                     reject();

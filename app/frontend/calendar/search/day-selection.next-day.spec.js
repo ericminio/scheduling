@@ -43,7 +43,7 @@ describe('Day selection - next day', ()=>{
     });
     it('notifies', ()=>{
         let spy;
-        window.events.register({ update:(value)=> { spy = value; } }, 'calendar update');
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
         nextDay.click();
 
         expect(spy).to.deep.equal('2015-07-02');

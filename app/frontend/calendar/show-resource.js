@@ -34,7 +34,7 @@ class ShowResource extends HTMLElement {
     connectedCallback() {
         this.appendChild(showResourceTemplate.content.cloneNode(true));
         this.querySelector('#delete-resource').addEventListener('click', ()=> { this.goDeleteResource(); });
-        events.register(this, 'show resource');
+        eventBus.register(this, 'show resource');
     }
     update(resource) {
         this.resource = resource;
@@ -45,7 +45,7 @@ class ShowResource extends HTMLElement {
     goDeleteResource() {
         this.deleteResource.please(this.resource)
             .then(()=> {
-                events.notify('resource deleted');
+                eventBus.notify('resource deleted');
                 this.querySelector('#show-resource-form').classList.add('hidden');
             });
     }

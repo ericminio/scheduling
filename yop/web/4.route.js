@@ -12,7 +12,7 @@ class Route extends HTMLElement {
             else {
                 this.then = this.innerHTML;
             }
-            events.register(this, 'navigation')
+            eventBus.register(this, 'navigation')
             this.update()
         }
     }

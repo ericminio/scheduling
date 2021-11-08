@@ -39,24 +39,24 @@ describe('Error message', ()=>{
     });
 
     it('becomes visible on error', ()=>{
-        window.events.notify('error', {})
+        window.eventBus.notify('error', {})
         expect(document.querySelector('#error-message').classList.toString()).to.equal('');
     });
 
     it('displays provided message', ()=>{
-        window.events.notify('error', { message: 'oops' });
+        window.eventBus.notify('error', { message: 'oops' });
         expect(document.querySelector('#error-message').innerHTML).to.equal('oops');
     });
 
     it('will close on click', ()=>{
-        window.events.notify('error', { message: 'oops' });
+        window.eventBus.notify('error', { message: 'oops' });
         document.querySelector('#error-message').click();
         expect(document.querySelector('#error-message').classList.toString()).to.equal('hidden');
     });
 
     it('will close on expected notification', ()=>{
-        window.events.notify('error', { message: 'oops' });
-        window.events.notify('acknowledge error');
+        window.eventBus.notify('error', { message: 'oops' });
+        window.eventBus.notify('acknowledge error');
         expect(document.querySelector('#error-message').classList.toString()).to.equal('hidden');
     });
 })

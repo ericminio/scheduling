@@ -28,7 +28,7 @@ class ResourceCreationForm extends HTMLElement {
         this.querySelector('#create-resource').addEventListener('click', ()=>{
             this.goCreateResource();
         });
-        events.register(this, 'resource creation trigger');
+        eventBus.register(this, 'resource creation trigger');
     }
     update() {
         this.querySelector('#resource-creation-form').classList.toggle('hidden');
@@ -40,11 +40,11 @@ class ResourceCreationForm extends HTMLElement {
         };
         this.createResource.please(payload)
             .then(()=> { 
-                events.notify('success', { message:'Resource created' }); 
-                events.notify('resource created'); 
+                eventBus.notify('success', { message:'Resource created' }); 
+                eventBus.notify('resource created'); 
             })
             .catch((error) => {
-                events.notify('error', { message:error.message }); 
+                eventBus.notify('error', { message:error.message }); 
             });
     }
 };

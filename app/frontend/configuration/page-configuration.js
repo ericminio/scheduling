@@ -47,7 +47,7 @@ class PageConfiguration extends HTMLElement {
                 this.querySelector('#configuration-opening-hours').value = configuration.getOpeningHours();
             })
             .catch(()=> {
-                events.notify('maybe signed-out');
+                eventBus.notify('maybe signed-out');
             });        
     }
     save() {
@@ -58,8 +58,8 @@ class PageConfiguration extends HTMLElement {
         api.saveConfiguration(configuration)
             .then(()=> {
                 store.saveObject('configuration', configuration);
-                events.notify('success', { message:'Configuration saved' });
-                events.notify('configuration updated');
+                eventBus.notify('success', { message:'Configuration saved' });
+                eventBus.notify('configuration updated');
             });
     }
 };

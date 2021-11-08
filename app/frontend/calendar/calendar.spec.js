@@ -54,14 +54,6 @@ describe('Calendar', ()=>{
         page.appendChild(calendar);
     }
 
-    it('requests current date', ()=>{
-        let wasCalled;
-        window.events.register(()=> wasCalled = true, 'share date please');
-        showCalendar();
-        
-        expect(wasCalled).to.equal(true);
-    });
-
     it('leverages search events', (done)=>{
         calendar.searchEvents.inRange = (start, end)=> {
             return new Promise((resolve, reject)=> { 
@@ -117,7 +109,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.events.notify('resource created');
+        window.eventBus.notify('resource created');
         setTimeout(()=>{
             expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
@@ -140,7 +132,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.events.notify('event created');
+        window.eventBus.notify('event created');
         setTimeout(()=>{
             expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
@@ -163,7 +155,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.events.notify('event deleted');
+        window.eventBus.notify('event deleted');
         setTimeout(()=>{
             expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
@@ -186,7 +178,7 @@ describe('Calendar', ()=>{
                 ]});
             });
         };
-        window.events.notify('resource deleted');
+        window.eventBus.notify('resource deleted');
         setTimeout(()=>{
             expect(document.querySelector('yop-calendar-day resources #resource-11')).not.to.equal(null);
             expect(document.querySelector('yop-calendar-day events #event-422-resource-11')).not.to.equal(null);
