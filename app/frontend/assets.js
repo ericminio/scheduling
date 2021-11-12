@@ -29,6 +29,7 @@ module.exports = {
         '/frontend/calendar/show-event.js',
         '/frontend/calendar/show-resource.js',
         '/frontend/calendar/page-calendar-day.js',
+        '/frontend/coming-up/page-coming-up.js',
         '/frontend/common/error-message.js',
         '/frontend/common/header.js',
         '/frontend/common/menu.js',
