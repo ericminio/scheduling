@@ -39,4 +39,5 @@ Then('he sees the notes for this event are {string}', async (notes)=> {
 Then('he sees that day {string} has event {string}', async (date, label)=> {
     let actual = await World.robot.text(`#day-${date}`);
     expect(actual).to.contain(label);
+    expect(actual).to.contain(date);
 });

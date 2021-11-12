@@ -35,7 +35,7 @@ menuTemplate.innerHTML = `
                 <li class="menu" id="menu-calendar">CALENDAR</li>
             </yop-link>
             <yop-link to="/coming-up">
-                <li class="menu" id="menu-coming-up">COMING UP</li>
+                <li class="menu with-separator" id="menu-coming-up">COMING UP</li>
             </yop-link>
             <yop-link to="/configuration">
                 <li class="menu with-separator" id="menu-configuration">CONFIGURATION</li>
