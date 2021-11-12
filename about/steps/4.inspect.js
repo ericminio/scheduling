@@ -36,3 +36,7 @@ Then('he sees the notes for this event are {string}', async (notes)=> {
     let actual = await element.getAttribute('value');
     expect(actual).to.equal(notes);
 });
+Then('he sees that day {string} has event {string}', async (date, label)=> {
+    let actual = await World.robot.text(`#day-${date}`);
+    expect(actual).to.contain(label);
+});

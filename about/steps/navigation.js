@@ -19,7 +19,14 @@ let openConfiguration = async ()=> {
     await World.driver.sleep(300);
 };
 
+let openComingUp = async ()=> {
+    let menu = await World.robot.findElement('#menu-coming-up');
+    await menu.click();
+    await World.driver.sleep(300);
+};
+
 module.exports = {
     openCalendarDay: openCalendarDay,
-    openConfiguration: openConfiguration
+    openConfiguration: openConfiguration,
+    openComingUp: openComingUp
 };
