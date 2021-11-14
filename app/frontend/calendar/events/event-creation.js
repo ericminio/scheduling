@@ -36,7 +36,10 @@ class EventCreation extends HTMLElement {
     connectedCallback() {
         this.appendChild(eventCreationTemplate.content.cloneNode(true));
         this.querySelector('#create-event').addEventListener('click', ()=> { this.goCreateEvent(); });
-        eventBus.register(this, 'event creation');
+        this.eventId = eventBus.register(this, 'event creation');
+    }
+    disconnectedCallback() {
+        eventBus.unregister(this.eventId);
     }
     update(date) {
         let resources = store.getObject('resources');

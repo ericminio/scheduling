@@ -34,7 +34,10 @@ class ShowEvent extends HTMLElement {
     connectedCallback() {
         this.appendChild(showEventTemplate.content.cloneNode(true));
         this.querySelector('#delete-event').addEventListener('click', ()=> { this.goDeleteEvent(); });
-        eventBus.register(this, 'show event');
+        this.eventId = eventBus.register(this, 'show event');
+    }
+    disconnectedCallback(){
+        eventBus.unregister(this.eventId);
     }
     update(event) {
         this.event = event;

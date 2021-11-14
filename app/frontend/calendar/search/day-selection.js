@@ -45,7 +45,10 @@ class DaySelection extends HTMLElement {
         });
         this.setDate(formatDate(today()));
         this.updateDayName();
-        eventBus.registerForNewListener(this.notifiesWhenValid.bind(this), 'calendar update');
+        this.eventId = eventBus.registerForNewListener(this.notifiesWhenValid.bind(this), 'calendar update');
+    }
+    disconnectedCallback() {
+        eventBus.unregisterForNewListener(this.eventId);
     }
     setDate(value) {
         this.querySelector("#calendar-date").value = value;

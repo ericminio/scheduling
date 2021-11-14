@@ -34,7 +34,10 @@ class ShowResource extends HTMLElement {
     connectedCallback() {
         this.appendChild(showResourceTemplate.content.cloneNode(true));
         this.querySelector('#delete-resource').addEventListener('click', ()=> { this.goDeleteResource(); });
-        eventBus.register(this, 'show resource');
+        this.eventId = eventBus.register(this, 'show resource');
+    }
+    disconnectedCallback() {
+        eventBus.unregister(this.eventId);
     }
     update(resource) {
         this.resource = resource;

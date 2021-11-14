@@ -28,7 +28,10 @@ class ResourceCreationForm extends HTMLElement {
         this.querySelector('#create-resource').addEventListener('click', ()=>{
             this.goCreateResource();
         });
-        eventBus.register(this, 'resource creation trigger');
+        this.eventId = eventBus.register(this, 'resource creation trigger');
+    }
+    disconnectedCallback() {
+        eventBus.unregister(this.eventId);
     }
     update() {
         this.querySelector('#resource-creation-form').classList.toggle('hidden');

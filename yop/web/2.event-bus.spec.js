@@ -94,4 +94,60 @@ describe('events bus', ()=> {
         expect(first).to.equal(true);
         expect(second).to.equal(true);
     });
+
+    describe('unregister', ()=> {
+        
+        it('is available', ()=> {
+            let spy;
+            let id = eventBus.register({ update: (value)=> { spy = value; }}, 'event');
+            eventBus.unregister(id);
+            eventBus.notify('event', 42);
+    
+            expect(spy).to.equal(undefined);
+        });
+        it('ignores unknown id', ()=> {
+            let spy;
+            let id = eventBus.register({ update: (value)=> { spy = value; }}, 'event');
+            eventBus.unregister(id+1);
+            eventBus.notify('event', 42);
+    
+            expect(spy).to.equal(42);
+        });
+        it('is available for registration listening', ()=> {
+            let newListener = false;
+            let id = eventBus.registerForNewListener(()=> newListener = true, 'any event');
+            eventBus.unregisterForNewListener(id);
+            eventBus.register(()=> {}, 'any event');
+    
+            expect(newListener).to.equal(false);
+        });
+        it('is available for a bulk of ids', ()=> {
+            let one = eventBus.register({ update: ()=> { }}, 'this event');
+            let two = eventBus.register({ update: ()=> { }}, 'that event');
+            eventBus.unregisterAll([one, two]);
+    
+            expect(eventBus.listeners).to.deep.equal({ });
+        });
+    
+    });
+
+    describe('emptyness', ()=> {
+
+        it('is the starting point', ()=> {
+            expect(eventBus.isEmpty()).to.equal(true);
+        });
+        it('becomes history once registration happens', ()=> {
+            eventBus.register({ update: ()=> {  }}, 'this event');
+            expect(eventBus.isEmpty()).to.equal(false);
+        });
+        it('becomes history once registration of listener happens', ()=> {
+            eventBus.registerForNewListener({ update: ()=> {  }}, 'this event');
+            expect(eventBus.isEmpty()).to.equal(false);
+        });
+        it('can be effective again after unregistration', ()=> {
+            let id = eventBus.register({ update: ()=> { }}, 'event');
+            eventBus.unregister(id);
+            expect(eventBus.isEmpty()).to.equal(true);
+        });
+    });
 });

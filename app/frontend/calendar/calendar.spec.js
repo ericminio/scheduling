@@ -185,4 +185,10 @@ describe('Calendar', ()=>{
             done();
         }, wait);
     });
+    it('cleans eventBus on disconnection', ()=> {
+        showCalendar();
+        calendar.remove();
+
+        expect(window.eventBus.isEmpty()).to.equal(true);
+    })
 })

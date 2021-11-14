@@ -68,7 +68,7 @@ calendarTemplate.innerHTML = `
 class CalendarDay extends HTMLElement {
 
     constructor() {
-        super();
+        super();        
         this.searchEvents = new SearchEvents();
         this.searchEvents.use({ searchEvents:new EventsSearchUsingHttp(api) });
         this.getResources = new GetResources();
@@ -79,11 +79,16 @@ class CalendarDay extends HTMLElement {
         this.querySelector('events').addEventListener('click', (e)=>{
             eventBus.notify('event creation', this.querySelector("#calendar-date").value);
         });
-        eventBus.register(this.setDate.bind(this), 'calendar update');
-        eventBus.register(this, 'resource created');
-        eventBus.register(this, 'event created');
-        eventBus.register(this, 'event deleted');
-        eventBus.register(this, 'resource deleted');
+        this.eventIds = [
+            eventBus.register(this.setDate.bind(this), 'calendar update'),
+            eventBus.register(this, 'resource created'),
+            eventBus.register(this, 'event created'),
+            eventBus.register(this, 'event deleted'),
+            eventBus.register(this, 'resource deleted')
+        ]
+    }
+    async disconnectedCallback() {
+        eventBus.unregisterAll(this.eventIds);
     }
     setDate(date) {
         this.date = date;
