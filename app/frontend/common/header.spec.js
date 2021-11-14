@@ -48,6 +48,30 @@ describe('Header', ()=>{
         });
     });
 
+    it('cleans eventBus on disconnection', ()=> {
+        let html = `
+            <!DOCTYPE html>
+            <html lang="en">
+                <body>
+                    <yop-header></yop-header>
+                    <script>
+                        ${yop}
+                        ${domain}
+                        ${data}
+                        store.saveObject('configuration', 
+                            { title:'Resto', 'opening-hours':'12-15' });
+                        ${components}
+                    </script>
+                </body>
+            </html>
+            `;
+        let window = (new JSDOM(html, { url:'http://localhost', runScripts: "dangerously", resources: "usable" })).window;
+        let document = window.document;
+        document.querySelector('yop-header').remove();
+
+        expect(window.eventBus.isEmpty()).to.equal(true);
+    });
+
     describe('When configuration is not already available', ()=> {
         let html = `
             <!DOCTYPE html>

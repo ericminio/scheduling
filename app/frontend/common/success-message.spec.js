@@ -53,4 +53,10 @@ describe('Success message', ()=>{
         document.querySelector('#success-message').click();
         expect(document.querySelector('#success-message').classList.toString()).to.equal('hidden');
     });
+
+    it('cleans eventBus on disconnection', ()=> {
+        document.querySelector('yop-success-message').remove();
+
+        expect(window.eventBus.isEmpty()).to.equal(true);
+    });
 })

@@ -59,4 +59,10 @@ describe('Error message', ()=>{
         window.eventBus.notify('acknowledge error');
         expect(document.querySelector('#error-message').classList.toString()).to.equal('hidden');
     });
+
+    it('cleans eventBus on disconnection', ()=> {
+        document.querySelector('yop-error-message').remove();
+
+        expect(window.eventBus.isEmpty()).to.equal(true);
+    })
 })

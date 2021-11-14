@@ -88,4 +88,10 @@ describe('Logout', ()=>{
         window.eventBus.notify('connected');
         expect(document.querySelector('#logout-greetings').innerHTML).to.equal('Welcome, Alex');
     });
+
+    it('cleans eventBus on disconnection', ()=> {
+        document.querySelector('yop-logout').remove();
+
+        expect(window.eventBus.isEmpty()).to.equal(true);
+    });
 })
