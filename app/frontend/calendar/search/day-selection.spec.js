@@ -58,14 +58,6 @@ describe('Day selection', ()=>{
 
         expect(spy).to.deep.equal({ message:'Invalid date. Expected format is yyyy-mm-dd' });
     });
-    it('notifies immediately new listener of calendar update', ()=> {
-        let field = document.querySelector('#calendar-date');
-        field.value = '2015-09-21';
-        let spy;
-        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
-
-        expect(spy).to.deep.equal('2015-09-21');
-    });
     it('notifies on valid date', ()=>{
         let field = document.querySelector('#calendar-date');
         field.value = '2015-09-21';

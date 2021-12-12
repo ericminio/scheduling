@@ -1,14 +1,14 @@
 class EventBus {
     constructor() {
         this.listeners = {}
-        this.registrationListeners = {}
         this.id = 0;
+        this.lastValues = {}
     }
     isEmpty() {
-        return Object.keys(this.listeners).length == 0
-                && Object.keys(this.registrationListeners).length == 0;
+        return Object.keys(this.listeners).length == 0;
     }
     notify(key, value) {
+        this.lastValues[key] = value;
         let listeners = this.listeners[key]
         if (listeners !== undefined) {
             for (var i=0; i<listeners.length; i++) {
@@ -24,17 +24,10 @@ class EventBus {
     }
     register(listener, key) {
         let id = this.save(listener, key, this.listeners);
-        
-        let registrationListeners = this.registrationListeners[key];
-        if (registrationListeners !== undefined) {
-            for (var i=0; i<registrationListeners.length; i++) {
-                registrationListeners[i].listener();
-            }
+        if (this.lastValues[key] !== undefined) {
+            this.notify(key, this.lastValues[key])
         }
         return id;
-    }
-    registerForNewListener(listener, key) {
-        return this.save(listener, key, this.registrationListeners);
     }
     unregister(id) {
         this.remove(id, this.listeners);
@@ -44,9 +37,6 @@ class EventBus {
             let id = ids[i];
             this.unregister(id);
         }
-    }
-    unregisterForNewListener(id) {
-        this.remove(id, this.registrationListeners);
     }
     save(listener, key, map) {
         if (map[key] === undefined) {

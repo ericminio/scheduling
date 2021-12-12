@@ -68,33 +68,6 @@ describe('events bus', ()=> {
         expect(received).to.equal(42);
     });
 
-    it('offers registration listening', ()=> {
-        let newListener = false;
-        eventBus.registerForNewListener(()=> newListener = true, 'any event');
-        eventBus.register(()=> {}, 'any event');
-
-        expect(newListener).to.equal(true);
-    });
-
-    it('offers registration listening for specific event', ()=> {
-        let newListener = false;
-        eventBus.registerForNewListener(()=> newListener = true, 'this event');        
-        eventBus.register(()=> {}, 'other event');
-
-        expect(newListener).to.equal(false);
-    });
-
-    it('will notify all callbacks listening to registration', ()=> {
-        let first = false;
-        let second = false;
-        eventBus.registerForNewListener(()=> first = true, 'any event');
-        eventBus.registerForNewListener(()=> second = true, 'any event');
-        eventBus.register(()=> {}, 'any event');
-
-        expect(first).to.equal(true);
-        expect(second).to.equal(true);
-    });
-
     describe('unregister', ()=> {
         
         it('is available', ()=> {
@@ -112,14 +85,6 @@ describe('events bus', ()=> {
             eventBus.notify('event', 42);
     
             expect(spy).to.equal(42);
-        });
-        it('is available for registration listening', ()=> {
-            let newListener = false;
-            let id = eventBus.registerForNewListener(()=> newListener = true, 'any event');
-            eventBus.unregisterForNewListener(id);
-            eventBus.register(()=> {}, 'any event');
-    
-            expect(newListener).to.equal(false);
         });
         it('is available for a bulk of ids', ()=> {
             let one = eventBus.register({ update: ()=> { }}, 'this event');
@@ -140,14 +105,46 @@ describe('events bus', ()=> {
             eventBus.register({ update: ()=> {  }}, 'this event');
             expect(eventBus.isEmpty()).to.equal(false);
         });
-        it('becomes history once registration of listener happens', ()=> {
-            eventBus.registerForNewListener({ update: ()=> {  }}, 'this event');
-            expect(eventBus.isEmpty()).to.equal(false);
-        });
         it('can be effective again after unregistration', ()=> {
             let id = eventBus.register({ update: ()=> { }}, 'event');
             eventBus.unregister(id);
             expect(eventBus.isEmpty()).to.equal(true);
         });
     });
+
+    describe('race condition solver', () => {
+        
+        it('will notify immediately with last value', () => {
+            eventBus.notify('news', 42);
+            let received;
+            let callback = (value)=> { received = value; }
+            eventBus.register(callback, 'news');
+    
+            expect(received).to.equal(42);
+        })
+        it('does not trigger for a different event', () => {
+            eventBus.notify('news', 42);
+            let received;
+            let callback = (value)=> { received = value; }
+            eventBus.register(callback, 'other');
+    
+            expect(received).to.equal(undefined);
+        }) 
+        it('does not trigger when no data is available', () => {
+            let received;
+            let callback = (value)=> { received = value; }
+            eventBus.register(callback, 'other');
+    
+            expect(received).to.equal(undefined);
+        }) 
+        it('only keeps last value', () => {
+            eventBus.notify('news', 42);
+            eventBus.notify('news', 15);
+            let received;
+            let callback = (value)=> { received = value; }
+            eventBus.register(callback, 'news');
+    
+            expect(received).to.equal(15);
+        }) 
+    })
 });
