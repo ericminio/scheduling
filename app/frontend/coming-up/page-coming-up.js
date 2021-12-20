@@ -40,14 +40,8 @@ comingUpTemplate.innerHTML = `
             <tr>
                 <td class="column-one"></td>
                 <td class="column-two-three-together" colspan="2">
-                    <yop-day-selection></yop-day-selection>
-                </td>
-            </tr>
-            <tr>
-                <td class="column-one"></td>
-                <td class="column-two-three-together" colspan="2">
                     <ol id="day-2015-09-21">
-                        <li>2015-09-21 Birthday</li>
+                        <li></li>
                     </ol>
                 </td>
             </tr>
@@ -60,10 +54,29 @@ class PageComingUp extends HTMLElement {
 
     constructor() {
         super();
+        this.searchEvents = new SearchEvents();
+        this.searchEvents.use({ searchEvents:new EventsSearchUsingHttp(api) });
     }
     async connectedCallback() {
         this.appendChild(comingUpTemplate.content.cloneNode(true))
+        this.load(today())               
     }
+    load(date) {
+        let start = `${formatDate(date)} 00:00:00`;
+        let end = `${formatDate(addDays(30, date))} 00:00:00`;
+        let eventsLoaded = this.searchEvents.inRange(start, end);
+        this.clear();
+        eventsLoaded.then(data => {
+            this.displayEvents(data.events)
+        }); 
+    }
+    clear() {
+
+    }
+    displayEvents(events) {
+        this.querySelector('#day-2015-09-21').innerHTML = `<li>${JSON.stringify(events)}</li>`
+    }
+
 };
 customElements.define('page-coming-up', PageComingUp);
 

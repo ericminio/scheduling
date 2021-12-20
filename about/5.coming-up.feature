@@ -17,5 +17,6 @@ Feature: List of future events
         Given he creates the following events
             | Label      | Start             | End              | Resources     |
             | Birthday   | 2015-09-21 13:00  | 2015-09-21 17:00 | table #1      |
-        Given he opens the coming-up page on "2015-09-20"
+        Given today is "2015-09-20"
+        Given he opens the coming-up page 
         Then he sees that day "2015-09-21" has event "Birthday"

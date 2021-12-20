@@ -31,3 +31,6 @@ var formatDate = (date)=> {
 var zeroLeft = (number)=> {
     return number < 10 ? '0'+number : ''+number;
 };
+var addDays = (days, date) => {
+    return new Date(date.getTime() + 1000*60*60*24 * days);
+}
