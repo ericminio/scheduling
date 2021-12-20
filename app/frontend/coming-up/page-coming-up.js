@@ -17,19 +17,6 @@ comingUpTemplate.innerHTML = `
         margin-left: 0px;
         margin-right: 0px;
     }
-    .column-one {
-        width: var(--resourceAreaWidth);
-    }
-    .column-two, .column-three {
-        width: calc(var(--agendaAreaWidth) / 2);
-    }
-    .column-two-three-together {
-        width: var(--agendaAreaWidth);
-    }
-
-    .calendar-table .vertical-form {
-        margin-top: 0px;
-    }
 </style>
 
 <yop-menu></yop-menu>
@@ -38,17 +25,19 @@ comingUpTemplate.innerHTML = `
     <table class="coming-up-table">
         <tbody>
             <tr>
-                <td class="column-one"></td>
-                <td class="column-two-three-together" colspan="2">
-                    <ol id="day-2015-09-21">
-                        <li></li>
-                    </ol>
-                </td>
+                <td id="coming-up-events"></td>
             </tr>
         </tbody>
     </table>
 </div>
 `;
+
+const comingUpEventTemplate = `
+<div id="coming-up-event-id">
+    event-starthour - event-endhour event-label 
+</div>`
+const comingUpEventDayTemplateOpen = `<div id="day-id">event-day`;
+const comingUpEventDayTemplateClose = `</div>`;
 
 class PageComingUp extends HTMLElement {
 
@@ -59,6 +48,7 @@ class PageComingUp extends HTMLElement {
     }
     async connectedCallback() {
         this.appendChild(comingUpTemplate.content.cloneNode(true))
+        this.eventsView = this.querySelector('#coming-up-events')
         this.load(today())               
     }
     load(date) {
@@ -74,7 +64,28 @@ class PageComingUp extends HTMLElement {
 
     }
     displayEvents(events) {
-        this.querySelector('#day-2015-09-21').innerHTML = `<li>${JSON.stringify(events)}</li>`
+        events.sort((a, b) => a.start > b.start)        
+        let html = ''
+        let previousDay;
+        events.forEach(event => {
+            let day = event.start.split(' ')[0]
+            if (day != previousDay) {
+                previousDay = day
+                if (html.length >0) {
+                    html += comingUpEventDayTemplateClose;
+                }
+                html += comingUpEventDayTemplateOpen
+                    .replace('day-id', `day-${day}`)
+                    .replace('event-day', day)
+            }
+
+            html += comingUpEventTemplate
+                .replace('event-id', `event-${event.id}`)
+                .replace('event-label', event.label)
+                .replace('event-starthour', event.start.split(' ')[1])
+                .replace('event-endhour', event.end.split(' ')[1])
+        })
+        this.eventsView.innerHTML = html
     }
 
 };
