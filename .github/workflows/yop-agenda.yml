@@ -3,7 +3,7 @@ name: yop-agenda
 on:
   push:
     branches:
-      - heroku
+      - agenda
 
 jobs:
 
