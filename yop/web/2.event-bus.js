@@ -22,9 +22,10 @@ class EventBus {
             }
         }
     }
-    register(listener, key) {
+    register(listener, key, options) {
+        let sendLastValue = options && options.sendLastValue;
         let id = this.save(listener, key, this.listeners);
-        if (this.lastValues[key] !== undefined) {
+        if (sendLastValue && this.lastValues[key] !== undefined) {
             this.notify(key, this.lastValues[key])
         }
         return id;

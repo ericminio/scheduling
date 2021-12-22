@@ -114,26 +114,34 @@ describe('events bus', ()=> {
 
     describe('race condition solver', () => {
         
-        it('will notify immediately with last value', () => {
+        it('will notify immediately with last value when specified', () => {
+            eventBus.notify('news', 42);
+            let received;
+            let callback = (value)=> { received = value; }
+            eventBus.register(callback, 'news', { sendLastValue:true });
+    
+            expect(received).to.equal(42);
+        })
+        it('will not if not specified', () => {
             eventBus.notify('news', 42);
             let received;
             let callback = (value)=> { received = value; }
             eventBus.register(callback, 'news');
     
-            expect(received).to.equal(42);
+            expect(received).to.equal(undefined);
         })
         it('does not trigger for a different event', () => {
             eventBus.notify('news', 42);
             let received;
             let callback = (value)=> { received = value; }
-            eventBus.register(callback, 'other');
+            eventBus.register(callback, 'other', { sendLastValue:true });
     
             expect(received).to.equal(undefined);
         }) 
         it('does not trigger when no data is available', () => {
             let received;
             let callback = (value)=> { received = value; }
-            eventBus.register(callback, 'other');
+            eventBus.register(callback, 'event', { sendLastValue:true });
     
             expect(received).to.equal(undefined);
         }) 
@@ -142,7 +150,7 @@ describe('events bus', ()=> {
             eventBus.notify('news', 15);
             let received;
             let callback = (value)=> { received = value; }
-            eventBus.register(callback, 'news');
+            eventBus.register(callback, 'news', { sendLastValue:true });
     
             expect(received).to.equal(15);
         }) 
