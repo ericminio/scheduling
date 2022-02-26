@@ -68,6 +68,16 @@ describe('Day selection', ()=>{
 
         expect(spy).to.deep.equal('2015-09-21');
     });
+    it('notifies on calendar update request', ()=>{
+        let field = document.querySelector('#calendar-date');
+        field.value = '2015-09-21';
+        let spy;
+        window.eventBus.register({ update:(value)=> { spy = value; } }, 'calendar update');
+        spy = undefined;
+        window.eventBus.notify('calendar update request');
+
+        expect(spy).to.deep.equal('2015-09-21');
+    });
     describe('calendar day keyup', ()=>{
 
         it('updates day name', ()=>{

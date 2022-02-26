@@ -54,6 +54,14 @@ describe('Calendar', ()=>{
         page.appendChild(calendar);
     }
 
+    it('requests calendar update', ()=>{
+        let called = false;
+        window.eventBus.register(()=> { called = true }, 'calendar update request');
+        showCalendar();
+        
+        expect(called).to.equal(true);
+    })
+
     it('leverages search events', (done)=>{
         calendar.searchEvents.inRange = (start, end)=> {
             return new Promise((resolve, reject)=> { 

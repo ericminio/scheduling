@@ -2,13 +2,11 @@ class EventBus {
     constructor() {
         this.listeners = {}
         this.id = 0;
-        this.lastValues = {}
     }
     isEmpty() {
         return Object.keys(this.listeners).length == 0;
     }
     notify(key, value) {
-        this.lastValues[key] = value;
         let listeners = this.listeners[key]
         if (listeners !== undefined) {
             for (var i=0; i<listeners.length; i++) {
@@ -22,13 +20,8 @@ class EventBus {
             }
         }
     }
-    register(listener, key, options) {
-        let sendLastValue = options && options.sendLastValue;
-        let id = this.save(listener, key, this.listeners);
-        if (sendLastValue && this.lastValues[key] !== undefined) {
-            this.notify(key, this.lastValues[key])
-        }
-        return id;
+    register(listener, key) {
+        return this.save(listener, key, this.listeners);
     }
     unregister(id) {
         this.remove(id, this.listeners);

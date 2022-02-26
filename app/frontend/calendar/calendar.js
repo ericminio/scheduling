@@ -80,12 +80,13 @@ class CalendarDay extends HTMLElement {
             eventBus.notify('event creation', this.querySelector("#calendar-date").value);
         });
         this.eventIds = [
-            eventBus.register(this.setDate.bind(this), 'calendar update', { sendLastValue: true }),
+            eventBus.register(this.setDate.bind(this), 'calendar update'),
             eventBus.register(this, 'resource created'),
             eventBus.register(this, 'event created'),
             eventBus.register(this, 'event deleted'),
             eventBus.register(this, 'resource deleted')
-        ]
+        ];
+        eventBus.notify('calendar update request');
     }
     async disconnectedCallback() {
         eventBus.unregisterAll(this.eventIds);
