@@ -14,7 +14,7 @@ describe('Event search using Http', ()=>{
         eventsSearch = new EventsSearchUsingHttp(http);
     })
 
-    it('exposes event delete', ()=> {
+    it('exposes event search', ()=> {
         let spy = {};
         http.get = (uri)=> { spy = { uri:uri }; }
         eventsSearch.inRange('2015-07-01 00:00:00', '2015-07-02 00:00:00');
@@ -35,6 +35,16 @@ describe('Event search using Http', ()=>{
                 done();
             })
             .catch(error => done(error))
+    });
+
+    it('welcomes no end', ()=> {
+        let spy = {};
+        http.get = (uri)=> { spy = { uri:uri }; }
+        eventsSearch.inRange('2015-07-01 00:00:00', undefined);
+
+        expect(spy).to.deep.equal({
+            uri: '/data/events?from=2015-07-01%2000%3A00%3A00&to=undefined'
+        });
     });
 
 })

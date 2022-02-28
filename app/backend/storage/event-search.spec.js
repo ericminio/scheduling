@@ -47,6 +47,12 @@ describe('Events storage search', ()=> {
 
         expect(found.length).to.equal(0);
     });
+    it('includes future event when open ended is used', async ()=>{
+        await givenEvent('              |---|');
+        await whenSearch('      |--- ');
+
+        expect(found.length).to.equal(1);
+    });
 
     let found;
     let givenEvent = async (spec)=>{
@@ -66,9 +72,13 @@ describe('Events storage search', ()=> {
         if (start < 10) start = '0' + start;
         let end = 1 + spec.lastIndexOf('|');
         if (end < 10) end = '0' + end;
-        return { 
+        let criteria =  { 
             start_time: '2021-09-21 19:00:' + start,
             end_time: '2021-09-21 19:00:' + end
         };
+        if (spec.indexOf('|') == spec.lastIndexOf('|')) {
+            criteria.end_time = undefined;
+        }
+        return criteria;
     }
 })

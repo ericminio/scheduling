@@ -12,11 +12,13 @@ Feature: List of future events
             | table      | table #2  |
             | table      | table #3  |
     @only
-    Scenario: Display event of tomorrow
+    Scenario: Displays future events
         Given he navigates to calendar
         Given he creates the following events
-            | Label      | Start             | End              | Resources     |
-            | Birthday   | 2015-09-21 13:00  | 2015-09-21 17:00 | table #1      |
+            | Label        | Start             | End              | Resources     |
+            | Birthday 15  | 2015-09-21 13:00  | 2015-09-21 17:00 | table #1      |
+            | Birthday 21  | 2021-09-21 13:00  | 2021-09-21 17:00 | table #1      |
         Given today is "2015-09-20"
         Given he opens the coming-up page 
-        Then he sees that day "2015-09-21" has event "Birthday"
+        Then he sees that day "2015-09-21" has event "Birthday 15"
+        Then he sees that day "2021-09-21" has event "Birthday 21"

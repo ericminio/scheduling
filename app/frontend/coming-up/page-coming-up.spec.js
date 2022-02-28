@@ -37,7 +37,7 @@ describe('Coming up page', ()=>{
         container.appendChild(sut);
     }
 
-    it('fetches data up to today + 30 days', ()=>{
+    it('fetches future events', ()=>{
         let range = {}
         sut.searchEvents.inRange = (start, end)=> {
             range = {
@@ -53,7 +53,7 @@ describe('Coming up page', ()=>{
         showSut();
         expect(range).to.deep.equal({ 
             start:'2015-09-21 00:00:00',
-            end:'2015-10-21 00:00:00'
+            end:undefined
         })
     });
 

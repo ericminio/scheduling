@@ -51,6 +51,9 @@ describe('SearchEventsRoute', ()=> {
         it('rejects url with missing to', ()=> {
             expect(route.matchesUrl('/data/events?from=any')).to.equal(false);
         });
+        it('accepts url with undefined to', ()=> {
+            expect(route.matchesUrl('/data/events?from=any&to=undefined')).to.equal(true);
+        });
         it('rejects url with missing from', ()=> {
             expect(route.matchesUrl('/data/events?to=any')).to.equal(false);
         });

@@ -11,8 +11,12 @@ class EventSearchUsingPostgresql {
             from events_resources, events
             where events_resources.event_id = events.id 
             and end_time > $1
-            and start_time < $2
-            order by event_id
+        `;
+        if (end !== undefined) {
+            query += ` and start_time < $2`
+        }
+        query += `
+            order by event_id 
         `;
         return new Promise(async (resolve, reject)=> {
             let rows = await this.database.executeSync(query, [start, end]);

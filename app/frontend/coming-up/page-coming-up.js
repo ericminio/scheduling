@@ -53,7 +53,7 @@ class PageComingUp extends HTMLElement {
     }
     load(date) {
         let start = `${formatDate(date)} 00:00:00`;
-        let end = `${formatDate(addDays(30, date))} 00:00:00`;
+        let end = undefined;
         let eventsLoaded = this.searchEvents.inRange(start, end);
         this.clear();
         eventsLoaded.then(data => {
