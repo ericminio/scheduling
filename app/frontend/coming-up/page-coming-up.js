@@ -5,14 +5,14 @@ comingUpTemplate.innerHTML = `
     .coming-up-table {
         width: 100%;    
         border-spacing: 0px;    
+        margin-top: var(--vertical-margin);
     }
     .coming-up-table td {
         padding: 0px;
         vertical-align: top;
     }
-    .coming-up-table ol {
-        padding: 0px;
-        margin-top: var(--vertical-margin);
+    .coming-up-table td > div {
+        padding: 0px;        
         margin-bottom: var(--vertical-margin);
         margin-left: 0px;
         margin-right: 0px;
