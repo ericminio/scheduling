@@ -102,7 +102,7 @@ describe('Coming up page', ()=>{
         it('displays day', (done) => {
             showSut();
             setTimeout(() => {
-                expect(document.querySelector('#day-2015-09-21').innerHTML).to.contain('2015-09-21');
+                expect(document.querySelector('#day-2015-09-21').innerHTML).to.contain('2015-09-21 Monday');
                 done();
             }, wait)
         });

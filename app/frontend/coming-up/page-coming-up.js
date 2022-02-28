@@ -43,6 +43,7 @@ class PageComingUp extends HTMLElement {
 
     constructor() {
         super();
+        this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         this.searchEvents = new SearchEvents();
         this.searchEvents.use({ searchEvents:new EventsSearchUsingHttp(api) });
     }
@@ -71,12 +72,14 @@ class PageComingUp extends HTMLElement {
             let day = event.start.split(' ')[0]
             if (day != previousDay) {
                 previousDay = day
+                let date = dateFrom(day);
+                let weekday = this.weekdays[(date.getDay()+6) % 7];
                 if (html.length >0) {
                     html += comingUpEventDayTemplateClose;
                 }
                 html += comingUpEventDayTemplateOpen
                     .replace('day-id', `day-${day}`)
-                    .replace('event-day', day)
+                    .replace('event-day', `${day} ${weekday}`)
             }
 
             html += comingUpEventTemplate
