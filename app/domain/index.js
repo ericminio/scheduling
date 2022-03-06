@@ -14,6 +14,7 @@ module.exports = {
     previousDay: code('/domain/calendar/time.js', 'previousDay'),
     isAnOverbooking: code('/domain/rules/is-overbooking.js', 'isAnOverbooking'),
     formatDate: code('/domain/calendar/time.js', 'formatDate'),
+    weekday: code('/domain/calendar/time.js', 'weekday'),
 
     SearchEvents: code('/domain/services/search-events.js', 'SearchEvents'),
     CreateEvent: code('/domain/services/create-event.js', 'CreateEvent'),

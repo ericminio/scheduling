@@ -17,7 +17,6 @@ daySelectionTemplate.innerHTML = `
 class DaySelection extends HTMLElement {
     constructor() {
         super();
-        this.weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     }
     async connectedCallback() {
         this.appendChild(daySelectionTemplate.content.cloneNode(true))
@@ -59,9 +58,7 @@ class DaySelection extends HTMLElement {
     updateDayName() {
         let value = this.querySelector("#calendar-date").value;
         if (isValidDate(value)) {
-            let date = dateFrom(value);
-            let day = this.weekdays[(date.getDay()+6) % 7];
-            this.querySelector("#calendar-date-day-name").innerHTML = day;
+            this.querySelector("#calendar-date-day-name").innerHTML = weekday(value);
         }
         else {
             this.querySelector("#calendar-date-day-name").innerHTML = '';

@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { nextDay, previousDay, formatDate } = require('..');
+const { nextDay, previousDay, formatDate, weekday } = require('..');
 
 describe('The next day', ()=> {
 
@@ -31,4 +31,16 @@ describe('date formater', ()=> {
         let date = new Date(2015, 8, 21);
         expect(formatDate(date)).to.equal('2015-09-21');
     })
+});
+
+describe('weekday', ()=> {
+
+    it('is Monday for 2015-09-21', ()=> {
+        let day = '2015-09-21'
+        expect(weekday(day)).to.equal('Monday');
+    });
+    it('is Thursday for 1972-09-21', ()=> {
+        let day = '1972-09-21'
+        expect(weekday(day)).to.equal('Thursday');
+    });
 })
