@@ -19,3 +19,7 @@ cd app
 npm install
 npm test
 ```
+
+# Node version
+
+Keep in sync `.nvmrc` and `Dockerfile`
