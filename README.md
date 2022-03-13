@@ -14,7 +14,7 @@ https://yop-scheduling.herokuapp.com
 Make sure `geckodriver` is in your PATH
 
 ```
-export DATABASE_URL=postgres://dev:dev@localhost:5432/scheduling
+docker-compose up -d database
 cd app
 npm install
 npm test
