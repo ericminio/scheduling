@@ -1,18 +1,15 @@
 class Robot {
     constructor(World, By) {
         this.By = By;
-        this.World = World;
         this.driver = World.driver;
-        this.elements = [
-            'yop-route',
-            'yop-link'
-        ]
+        this.server = World.server;
+        this.elements = [];
     }
     async open(uri) {
-        await this.World.driver.get(`http://localhost:${this.World.server.port}${uri}`);
+        await this.driver.get(`http://localhost:${this.server.port}${uri}`);
     }
     async wait(ms) {
-        await this.World.driver.sleep(ms);
+        await this.driver.sleep(ms);
     }
     async input(selector, value) {
         let field = await this.findElement(selector);
